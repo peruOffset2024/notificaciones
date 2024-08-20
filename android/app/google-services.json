@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "865249170055",
+    "project_id": "notificaciones-7b224",
+    "storage_bucket": "notificaciones-7b224.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865249170055:android:6705024e74485ea8b6de22",
+        "android_client_info": {
+          "package_name": "com.ricardodev.push_notificaciones"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-WhXzBGDyP1Q4LjzkXPNlzgtYeJ9GFJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
