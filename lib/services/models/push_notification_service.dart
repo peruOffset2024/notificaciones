@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+
 //se requiere que desde aqui nos escuche my app
 class PushNotificationService {
   //envia eventos e informacion a otros widget, canal por donde 
@@ -13,6 +14,9 @@ class PushNotificationService {
   static FirebaseMessaging  messaging = FirebaseMessaging.instance;
   // si cada dispositivo que descargue nuestra aplicacion  debe tener un token 
   // una cadena que contiene informacion codificada cuadno se decodifica se puede acceder a esa informacion
+
+  static Stream<String> get messagesStream => _msjStream.stream;
+
 
   static String? token;
 
@@ -30,6 +34,9 @@ class PushNotificationService {
   // puede detectar si nuestra aplicacion est en backgound
   static Future __backgroundController(RemoteMessage mjs) async {
     print('Estado BACKGROUND segundo plano');
+    _msjStream.add(mjs.notification?.body ?? 'No body');
+    print('Mensaje Titulo: ${mjs.notification?.title}');
+    print('Mensaje Titulo: ${mjs.notification?.body}');
     
   }
 
@@ -37,12 +44,21 @@ class PushNotificationService {
     print('Estado FOREGROUND  abierta');
     //print('Mensaje de la notificacion: ${mjs.messageId}');
     print('Mensaje Titulo: ${mjs.notification?.title}');
+    print('Mensaje Titulo: ${mjs.notification?.body}');
     _msjStream.add(mjs.notification?.title ?? 'No title');
+    _msjStream.add(mjs.data['usuario'] ?? 'No hay datos o personalizados');
+    print('MENSAJE DATOS-DATA datos adicionales: ${mjs.data}');
+
+    
 
   }
-
+  // cuadno el estado esta cerrado tenemos que hacer para que inicie
+  // tenemos que hacer que actualize el estado mediante my app y automaticamente lo mande
   static Future _onMsjOpenApp(RemoteMessage mjs) async{
     print('Estado OPEN APP  cerrada');
+    _msjStream.add(mjs.notification?.body ?? 'No body');
+    print('Mensaje Titulo: ${mjs.notification?.title}');
+    print('Mensaje Titulo: ${mjs.notification?.body}');
   }
 
   static closeStreams(){

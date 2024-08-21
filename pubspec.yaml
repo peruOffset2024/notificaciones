@@ -41,7 +41,6 @@ dependencies:
   firebase_in_app_messaging: ^0.8.0+4
   flutter_local_notifications: ^17.2.2
   provider: ^6.1.2
-  dropdown_search: ^5.0.2
   http: ^1.2.2
 
 dev_dependencies:

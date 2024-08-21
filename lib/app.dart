@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:push_notificaciones/screens/iniciar_sesion.dart';
-import 'package:push_notificaciones/services/noti_push_firebase.dart';
+import 'package:push_notificaciones/screens/message_screen.dart';
+import 'package:push_notificaciones/services/models/push_notification_service.dart';
+
 
 //convertir a statefulwidget
 class MyApp extends StatefulWidget {
@@ -11,6 +13,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // permite ver la navegacion
   //para mandar a otra ruta
   final GlobalKey<NavigatorState> navigatorKey =
       new GlobalKey<NavigatorState>();
@@ -22,10 +25,19 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    PushNotificationsService.msjStream.listen((msj) {
-      // ignore: avoid_print
-      print('LLrgo este mensaje: $msj');
-    });
+
+  
+
+  PushNotificationService.messagesStream.listen((mensaje){
+      print('------------------- > DESDE MYAPP mensaje: $mensaje');
+
+    navigatorKey.currentState?.pushNamed('/mensaje', arguments: mensaje);
+
+      final snackBar = 
+        SnackBar(content: Text('Esto es snackbar msj: $mensaje'));
+        scaffoldKey.currentState?.showSnackBar(snackBar);
+    }
+   );
   }
 
   @override
@@ -34,9 +46,11 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Notificaciones push',
         initialRoute: '/home',
+        scaffoldMessengerKey: scaffoldKey,
+        navigatorKey: navigatorKey,
         routes: {
           '/home': (_) => const IniciarSesion(),
-          //'/mensaje': (_) => const NavegadorIndex(),
+          '/mensaje': (_) => const MessageScreen(),
         });
   }
 }
