@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:push_notificaciones/screens/guias.dart';
-import 'package:push_notificaciones/screens/otros.dart';
-import 'package:push_notificaciones/screens/servicios.dart';
-
-
+import 'package:push_notificaciones/screens/registro_datos.dart';
+import 'package:push_notificaciones/test/tracking_screen.dart';
 
 class GuiasServicios extends StatefulWidget {
   const GuiasServicios({super.key});
@@ -24,70 +22,87 @@ class _GuiasServiciosState extends State<GuiasServicios> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   child: MaterialButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                disabledColor: Colors.grey,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) =>  const Guias()),
-                  );
-                },
-                color: const Color.fromARGB(255, 43, 43, 44),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.2,
-                    vertical: size.height * 0.02,
-                  ),
-                  child: const Text(
-                    'Guias',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              )),
-              const SizedBox(height: 100,),
-              Container(
-                padding: const EdgeInsets.all(5),
-                child: MaterialButton(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>  const Servicios()));
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                disabledColor:Colors.green,
-                color: const Color.fromARGB(255, 43, 43, 44), 
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.2,
-                    vertical: size.height * 0.02,
-                  ),
-                  child: const Text('Servicios', style: TextStyle(color: Colors.white),),
-                ),
-                ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    disabledColor: Colors.grey,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Guias()),
+                      );
+                    },
+                    color: const Color.fromARGB(255, 43, 43, 44),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.2,
+                        vertical: size.height * 0.02,
+                      ),
+                      child: const Text(
+                        'Guias',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )),
+              const SizedBox(
+                height: 100,
               ),
-              const SizedBox(height: 100,),
               Container(
                 padding: const EdgeInsets.all(5),
                 child: MaterialButton(
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const Otros()));
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegistroDatos()));
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  disabledColor: Colors.green,
+                  color: const Color.fromARGB(255, 43, 43, 44),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.2,
+                      vertical: size.height * 0.02,
+                    ),
+                    child: const Text(
+                      'Servicios',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 100,
+              ),
+              Container(
+                padding: const EdgeInsets.all(5),
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TrackingScreen()));
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   disabledColor: const Color.fromARGB(255, 75, 31, 46),
-                  color: const Color.fromARGB(255, 43, 43, 44), 
+                  color: const Color.fromARGB(255, 43, 43, 44),
                   child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.2,
-                    vertical: size.height * 0.02,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.2,
+                      vertical: size.height * 0.02,
+                    ),
+                    child: const Text(
+                      'Otros',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                  child: const Text('Otros', style: TextStyle(color: Colors.white),),
                 ),
-                  ),
               )
             ],
           ),

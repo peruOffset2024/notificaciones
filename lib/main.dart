@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:push_notificaciones/app.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/buscador_provider.dart';
+import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pokemon_provider.dart';
 import 'package:push_notificaciones/providers/rutas_provider.dart';
+import 'package:push_notificaciones/providers/tracking_provider.dart';
 import 'package:push_notificaciones/services/models/push_notification_service.dart';
 
 
@@ -20,7 +22,9 @@ void main() async {
     ChangeNotifierProvider(create: (_)=> Authprovider()), 
     ChangeNotifierProvider(create: (_)=> BuscadorProvider()), 
     ChangeNotifierProvider(create: (_)=> PokemonProvider()), 
-    ChangeNotifierProvider(create: (_)=> RutasProvider()),
+    ChangeNotifierProvider(create: (_)=> RutasProvider()), 
+    ChangeNotifierProvider(create: (_)=> TrackingProvider()), 
+    ChangeNotifierProvider(create: (_)=> LocationProvider()),
   ],
   child: const MyApp()));
 }

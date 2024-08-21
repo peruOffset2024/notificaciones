@@ -16,11 +16,11 @@ class _MyAppState extends State<MyApp> {
   // permite ver la navegacion
   //para mandar a otra ruta
   final GlobalKey<NavigatorState> navigatorKey =
-      new GlobalKey<NavigatorState>();
+       GlobalKey<NavigatorState>();
 
   // abrir un scaffold
   final GlobalKey<ScaffoldMessengerState> scaffoldKey =
-      new GlobalKey<ScaffoldMessengerState>();
+       GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() {
