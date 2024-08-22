@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:push_notificaciones/models/ruta.dart';
+import 'package:push_notificaciones/models/ruta.dart'; 
 
 class RutasProvider with ChangeNotifier {
   List<Ruta> _rutas = [];
@@ -12,7 +12,7 @@ class RutasProvider with ChangeNotifier {
   RutasProvider() {
     // Inicializar los datos simulados
     _rutas = List.generate(
-      50,
+      20,
       (index) => Ruta(
         registro: index % 2 == 0
             ? 'Salida ${index ~/ 2 + 1}'

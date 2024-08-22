@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/rutas_provider.dart';
+import 'package:push_notificaciones/test/tracking_screen.dart';// Asegúrate de tener esta importación para Ruta
 
 class RegistroRutas extends StatefulWidget {
   const RegistroRutas({super.key});
@@ -84,27 +85,47 @@ class _RegistroRutasState extends State<RegistroRutas> {
                             ],
                           ),
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
-                              child: Text(
-                                ruta.registro,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black87,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RutaDetailsScreen(ruta: ruta),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
+                                child: Text(
+                                  ruta.registro,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black87,
+                                  ),
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
-                              child: Text(
-                                ruta.hora,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.teal,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RutaDetailsScreen(ruta: ruta),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
+                                child: Text(
+                                  ruta.hora,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.teal,
+                                  ),
                                 ),
                               ),
                             ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:push_notificaciones/screens/entrada_salida_registro.dart';
 import 'package:push_notificaciones/screens/guias_servicios.dart';
-import 'package:push_notificaciones/screens/marcador.dart';
 import 'package:push_notificaciones/screens/registro_rutas.dart';
-import 'dart:io'; // Importa esta librería para usar exit(0)
+import 'dart:io';
+
+
 
 class NavegadorIndex extends StatefulWidget {
   const NavegadorIndex({super.key, required this.usuario});
@@ -18,7 +20,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
   List<Widget> navegador = [
     const RegistroRutas(),
     const GuiasServicios(),
-    const RegistroMarcador(),
+    const EntradaSalidaRegistro(),
     const Center(
       child: Text(
         'Pag4',
@@ -31,16 +33,10 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Bienvenido: ${widget.usuario}',
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
+        title:  Text('Bienvenido: ${widget.usuario}', style: const TextStyle(color: Colors.greenAccent),),
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xFF004D40),
+        backgroundColor: Colors.black,
+        
       ),
       body: navegador[indice],
       bottomNavigationBar: BottomNavigationBar(

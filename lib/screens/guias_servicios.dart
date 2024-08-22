@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:push_notificaciones/screens/boton_para_mover_carro.dart';
 import 'package:push_notificaciones/screens/guias.dart';
 import 'package:push_notificaciones/screens/registro_datos.dart';
-import 'package:push_notificaciones/test/tracking_screen.dart';
+
 
 class GuiasServicios extends StatefulWidget {
   const GuiasServicios({super.key});
@@ -31,7 +32,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const Guias()),
+                        MaterialPageRoute(builder: (context) => const ControlView()),
                       );
                     },
                     color: const Color.fromARGB(255, 43, 43, 44),
@@ -85,7 +86,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TrackingScreen()));
+                            builder: (context) => Guias()));
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
