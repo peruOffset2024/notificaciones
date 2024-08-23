@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:push_notificaciones/screens/entrada_salida_registro.dart';
+import 'package:push_notificaciones/views/screens/entrada_salida_registro.dart';
 
 class RegistroMarcador extends StatelessWidget {
   const RegistroMarcador({super.key});
@@ -28,7 +28,7 @@ class RegistroMarcador extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const EntradaSalidaRegistro()),
+                            builder: (context) =>  RegistroAsistencia()),
                       );
                     },
                     color: const Color.fromARGB(255, 43, 43, 44),
@@ -57,7 +57,7 @@ class RegistroMarcador extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const EntradaSalidaRegistro()),
+                            builder: (context) =>  RegistroAsistencia()),
                       );
                     },
                     color: const Color.fromARGB(255, 43, 43, 44),

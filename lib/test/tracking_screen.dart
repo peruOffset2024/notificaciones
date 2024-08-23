@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:push_notificaciones/models/ruta.dart';
+import 'package:push_notificaciones/models/modelo_ruta.dart';
 import 'package:push_notificaciones/providers/tracking_provider.dart';
 
 class RutaDetailsScreen extends StatefulWidget {

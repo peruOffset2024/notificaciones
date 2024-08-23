@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:push_notificaciones/screens/iniciar_sesion.dart';
-import 'package:push_notificaciones/screens/message_screen.dart';
+import 'package:push_notificaciones/views/screens/iniciar_sesion.dart';
+import 'package:push_notificaciones/views/screens/message_screen.dart';
 import 'package:push_notificaciones/services/models/push_notification_service.dart';
 
 

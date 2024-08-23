@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:push_notificaciones/models/ruta.dart'; 
+import 'package:push_notificaciones/models/modelo_ruta.dart'; 
 
 class RutasProvider with ChangeNotifier {
   List<Ruta> _rutas = [];

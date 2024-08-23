@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:push_notificaciones/providers/rutas_provider.dart';
-import 'package:push_notificaciones/test/tracking_screen.dart';// Asegúrate de tener esta importación para Ruta
+import 'package:push_notificaciones/providers/miguia_provider.dart';
+import 'package:push_notificaciones/views/screens/message_screen.dart';
+import 'package:push_notificaciones/views/screens/otros.dart';
 
-class RegistroRutas extends StatefulWidget {
-  const RegistroRutas({super.key});
+class ListaGuias extends StatefulWidget {
+  const ListaGuias({super.key, });
 
   @override
-  State<RegistroRutas> createState() => _RegistroRutasState();
+  State<ListaGuias> createState() => _ListaGuiasState();
 }
 
-class _RegistroRutasState extends State<RegistroRutas> {
+class _ListaGuiasState extends State<ListaGuias> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.green,
+      ),
+      backgroundColor: Colors.black,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -23,36 +29,45 @@ class _RegistroRutasState extends State<RegistroRutas> {
               children: [
                 Expanded(
                   child: TextField(
+                    style: const TextStyle(color: Colors.black),
                     decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search, color: Colors.teal),
-                      labelText: 'Buscar',
-                      labelStyle: const TextStyle(color: Colors.teal),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(color: Colors.teal),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(color: Colors.teal, width: 2.0),
-                      ),
-                    ),
+                        prefixIcon:
+                            const Icon(Icons.search, color: Colors.black),
+                        hintText: '¿Qué guía deseas buscar?',
+                        labelStyle: const TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(color: Colors.black),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              const BorderSide(color: Colors.white, width: 2.0),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white),
                     onChanged: (value) {
-                      context.read<RutasProvider>().searchRuta(value);
+                      context.read<MiGuiasProvider>().buscarRuta(value);
                     },
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 20),
-
+    
             // Tabla de resultados
             Expanded(
-              child: Consumer<RutasProvider>(
+              child: Consumer<MiGuiasProvider>(
                 builder: (context, provider, child) {
-                  if (provider.rutas.isEmpty) {
-                    return const Center(child: Text('No hay resultados'));
+                  if (provider.guias.isEmpty) {
+                    print(provider.guias);
+                    return const Center(
+                        child: Text(
+                      'No hay resultados',
+                      style: TextStyle(color: Colors.white),
+                    ));
                   }
-
+    
                   return SingleChildScrollView(
                     child: Table(
                       columnWidths: const {
@@ -71,7 +86,7 @@ class _RegistroRutasState extends State<RegistroRutas> {
                           style: BorderStyle.solid,
                         ),
                       ),
-                      children: provider.rutas.map((ruta) {
+                      children: provider.guias.map((rutaso) {
                         return TableRow(
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -90,14 +105,15 @@ class _RegistroRutasState extends State<RegistroRutas> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => RutaDetailsScreen(ruta: ruta),
+                                    builder: (context) => Otros(),
                                   ),
                                 );
                               },
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 8.0),
                                 child: Text(
-                                  ruta.registro,
+                                  rutaso.registros,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontSize: 16,
@@ -112,14 +128,15 @@ class _RegistroRutasState extends State<RegistroRutas> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => RutaDetailsScreen(ruta: ruta),
+                                    builder: (context) => MessageScreen(),
                                   ),
                                 );
                               },
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 8.0),
                                 child: Text(
-                                  ruta.hora,
+                                  rutaso.horas,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontSize: 16,
