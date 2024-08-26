@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/app.dart';
+import 'package:push_notificaciones/providers/api_diferencias_provider.dart';
+import 'package:push_notificaciones/providers/asistencia_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
-import 'package:push_notificaciones/providers/buscador_provider.dart';
-
 import 'package:push_notificaciones/providers/location_provider.dart';
-import 'package:push_notificaciones/providers/miguia_provider.dart';
-
+import 'package:push_notificaciones/providers/pedido_provider.dart';
+import 'package:push_notificaciones/providers/reg_sal_switch_provider.dart';
 import 'package:push_notificaciones/providers/rutas_provider.dart';
 import 'package:push_notificaciones/providers/tracking_provider.dart';
-
 import 'package:push_notificaciones/services/models/push_notification_service.dart';
 
 void main() async {
@@ -19,10 +18,15 @@ void main() async {
   //await PushNotificationsService.cargarFirebaseApp();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => RutasProvider()),
-    ChangeNotifierProvider(create: (_) => MiGuiasProvider()),
     ChangeNotifierProvider(create: (_) => Authprovider()),
-    ChangeNotifierProvider(create: (_) => BuscadorProvider()),
     ChangeNotifierProvider(create: (_) => TrackingProvider()),
-    ChangeNotifierProvider(create: (_) => LocationProvider()),
+    ChangeNotifierProvider(create: (_) => LocationProvider()), 
+    ChangeNotifierProvider(create: (_) => ProductosProvider()), 
+    ChangeNotifierProvider(create: (_) => SwitchStateProvider()),
+    ChangeNotifierProvider(create: (_) => PedidoProvider()), 
+    ChangeNotifierProvider(create: (_) => AsistenciaProvider()),
+     
+
   ], child: const MyApp()));
 }
+

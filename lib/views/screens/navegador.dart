@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:push_notificaciones/views/screens/index_diferencias_despacho.dart';
 import 'package:push_notificaciones/views/screens/entrada_salida_registro.dart';
 import 'package:push_notificaciones/views/screens/guias_servicios.dart';
-import 'package:push_notificaciones/views/screens/reporte_ruta.dart';
 import 'dart:io';
 
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
@@ -20,7 +20,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
   int indice = 0;
 
   List<Widget> navegador = [
-    const ReporteRutas(),
+    const ProductosGridScreen(),
     const GuiasServicios(),
      RegistroAsistencia(),
     const Center(

@@ -26,8 +26,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-  
-
   PushNotificationService.messagesStream.listen((mensaje){
       print('------------------- > DESDE MYAPP mensaje: $mensaje');
 
@@ -40,8 +38,11 @@ class _MyAppState extends State<MyApp> {
    );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Notificaciones push',

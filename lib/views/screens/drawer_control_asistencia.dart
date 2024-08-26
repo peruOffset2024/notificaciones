@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:push_notificaciones/providers/asistencia_provider.dart';
+
 
 class DrawerHistorialAsistencia extends StatelessWidget {
   const DrawerHistorialAsistencia({super.key});
@@ -6,43 +9,82 @@ class DrawerHistorialAsistencia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
+        backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
+        title: const Text(
+          'Historial de Asistencia',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(children: [
-          const Text(
-              'Historial Reciente',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Mes: Agosto',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
+            const SizedBox(height: 20),
             Expanded(
-              child: _buildHistorialReciente(),
+              child: _buildHistorialReciente(context),
             ),
-        ],),
+          ],
         ),
-        floatingActionButton: FloatingActionButton(onPressed: (){
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
           _mostrarAyuda(context);
         },
-        child: const Icon(Icons.live_help_outlined),
-        ),
+        backgroundColor: Colors.greenAccent[400],
+        child: const Icon(Icons.live_help_outlined, color: Colors.black),
+      ),
     );
   }
-  Widget _buildHistorialReciente() {
-    return ListView(
-      children: List.generate(5, (index) {
+
+  Widget _buildHistorialReciente(BuildContext context) {
+    final asistencias = Provider.of<AsistenciaProvider>(context).asistencias;
+
+    return ListView.builder(
+      itemCount: asistencias.length,
+      itemBuilder: (context, index) {
+        final asistencia = asistencias[index];
         return Card(
+          color: Colors.grey[900],
           elevation: 2,
-          margin: const EdgeInsets.symmetric(vertical: 5),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
           child: ListTile(
-            leading: const Icon(Icons.person, color: Colors.blueGrey),
-            title: Text('Empleado ${index + 1}'),
-            subtitle: const Text('Inicio: 09:00 AM - Fin: 05:00 PM'),
-            trailing: const Text('8h'),
+            leading: CircleAvatar(
+              backgroundColor: Colors.greenAccent[400],
+              child: const Icon(Icons.person, color: Colors.black),
+            ),
+            title: Text(
+              asistencia['nombre']!,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              'Inicio: ${asistencia['inicio']} - Fin: ${asistencia['fin']}',
+              style: const TextStyle(color: Colors.white70),
+            ),
+            trailing: Text(
+              asistencia['horas']!,
+              style: const TextStyle(color: Colors.greenAccent),
+            ),
           ),
         );
-      }),
+      },
     );
   }
 
@@ -51,14 +93,19 @@ class DrawerHistorialAsistencia extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Ayuda'),
+          backgroundColor: Colors.grey[900],
+          title: const Text(
+            'Ayuda',
+            style: TextStyle(color: Colors.white),
+          ),
           content: const Text(
-              'Aquí puedes registrar la hora de inicio y salida de tu jornada laboral. '
-              'Para registrar tu entrada, ingresa tu ID de empleado y presiona "Registrar Inicio". '
-              'Para registrar la salida, haz lo mismo pero presiona "Registrar Salida".'),
+            'Aquí puedes ver el historial reciente de asistencia de los empleados. '
+            'Para registrar la asistencia, dirígete a la pantalla principal.',
+            style: TextStyle(color: Colors.white70),
+          ),
           actions: [
             TextButton(
-              child: const Text('Cerrar'),
+              child: const Text('Cerrar', style: TextStyle(color: Colors.greenAccent)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -68,5 +115,4 @@ class DrawerHistorialAsistencia extends StatelessWidget {
       },
     );
   }
-
 }

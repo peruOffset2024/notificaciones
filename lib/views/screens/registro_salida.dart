@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
+import 'package:push_notificaciones/providers/pedido_provider.dart';
+import 'package:push_notificaciones/providers/reg_sal_switch_provider.dart';
+
+
+// Pendiente para producción Validar que el usuario no vuelva a ejecutar la salida para esa guia o orden de pedido
+// ojo PENDIENTE
+
 
 class RegistroSalida extends StatefulWidget {
   const RegistroSalida({
@@ -21,177 +30,186 @@ final TextEditingController _lugarEntrega = TextEditingController();
 class _RegistroSalidaState extends State<RegistroSalida> {
   @override
   Widget build(BuildContext context) {
+    final switchState = context.watch<SwitchStateProvider>();
+
     return Scaffold(
+      backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
         title: const Text(
           'T00-00001',
           style: TextStyle(
-              fontSize: 25, fontWeight: FontWeight.bold, color: Colors.green),
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.greenAccent,
+          ),
         ),
         centerTitle: true,
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.black
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.greenAccent),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        child: Center(
-          // Asegura que todo el contenido esté centrado
-          child: SingleChildScrollView(
-            child: Column(
-              // Centra verticalmente
-              children: [
-                const SizedBox(height: 20),
-                const Text(
-                  'VIRU S.A',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 30),
+              const Text(
+                'VIRU S.A',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  letterSpacing: 1.2,
                 ),
-                const SizedBox(
-                    height: 40), // Espaciado entre el texto y los switches
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.center, // Centra horizontalmente
-                  children: [
-                    Column(
-                      children: [
-                        Switch(
-                          value: widget.isActive,
-                          onChanged: widget.onChanged,
-                          activeColor: Colors.green, // Color del switch activo
-                          inactiveThumbColor:
-                              Colors.grey, // Color del switch inactivo
-                          inactiveTrackColor:
-                              Colors.grey[300], // Color de la pista inactiva
-                        ),
-                        const SizedBox(
-                            height: 8), // Espaciado entre el switch y el texto
-                        Text(
-                          widget.label,
-                          style: const TextStyle(
-                            fontSize: 16, // Tamaño de la fuente
-                            fontWeight: FontWeight.bold, // Grosor de la fuente
-                            color: Colors.white, // Color del texto
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                        width:
-                            40), // Espaciado entre las dos columnas de switches
-                    Column(
-                      children: [
-                        Switch(
-                          value: widget.isActive,
-                          onChanged: widget.onChanged,
-                          activeColor: Colors.green, // Color del switch activo
-                          inactiveThumbColor:
-                              Colors.grey, // Color del switch inactivo
-                          inactiveTrackColor:
-                              Colors.grey[300], // Color de la pista inactiva
-                        ),
-                        const SizedBox(
-                            height: 8), // Espaciado entre el switch y el texto
-                        Text(
-                          widget.label,
-                          style: const TextStyle(
-                            fontSize: 16, // Tamaño de la fuente
-                            fontWeight: FontWeight.bold, // Grosor de la fuente
-                            color: Colors.white, // Color del texto
-                          ),
-                        ),
-                      ],
+              ),
+              const SizedBox(height: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildSwitch(
+                      context, switchState.switch1, switchState.toggleSwitch1),
+                  _buildSwitch(
+                      context, switchState.switch2, switchState.toggleSwitch2),
+                ],
+              ),
+              const SizedBox(height: 50),
+              _buildSwitch(
+                  context, switchState.switch3, switchState.toggleSwitch3),
+              const SizedBox(height: 50),
+              _buildObservationsField(),
+              const SizedBox(height: 80),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {
+            final provider = context.read<PedidoProvider>();
+            provider.actualizarEstado(
+              PedidoEstado(
+                estado: 'Salida de Perú Offset Digital',
+                descripcion: 'Nestle',
+                fecha: DateTime.now(),
+              ),
+            );
+
+            // Mostrar el AlertDialog después de actualizar el estado
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  backgroundColor: const Color.fromRGBO(64, 64, 64, 1),
+                  title: const Text('Éxito', style: TextStyle(color: Colors.white, fontSize: 25),),
+                  content: const Text('Se registró correctamente tu salida', style: TextStyle(color: Colors.white, fontSize: 18),),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Aceptar'),
                     ),
                   ],
-                ),
-                const SizedBox(
-                    height: 40), // Espaciado entre las filas y el switch final
-                Column(
-                  children: [
-                    Switch(
-                      value: widget.isActive,
-                      onChanged: widget.onChanged,
-                      activeColor: Colors.green, // Color del switch activo
-                      inactiveThumbColor:
-                          Colors.grey, // Color del switch inactivo
-                      inactiveTrackColor:
-                          Colors.grey[300], // Color de la pista inactiva
-                    ),
-                    const SizedBox(
-                        height: 8), // Espaciado entre el switch y el texto
-                    Text(
-                      widget.label,
-                      style: const TextStyle(
-                        fontSize: 16, // Tamaño de la fuente
-                        fontWeight: FontWeight.bold, // Grosor de la fuente
-                        color: Colors.white, // Color del texto
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          'Observaciones',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxHeight: 200),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 1, color: Colors.grey),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextField(
-                              style: const TextStyle(color: Colors.black),
-                              controller: _lugarEntrega,
-                              maxLines: null,
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8)),
-                                  contentPadding: EdgeInsets.all(10),
-                                  filled: true,
-                                  fillColor: Colors.white),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                );
+              },
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.greenAccent,
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          child: const Text(
+            'Registrar Salida',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: MaterialButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+    );
+  }
+
+  Widget _buildSwitch(
+      BuildContext context, bool isActive, ValueChanged<bool> onChanged) {
+    return Column(
+      children: [
+        Switch(
+          value: isActive,
+          onChanged: onChanged,
+          activeColor: Colors.greenAccent,
+          inactiveThumbColor: Colors.grey[800],
+          inactiveTrackColor: Colors.grey[700],
         ),
-        disabledColor: Colors.grey,
-        onPressed: () {},
-        color: Colors.green,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 50,
-            vertical: 10,
-          ),
-          child: const Text(
-            'Registrar Salida',
-            style: TextStyle(fontSize: 20, color: Colors.white),
+        const SizedBox(height: 8),
+        Text(
+          widget.label,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildObservationsField() {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.greenAccent.withOpacity(0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Lugar de entrega',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.greenAccent,
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            style: const TextStyle(color: Colors.white),
+            controller: _lugarEntrega,
+            maxLines: null,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.black,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide:
+                    BorderSide(color: Colors.greenAccent.withOpacity(0.5)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: Colors.greenAccent),
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+            ),
+          ),
+        ],
       ),
     );
   }
