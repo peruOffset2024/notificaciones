@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/navegador.dart';
@@ -7,21 +8,23 @@ class IniciarSesion extends StatefulWidget {
   const IniciarSesion({super.key});
 
   @override
-  _IniciarSesionState createState() => _IniciarSesionState();
+  State<IniciarSesion> createState() => _IniciarSesionState();
 }
 
 class _IniciarSesionState extends State<IniciarSesion> {
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+
   bool _obcureText = true;
+
   @override
   void dispose() {
     _usernameController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
-  void _passwordVisibility(){
+  // ignore: unused_element
+  void _passwordVisibility() {
     setState(() {
       _obcureText = !_obcureText;
     });
@@ -35,7 +38,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color.fromARGB(255, 3, 32, 14), Color(0xFF121212)],
+            colors: [Color.fromARGB(255, 30, 137, 236), Color(0xFF121212)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -55,154 +58,132 @@ class _IniciarSesionState extends State<IniciarSesion> {
                         children: <TextSpan>[
                           TextSpan(
                             text: 'A',
-                            style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
                             text: 'Q',
-                            style: TextStyle(color: Colors.green, fontSize: 40, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
                             text: 'N',
-                            style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
                             text: 'Q',
-                            style: TextStyle(color: Colors.green, fontSize: 40, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                     ),
                   ),
-              
+
                   SizedBox(height: size.height * 0.05),
-              
+
                   // Campo de Usuario
-                  SizedBox(
-                    height: size.height * 0.08,
-                    child: TextFormField(
-                      controller: _usernameController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        prefixIcon:
-                            const Icon(Icons.person, color: Color(0xFF1DB954)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFF1DB954)),
+                  Form(
+                    key: _formkey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: SizedBox(
+                      height: size.height * 0.08,
+                      child: TextFormField(
+                        maxLength: 15,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                        ],
+                        keyboardType: TextInputType.number,
+                        controller: _usernameController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.person,
+                              color: Colors.lightBlueAccent),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide:
+                                const BorderSide(color: Colors.lightBlueAccent),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                  color: Colors.lightBlueAccent)),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide:
+                                const BorderSide(color: Colors.lightBlueAccent),
+                          ),
+                          labelText: 'DNI',
+                          labelStyle: const TextStyle(color: Colors.white),
+                          hintStyle:
+                              TextStyle(color: Colors.white.withOpacity(0.6)),
+                          filled: true,
+                          fillColor: Colors.black.withOpacity(0.7),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFF1DB954)),
-                        ),
-                        labelText: 'Correo Electrónico o Usuario',
-                        labelStyle: const TextStyle(color: Colors.white),
-                        hintText: 'ejemplo@correo.com',
-                        hintStyle:
-                            TextStyle(color: Colors.white.withOpacity(0.6)),
-                        filled: true,
-                        fillColor: Colors.black.withOpacity(0.7),
+                        onChanged: (value) {
+                          // Aquí podrías actualizar el estado global si es necesario
+                          context.read<Authprovider>().authentication(value);
+                        },
                       ),
-                      onChanged: (value) {
-                        // Aquí podrías actualizar el estado global si es necesario
-                        context.read<Authprovider>().authentication(value);
-                      },
                     ),
                   ),
+                 
                   SizedBox(height: size.height * 0.03),
-              
-                  // Campo de Contraseña
-                  SizedBox(
-                    height: size.height * 0.08,
-                    child: TextFormField(
-                      controller: _passwordController,
-                      obscureText: _obcureText,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        prefixIcon:
-                            const Icon(Icons.lock, color: Color(0xFF1DB954)),
-                        suffixIcon: IconButton(onPressed: _passwordVisibility, icon: Icon(
-                          _obcureText ? Icons.visibility_off :
-                          Icons.visibility)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFF1DB954)),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFF1DB954)),
-                        ),
-                        labelText: 'Contraseña',
-                        labelStyle: const TextStyle(color: Colors.white),
-                        hintText: '*******',
-                        hintStyle:
-                            TextStyle(color: Colors.white.withOpacity(0.6)),
-                        filled: true,
-                        fillColor: Colors.black.withOpacity(0.7),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: size.height * 0.05),
-              
+
                   // Botón de Ingresar
-                  ElevatedButton(
-                    onPressed: () {
-                      context
-                          .read<Authprovider>()
-                          .authentication(_usernameController.text);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              NavegadorIndex(usuario: _usernameController.text),
+                  Consumer<Authprovider>(
+                    builder: ( context, authprovider,child) { 
+                      return ElevatedButton(
+                      onPressed: authprovider.authenticated ? () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => NavegadorIndex(usuario: _usernameController.text,)));
+                      } : () async {
+                        if(_formkey.currentState?.validate() ?? false){
+                          try {
+                            await authprovider.login(_usernameController.text);
+                            if(authprovider.authenticated){
+                              // ignore: use_build_context_synchronously
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => NavegadorIndex(usuario: _usernameController.text)));
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Datos Invalidos')));
+                            }
+                          } catch (e){
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error al Autentificarse')));
+                          }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(vertical: size.height * 0.02),
+                        backgroundColor: Colors.lightBlueAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
-                      backgroundColor: const Color(0xFF1DB954),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        elevation: 0,
                       ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      'Ingresar',
-                      style: TextStyle(
-                        fontSize: size.width * 0.05,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                      child: Text(
+                        'Ingresar',
+                        style: TextStyle(
+                          fontSize: size.width * 0.05,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                    );
+                     },
+                    
                   ),
                   SizedBox(height: size.height * 0.02),
-              
-                  // Enlace para Olvidé mi contraseña
-                  Align(
-                    alignment: Alignment.center,
-                    child: TextButton(
-                      onPressed: () {
-                        // Lógica para restablecer la contraseña
-                      },
-                      child: const Text(
-                        'Olvidé mi contraseña',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: size.height * 0.02),
-              
-                  // Enlace para Crear una cuenta
-                  Align(
-                    alignment: Alignment.center,
-                    child: TextButton(
-                      onPressed: () {
-                        // Navegar a la pantalla de registro
-                      },
-                      child: const Text(
-                        'Crear una cuenta',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -222,7 +203,7 @@ class CustomText extends StatelessWidget {
       ),
       body: Center(
         child: RichText(
-          text: TextSpan(
+          text: const TextSpan(
             children: <TextSpan>[
               TextSpan(
                 text: 'A',

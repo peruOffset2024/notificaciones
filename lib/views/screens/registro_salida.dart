@@ -33,23 +33,23 @@ class _RegistroSalidaState extends State<RegistroSalida> {
     final switchState = context.watch<SwitchStateProvider>();
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: const Text(
           'T00-00001',
           style: TextStyle(
-            fontSize: 25,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.greenAccent,
+            color: Colors.black,
           ),
         ),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.greenAccent),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -65,9 +65,9 @@ class _RegistroSalidaState extends State<RegistroSalida> {
               const Text(
                 'VIRU S.A',
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.black,
                   letterSpacing: 1.2,
                 ),
               ),
@@ -125,7 +125,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.greenAccent,
+            backgroundColor: Colors.green,
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -136,7 +136,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Colors.white,
             ),
           ),
         ),
@@ -152,17 +152,17 @@ class _RegistroSalidaState extends State<RegistroSalida> {
         Switch(
           value: isActive,
           onChanged: onChanged,
-          activeColor: Colors.greenAccent,
-          inactiveThumbColor: Colors.grey[800],
-          inactiveTrackColor: Colors.grey[700],
+          activeColor: Colors.blue,
+          inactiveThumbColor: Colors.grey[200],
+          inactiveTrackColor: Colors.grey[300],
         ),
         const SizedBox(height: 8),
         Text(
           widget.label,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
       ],
@@ -173,9 +173,9 @@ class _RegistroSalidaState extends State<RegistroSalida> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: Colors.blue[300],
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.greenAccent.withOpacity(0.5)),
+        //border: Border.all(color: Colors.greenAccent.withOpacity(0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,27 +183,27 @@ class _RegistroSalidaState extends State<RegistroSalida> {
           const Text(
             'Lugar de entrega',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: Colors.greenAccent,
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 10),
           TextField(
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.black),
             controller: _lugarEntrega,
             maxLines: null,
             decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.black,
+              fillColor: Colors.grey[200],
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 borderSide:
                     BorderSide(color: Colors.greenAccent.withOpacity(0.5)),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Colors.greenAccent),
+                borderRadius: BorderRadius.circular(8),
+                borderSide:  BorderSide(color: Colors.grey),
               ),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),

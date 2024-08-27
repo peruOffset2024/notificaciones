@@ -6,9 +6,9 @@ class GuiasScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blue,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue,
         title: const Text(
           'Mis Guías',
           style: TextStyle(
@@ -50,8 +50,8 @@ class GuiasScreen extends StatelessWidget {
         onPressed: () {
           // Acción para añadir nueva guía
         },
-        backgroundColor: Colors.greenAccent[400],
-        child: const Icon(Icons.add, color: Colors.black),
+        backgroundColor: Colors.black,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
@@ -61,7 +61,7 @@ class GuiasScreen extends StatelessWidget {
       itemCount: 10, // Número de guías
       itemBuilder: (context, index) {
         return Card(
-          color: Colors.grey[900],
+          color: Colors.white,
           elevation: 2,
           margin: const EdgeInsets.symmetric(vertical: 10),
           shape: RoundedRectangleBorder(
@@ -69,19 +69,19 @@ class GuiasScreen extends StatelessWidget {
           ),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: Colors.greenAccent[400],
+              backgroundColor: Colors.blue,
               child: const Icon(Icons.description, color: Colors.black),
             ),
             title: Text(
               'Guía ${index + 1}',
               style: const TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
             ),
             subtitle: Text(
               'Descripción de la guía ${index + 1}',
-              style: const TextStyle(color: Colors.white70),
+              style: const TextStyle(color: Colors.black),
             ),
             trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white),
             onTap: () {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/configuraciones_privacidad.dart';
 import 'package:push_notificaciones/views/screens/drawer_control_asistencia.dart';
 import 'package:push_notificaciones/views/screens/drawer_guias.dart';
@@ -10,27 +12,34 @@ class MyCustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final nombUsuario = context.watch<Authprovider>().conductor;
+    
+    List<String> nombCompleto = nombUsuario.split(' ');
+    String resultado = nombCompleto.sublist(0, nombCompleto.length >= 2 ? 2 : nombCompleto.length).join(' ');
+    
+
     return Drawer(
-      backgroundColor: Colors.grey[850],
+      backgroundColor: Colors.blue,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: Color.fromARGB(31, 202, 183, 183) // Fondo negro
+              color: Colors.blue, // Fondo negro
             ),
             child: Row(
               children: [
-                const CircleAvatar(
-                  backgroundColor: Colors.green,
+                 CircleAvatar(
+                  backgroundColor: Colors.black,
                   radius: 30,
-                  child: Text(
-                    'R',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                    ),
-                  ),
+                  child:  Text(
+                      '${nombUsuario[0]}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
                 ),
                 const SizedBox(width: 10),
                 Column(
@@ -38,19 +47,19 @@ class MyCustomDrawer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
-                    Text(
+                     Text(
                       'Bienvenido',
                       style: TextStyle(
-                        color: const Color.fromARGB(255, 255, 255, 255),
+                        color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold
                       ),
                     ),
                      Text(
-                      usuario,
+                      '${resultado}',
                       style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
+                        color: Colors.black,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                     )
@@ -64,7 +73,7 @@ class MyCustomDrawer extends StatelessWidget {
             title: const Text('Seguimiento', style: TextStyle(color: Colors.white)),
             onTap: () {
               // Acción al hacer clic en "Agregar cuenta"
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>  SeguimientoPedidoScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>  const SeguimientoPedidoScreen()));
               
             },
           ),

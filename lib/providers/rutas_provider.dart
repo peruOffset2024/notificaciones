@@ -17,8 +17,8 @@ class RutasProvider with ChangeNotifier {
       50,
       (index) => Ruta(
         registro: index % 2 == 0
-            ? 'Salida ${index ~/ 2 + 1} \n F001-555${index ~/ 2 + 1}'
-            : 'Llegada ${index ~/ 2 + 1}',
+            ? ' \n F001-555${index ~/ 2 + 1}'
+            : 'Llegada${index ~/ 2 + 1}',
         hora: DateTime.now()
             .subtract(Duration(minutes: Random().nextInt(60))),
       ),

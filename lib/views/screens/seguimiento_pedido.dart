@@ -21,17 +21,17 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue,
         title: const Text(
           'Seguimiento de Pedido',
           style: TextStyle(
-            color: Colors.greenAccent,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
       body: Container(
-        color: Colors.black,
+        color: Colors.blue,
         child: ListView.builder(
           itemCount: estados.length,
           itemBuilder: (context, index) {
@@ -58,7 +58,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                         subtitle: Text(
                           '${estado.descripcion}\n${_formatDate(estado.fecha)}',
                           style: const TextStyle(
-                            color: Colors.grey,
+                            color: Colors.white,
                             fontSize: 12,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -87,14 +87,14 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
       children: [
         Icon(
           Icons.circle,
-          color: isLast ? Colors.greenAccent : Colors.grey[800],
+          color: isLast ? Colors.black : Colors.blue[100],
           size: 20,
         ),
         if (!isLast)
           Container(
             height: 100,
             width: 2,
-            color: Colors.grey[800],
+            color: Colors.white,
           ),
       ],
     );
@@ -105,14 +105,14 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.grey[900],
+          backgroundColor: Colors.blue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
           title: const Text(
             'Actualizar Estado',
             style: TextStyle(
-              color: Colors.greenAccent,
+              color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
@@ -131,7 +131,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                 const Text(
                   'Observaciones',
                   style: TextStyle(
-                    color: Colors.greenAccent,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),

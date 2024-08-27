@@ -19,96 +19,111 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor:   Colors.white,
         automaticallyImplyLeading: false,
         title: const Text(
-          'Despachos',
+          'Reporte de ruta',
           style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+              fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(color: Colors.black),
+        decoration: const BoxDecoration(color: Colors.white,),
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _cleanData,
-              style: const TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  hintText: '¿Qué guía deseas buscar?',
-                  suffixIcon: IconButton(
-                  icon: const Icon(Icons.cancel_outlined),
-                  onPressed: () {
-                    // Limpiar el TextField
-                    _cleanData.clear();
-                    // Restablecer la lista de productos
-                    productosProvider.searchProducto('');
+        child: Padding(
+          padding: const  EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only( bottom: 16),
+                child: TextField(
+                  controller: _cleanData,
+                  style:  TextStyle(color: Colors.grey[400], fontSize: 14),
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide:
+                              BorderSide(color: Colors.greenAccent.withOpacity(0.5)),
+                        ),
+                      hintText: '¿Qué guía deseas buscar?',
+                      suffixIcon: IconButton(
+                      icon: const Icon(Icons.cancel_outlined),
+                      onPressed: () {
+                        // Limpiar el TextField
+                        _cleanData.clear();
+                        // Restablecer la lista de productos
+                        productosProvider.searchProducto('');
+                      },
+                    ),
+                      prefixIcon: const Icon(color: Colors.black, Icons.search),
+                      fillColor: Colors.white,
+                      filled: true),
+                  onChanged: (query) {
+                    productosProvider.searchProducto(query);
                   },
                 ),
-                  prefixIcon: const Icon(color: Colors.black, Icons.search),
-                  fillColor: Colors.white,
-                  filled: true),
-              onChanged: (query) {
-                productosProvider.searchProducto(query);
-              },
-            ),
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                ),
-                itemCount: productos.length,
-                itemBuilder: (context, index) {
-                  final producto = productos[index];
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SeguimientoPedidoScreen()));
-                    },
-                    child: Card(
-                      color: _getColorByIndex(index),
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                producto.descripcion,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                producto.itemCode,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
               ),
-            ),
-          ],
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 2,
+                    mainAxisSpacing: 2,
+                  ),
+                  itemCount: productos.length,
+                  itemBuilder: (context, index) {
+                    final producto = productos[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SeguimientoPedidoScreen()));
+                      },
+                      child: Card(
+            
+                        color: _getColorByIndex(index),
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  producto.descripcion,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  producto.itemCode,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -116,16 +131,9 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
 
   Color _getColorByIndex(int index) {
     List<Color> colors = [
-      Colors.pink,
+    
       Colors.green,
-      Colors.blue,
-      Colors.orange,
-      Colors.purple,
-      Colors.red,
-      Colors.cyan,
-      Colors.teal,
-      Colors.amber,
-      Colors.deepPurple
+     
     ];
     return colors[index % colors.length];
   }

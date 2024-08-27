@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/index_diferencias_despacho.dart';
 import 'package:push_notificaciones/views/screens/entrada_salida_registro.dart';
 import 'package:push_notificaciones/views/screens/guias_servicios.dart';
@@ -33,16 +35,17 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
 
   @override
   Widget build(BuildContext context) {
+    final nombUsuario = context.watch<Authprovider>().conductor;
     return Scaffold(
       appBar:AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         leading: Builder(builder: (context) {
           return GestureDetector(
-            child: const CircleAvatar(
-              backgroundColor: Colors.green,
+            child:  CircleAvatar(
+              backgroundColor:  Colors.blue[100],
               minRadius: 5,
               child: Text(
-                'R',
+                '${nombUsuario[0]}',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 15,
@@ -70,9 +73,9 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
             }
           },
           currentIndex: indice,
-          backgroundColor: Colors.black, // Fondo negro
+          backgroundColor: Colors.blue, // Fondo negro
           selectedItemColor: Colors.white, // Ícono seleccionado blanco
-          unselectedItemColor: Colors.white
+          unselectedItemColor: Colors.black
               .withOpacity(0.7), // Íconos no seleccionados blanco con opacidad
           type: BottomNavigationBarType.fixed,
           items: const [
@@ -82,11 +85,11 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.fire_truck_rounded),
-              label: 'Buscar',
+              label: 'Trasnporte',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.timer),
-              label: 'Registrarse',
+              label: 'Asistencia',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.exit_to_app_rounded),
@@ -111,20 +114,15 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
           ),
           backgroundColor: Colors.black,
           elevation: 0,
-          title: const Text('Confirmación de salida',
+          title: const Text('¿Estás seguro de que deseas salir de la aplicación?',
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
-              textAlign: TextAlign.center),
-          content:
-              const Text('¿Estás seguro de que deseas salir de la aplicación?',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center),
+              textAlign: TextAlign.center),      
           actions: <Widget>[
+            SizedBox(height: 100,),
             TextButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.yellowAccent[400],

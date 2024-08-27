@@ -17,15 +17,17 @@ class _ReporteRutasState extends State<ReporteRutas> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         title: const Text(
-          'Guias',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          'Guias Emitidas',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -36,14 +38,15 @@ class _ReporteRutasState extends State<ReporteRutas> {
                 Expanded(
                   child: TextField(
                     controller: _searchController,
-                    style: const TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black, fontSize: 12),
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {
                           _searchController.clear();
                           context.read<RutasProvider>().searchRuta('');
                         },
-                        icon: const Icon(Icons.cancel_outlined, color: Colors.black),
+                        icon: const Icon(Icons.cancel_outlined,
+                            color: Colors.black),
                       ),
                       prefixIcon: const Icon(Icons.search, color: Colors.black),
                       hintText: '¿Qué guía deseas buscar?',
@@ -54,8 +57,9 @@ class _ReporteRutasState extends State<ReporteRutas> {
                         borderSide: const BorderSide(color: Colors.black),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                             BorderSide(color: Colors.grey, width: 2.0),
                       ),
                       filled: true,
                       fillColor: Colors.white,
@@ -99,26 +103,35 @@ class _ReporteRutasState extends State<ReporteRutas> {
                                             onChanged: (bool value) {},
                                           )));
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
+                            child: Card(
+                              color: Colors.blue[100],
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
                                       ruta.registro,
                                       style: const TextStyle(
-                                          color: Colors.white, fontWeight: FontWeight.bold),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  ),
-                                  Text(
-                                    ruta.hora,
-                                    style: const TextStyle(color: Colors.teal),
-                                  ),
-                                ],
+                                    Text(
+                                      ruta.hora,
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                          Divider(color: Colors.grey[800]),
+                          Divider(color: Colors.white),
                         ],
                       );
                     },

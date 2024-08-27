@@ -9,9 +9,9 @@ class DrawerHistorialAsistencia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue,
         automaticallyImplyLeading: false,
         title: const Text(
           'Historial de Asistencia',
@@ -26,7 +26,7 @@ class DrawerHistorialAsistencia extends StatelessWidget {
             const Text(
               'Mes: Agosto',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -42,8 +42,8 @@ class DrawerHistorialAsistencia extends StatelessWidget {
         onPressed: () {
           _mostrarAyuda(context);
         },
-        backgroundColor: Colors.greenAccent[400],
-        child: const Icon(Icons.live_help_outlined, color: Colors.black),
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.live_help_outlined, color: Colors.white),
       ),
     );
   }
@@ -56,16 +56,16 @@ class DrawerHistorialAsistencia extends StatelessWidget {
       itemBuilder: (context, index) {
         final asistencia = asistencias[index];
         return Card(
-          color: Colors.grey[900],
+          color: Colors.blue,
           elevation: 2,
           margin: const EdgeInsets.symmetric(vertical: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
           child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.greenAccent[400],
-              child: const Icon(Icons.person, color: Colors.black),
+            leading: const CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Icon(Icons.person, color: Colors.blue),
             ),
             title: Text(
               asistencia['nombre']!,
@@ -80,7 +80,7 @@ class DrawerHistorialAsistencia extends StatelessWidget {
             ),
             trailing: Text(
               asistencia['horas']!,
-              style: const TextStyle(color: Colors.greenAccent),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         );
@@ -101,11 +101,11 @@ class DrawerHistorialAsistencia extends StatelessWidget {
           content: const Text(
             'Aquí puedes ver el historial reciente de asistencia de los empleados. '
             'Para registrar la asistencia, dirígete a la pantalla principal.',
-            style: TextStyle(color: Colors.white70),
+            style: TextStyle(color: Colors.white),
           ),
           actions: [
             TextButton(
-              child: const Text('Cerrar', style: TextStyle(color: Colors.greenAccent)),
+              child: const Text('Cerrar', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.of(context).pop();
               },

@@ -24,8 +24,8 @@ class RegistroAsistencia extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Registro de Asistencia', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
+        title: const Text('Registro de Asistencia', style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -49,13 +49,13 @@ class RegistroAsistencia extends StatelessWidget {
                 ),
         ),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
   }
 
   Widget _buildRegistroForm(Size size, BuildContext context) {
     return Card(
-      color: Colors.grey[850],
+      color: Colors.blue[100],
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
@@ -134,7 +134,7 @@ class RegistroAsistencia extends StatelessWidget {
   }
   Widget _buildUserCard(Size size) {
   return Card(
-    color: Colors.grey[850],
+    color: Colors.blue[100],
     elevation: 4,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
@@ -157,24 +157,24 @@ class RegistroAsistencia extends StatelessWidget {
                 Text(
                   _userData["Nombre"]!,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Puesto: ${_userData["Puesto"]!}',
+                  'DNI: ${_userData["Puesto"]!}',
                   style: const TextStyle(
-                    color: Colors.white70,
+                    color: Colors.black,
                     fontSize: 16,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Departamento: ${_userData["Departamento"]!}',
+                  'PLACA: ${_userData["Departamento"]!}',
                   style: const TextStyle(
-                    color: Colors.white70,
+                    color: Colors.black,
                     fontSize: 16,
                   ),
                 ),
