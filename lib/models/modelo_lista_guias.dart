@@ -7,10 +7,10 @@ String listaGuiasToJson(List<ListaGuias> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ListaGuias {
-  String item;
-  FechaEmision fechaEmision;
-  String guia;
-  String cliente;
+  String? item;
+  FechaEmision? fechaEmision;
+  String? guia;
+  String? cliente;
 
   ListaGuias({
     required this.item,
@@ -20,15 +20,17 @@ class ListaGuias {
   });
 
   factory ListaGuias.fromJson(Map<String, dynamic> json) => ListaGuias(
-        item: json["item"],
-        fechaEmision: fechaEmisionValues.map[json["Fecha_emision"]]!,
-        guia: json["Guia"],
-        cliente: json["Cliente"],
+        item: json["item"] ?? '', // Manejar nulos
+        fechaEmision: json["Fecha_emision"] != null 
+            ? fechaEmisionValues.map[json["Fecha_emision"]] 
+            : null, // Manejar nulos
+        guia: json["Guia"] ?? '', // Manejar nulos
+        cliente: json["Cliente"] ?? '', // Manejar nulos
       );
 
   Map<String, dynamic> toJson() => {
         "item": item,
-        "Fecha_emision": fechaEmisionValues.reverse[fechaEmision],
+        "Fecha_emision": fechaEmision != null ? fechaEmisionValues.reverse[fechaEmision] : null,
         "Guia": guia,
         "Cliente": cliente,
       };

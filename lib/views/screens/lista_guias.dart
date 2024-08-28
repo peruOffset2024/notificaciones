@@ -108,7 +108,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                                 MaterialPageRoute(
                                   builder: (context) => RegistroSalida(
                                     isActive: true,
-                                    label: guia.guia,
+                                    label: '${guia.guia}',
                                     onChanged: (bool value) {},
                                   ),
                                 ),
@@ -133,7 +133,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            guia.cliente,
+                                            '${guia.cliente}',
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
@@ -157,7 +157,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         Text(
-                                          guia.guia, // Use the legible text here
+                                         '${guia.guia}' , // Use the legible text here
                                           style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
