@@ -15,15 +15,20 @@ class RegistroSalida extends StatefulWidget {
     required this.isActive,
     required this.label,
     required this.onChanged,
+    required this.cliente, 
+    required this.guia, 
   });
 
   final bool isActive;
   final String label;
   final ValueChanged<bool> onChanged;
+  final String cliente; 
+  final String guia; 
 
   @override
   State<RegistroSalida> createState() => _RegistroSalidaState();
 }
+
 
 final TextEditingController _lugarEntrega = TextEditingController();
 
@@ -31,6 +36,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
   @override
   Widget build(BuildContext context) {
     final switchState = context.watch<SwitchStateProvider>();
+    
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -38,9 +44,9 @@ class _RegistroSalidaState extends State<RegistroSalida> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: const Text(
-          'T00-00001',
-          style: TextStyle(
+        title:  Text(
+          widget.guia,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -62,9 +68,9 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 30),
-              const Text(
-                'VIRU S.A',
-                style: TextStyle(
+               Text(
+                widget.cliente,
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -77,14 +83,10 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                 children: [
                   _buildSwitch(
                       context, switchState.switch1, switchState.toggleSwitch1),
-                  _buildSwitch(
-                      context, switchState.switch2, switchState.toggleSwitch2),
+                  
                 ],
               ),
-              const SizedBox(height: 50),
-              _buildSwitch(
-                  context, switchState.switch3, switchState.toggleSwitch3),
-              const SizedBox(height: 50),
+              
               _buildObservationsField(),
               const SizedBox(height: 80),
             ],
@@ -99,7 +101,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             provider.actualizarEstado(
               PedidoEstado(
                 estado: 'Salida de Perú Offset Digital',
-                descripcion: 'Nestle',
+                descripcion: widget.cliente,
                 fecha: DateTime.now(),
               ),
             );

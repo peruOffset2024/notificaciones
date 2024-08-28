@@ -49,7 +49,7 @@ class _ReporteRutasState extends State<ReporteRutas> {
                             color: Colors.black),
                       ),
                       prefixIcon: const Icon(Icons.search, color: Colors.black),
-                      hintText: '¿Qué guía deseas buscar?',
+                      hintText: 'Filtrar guía',
                       hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(color: Colors.black),
                       border: OutlineInputBorder(
@@ -100,7 +100,7 @@ class _ReporteRutasState extends State<ReporteRutas> {
                                       builder: (context) => RegistroSalida(
                                             isActive: true,
                                             label: ruta.registro,
-                                            onChanged: (bool value) {},
+                                            onChanged: (bool value) {}, cliente: '', guia: '',
                                           )));
                             },
                             child: Card(

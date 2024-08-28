@@ -73,6 +73,7 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 2,
                     mainAxisSpacing: 2,
+                    childAspectRatio: 2 
                   ),
                   itemCount: productos.length,
                   itemBuilder: (context, index) {

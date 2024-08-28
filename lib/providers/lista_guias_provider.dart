@@ -15,15 +15,20 @@ class ListaGuiaProvider with ChangeNotifier {
 
       if (response.statusCode == 200) {
         print('Verificar el status ${response.statusCode}');
-        final data = jsonDecode(response.body) as List;
-        _guia = data.map((json) => ListaGuias.fromJson(json)).toList();
+        
+        // Decodificar la respuesta JSON
+        final List<dynamic> data = jsonDecode(response.body);
+
+        // Convertir cada elemento de la lista en un objeto ListaGuias
+        _guia = data.map((jsonItem) => ListaGuias.fromJson(jsonItem)).toList();
         _filteredGuia = List.from(_guia); // Inicializar la lista filtrada con todos los elementos
+
         notifyListeners();
       } else {
         throw Exception('Failed to load guias');
       }
     } catch (e) {
-      print(e);
+      print('Error: $e');
       throw Exception('Failed to load guias');
     }
   }
@@ -33,8 +38,8 @@ class ListaGuiaProvider with ChangeNotifier {
       _filteredGuia = List.from(_guia); // Resetear a la lista original
     } else {
       _filteredGuia = _guia.where((guia) => 
-        (guia.guia ?? '').toLowerCase().contains(query.toLowerCase()) ||
-        (guia.cliente ?? '').toLowerCase().contains(query.toLowerCase())
+        (guia.guia).toLowerCase().contains(query.toLowerCase()) ||
+        (guia.cliente).toLowerCase().contains(query.toLowerCase())
       ).toList();
     }
     notifyListeners();

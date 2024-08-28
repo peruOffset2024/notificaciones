@@ -45,8 +45,8 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
               backgroundColor:  Colors.blue[100],
               minRadius: 5,
               child: Text(
-                '${nombUsuario[0]}',
-                style: TextStyle(
+                nombUsuario[0],
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 15,
                 ),

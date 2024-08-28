@@ -51,15 +51,17 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                     controller: _searchController,
                     style: const TextStyle(color: Colors.black, fontSize: 12),
                     decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(10),
                       suffixIcon: IconButton(
                         onPressed: () {
                           _searchController.clear();
                           context.read<ListaGuiaProvider>().searchGuia('');
                         },
-                        icon: const Icon(Icons.cancel_outlined, color: Colors.black),
+                        icon: const Icon(Icons.cancel_outlined,
+                            color: Colors.black),
                       ),
                       prefixIcon: const Icon(Icons.search, color: Colors.black),
-                      hintText: '¿Qué guía o cliente deseas buscar?',
+                      hintText: 'Filtrar por Nro. Guía',
                       hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(color: Colors.black),
                       border: OutlineInputBorder(
@@ -68,7 +70,8 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: Colors.grey, width: 2.0),
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 2.0),
                       ),
                       filled: true,
                       fillColor: Colors.white,
@@ -99,80 +102,114 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                     itemCount: provider.guias.length,
                     itemBuilder: (context, index) {
                       final guia = provider.guias[index];
-                      return Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RegistroSalida(
-                                    isActive: true,
-                                    label: '${guia.guia}',
-                                    onChanged: (bool value) {},
-                                  ),
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 0.0), // Espacio mínimo entre cada Card
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegistroSalida(
+                                  isActive: true, // O el valor que necesites
+                                  label: guia.guia,
+                                  onChanged: (bool value) {},
+                                  cliente: guia.cliente,
+                                  guia: guia.guia,
                                 ),
-                              );
-                            },
-                            child: Card(
-                              color: Colors.blue[100],
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                                child: Column(
-                                
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            '${guia.cliente}',
+                            );
+                          },
+                          child: Card(
+                            color: Colors.blue[100],
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 18.0,
+                                  horizontal:
+                                      14.0), // Espacio general alrededor del card
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween, // Espacio entre las dos columnas
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          right:
+                                              16.0), // Espacio entre la columna izquierda y la columna derecha
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // Fila 1: Número de guía
+                                          Text(
+                                            guia.guia,
                                             style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                          ),
+                                          // Fila 2: Cliente
+                                          Text(
+                                            guia.cliente,
+                                            style: const TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.black,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left:
+                                              16.0), // Espacio entre la columna derecha y el borde del card
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          // Fila 1: Fecha de emisión
+                                          Text(
+                                            guia.fechaEmision
+                                                .toString()
+                                                .substring(0, 10),
+                                            style: const TextStyle(
+                                              fontSize: 13,
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
                                             ),
                                             overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.end,
                                           ),
-                                        ),
-                                        
-                                      ],
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          guia.fechaEmisionText,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        Text(
-                                         '${guia.guia}' , // Use the legible text here
-                                          style: const TextStyle(
+                                          // Fila 2: Cantidad
+                                          Text(
+                                            guia.cant,
+                                            style: const TextStyle(
+                                              fontSize: 13,
                                               color: Colors.black,
-                                              fontWeight: FontWeight.bold,
                                             ),
-                                        ),
-                                      ],
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.end,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                     
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          Divider(color: Colors.white),
-                        ],
+                        ),
                       );
                     },
                   );

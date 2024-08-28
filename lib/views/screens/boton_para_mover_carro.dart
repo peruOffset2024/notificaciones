@@ -26,7 +26,7 @@ class ControlView extends StatelessWidget {
             ),
             SizedBox(height: 100,),
             ElevatedButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> RegistroSalida(isActive: true, label: '159144', onChanged: (bool value) {  },)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> RegistroSalida(isActive: true, label: '159144', onChanged: (bool value) {  }, cliente: '', guia: '',)));
             }, child: Text('search'))
           ],
         ),

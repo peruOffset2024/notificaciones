@@ -33,7 +33,7 @@ class MyCustomDrawer extends StatelessWidget {
                   backgroundColor: Colors.black,
                   radius: 30,
                   child:  Text(
-                      '${nombUsuario[0]}',
+                      nombUsuario[0],
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -47,7 +47,7 @@ class MyCustomDrawer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
-                     Text(
+                     const Text(
                       'Bienvenido',
                       style: TextStyle(
                         color: Colors.black,
@@ -56,7 +56,7 @@ class MyCustomDrawer extends StatelessWidget {
                       ),
                     ),
                      Text(
-                      '${resultado}',
+                      resultado,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 12,
