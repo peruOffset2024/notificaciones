@@ -4,6 +4,7 @@ import 'package:push_notificaciones/app.dart';
 import 'package:push_notificaciones/providers/api_diferencias_provider.dart';
 import 'package:push_notificaciones/providers/asistencia_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
+import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
 import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
@@ -26,7 +27,8 @@ void main() async {
     ChangeNotifierProvider(create: (_) => SwitchStateProvider()),
     ChangeNotifierProvider(create: (_) => PedidoProvider()), 
     ChangeNotifierProvider(create: (_) => AsistenciaProvider()), 
-    ChangeNotifierProvider(create: (_) => ListaGuiaProvider()),
+    ChangeNotifierProvider(create: (_) => ListaGuiaProvider()), 
+    ChangeNotifierProvider(create: (_) => GuiaxClienteProvider()),
      
 
   ], child: const MyApp()));
