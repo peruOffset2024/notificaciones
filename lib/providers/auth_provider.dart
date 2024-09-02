@@ -6,10 +6,15 @@ import 'package:http/http.dart' as http;
 class Authprovider with ChangeNotifier {
   String _username = '';
   String _conductor = '';
+  String _ruc = '';
+
   bool _authenticated = false;
 
   String get username => _username;
   String get conductor => _conductor;
+  String get ruc => _ruc;
+
+
   bool get authenticated => _authenticated;
 
   void authentication(String usuario) async {
@@ -32,9 +37,11 @@ class Authprovider with ChangeNotifier {
       
       final responsedata = jsonDecode(response.body);
       if (responsedata['valid'] == true) {
-        _username = responsedata['dni'] ?? '';  // Asegúrate de que el campo coincida con la respuesta
+        _username = responsedata['DNI'] ?? '';  // Asegúrate de que el campo coincida con la respuesta
         _conductor = responsedata['CONDUCTOR'] ?? '';
+        _ruc = responsedata['RUC'];
         _authenticated = true;
+        print('Este es el ruc ---->>: $_ruc');
         notifyListeners();
       } else {
         throw Exception(responsedata['message'] ?? 'Authentication failed');
@@ -46,6 +53,7 @@ class Authprovider with ChangeNotifier {
     _authenticated = false;
   _username = '';
   _conductor = '';
+  _ruc = '';
   print('Error ---->: $e');
   notifyListeners();
   }

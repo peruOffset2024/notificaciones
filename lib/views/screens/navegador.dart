@@ -5,7 +5,6 @@ import 'package:push_notificaciones/views/screens/index_diferencias_despacho.dar
 import 'package:push_notificaciones/views/screens/entrada_salida_registro.dart';
 import 'package:push_notificaciones/views/screens/guias_servicios.dart';
 import 'dart:io';
-
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
 
@@ -122,7 +121,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
               ),
               textAlign: TextAlign.center),      
           actions: <Widget>[
-            SizedBox(height: 100,),
+            const SizedBox(height: 100,),
             TextButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.yellowAccent[400],

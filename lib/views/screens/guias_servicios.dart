@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:push_notificaciones/views/screens/geolocalizacion.dart';
 import 'package:push_notificaciones/views/screens/lista_guias.dart';
 
 
@@ -54,7 +55,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                     // Add functionality for "Otros" button here (e.g., show a dialog)
                     Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ListaGuiasReporte()),);
+                    MaterialPageRoute(builder: (context) =>  LocationScreen()),);
                   },
                 ),
               ],

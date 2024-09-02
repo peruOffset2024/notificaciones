@@ -15,6 +15,7 @@ class ListaGuias {
     String guia;
     String cliente;
     String cant;
+    String llegada;
 
     ListaGuias({
         required this.item,
@@ -22,6 +23,7 @@ class ListaGuias {
         required this.guia,
         required this.cliente,
         required this.cant,
+        required this.llegada
     });
 
     factory ListaGuias.fromJson(Map<String, dynamic> json) => ListaGuias(
@@ -29,7 +31,8 @@ class ListaGuias {
         fechaEmision: DateTime.parse(json["Fecha_emision"]),
         guia: json["Guia"],
         cliente: json["Cliente"],
-        cant: json["cant"],
+        cant: json["cant"], 
+        llegada: json['llegada'],
     );
 
     Map<String, dynamic> toJson() => {
@@ -38,5 +41,6 @@ class ListaGuias {
         "Guia": guia,
         "Cliente": cliente,
         "cant": cant,
+        "llegada": llegada
     };
 }

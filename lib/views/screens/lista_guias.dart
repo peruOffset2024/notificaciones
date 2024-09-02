@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/services/scroll_behavior.dart';
 
@@ -18,9 +19,11 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
   @override
   void initState() {
     super.initState();
+    
     // Fetch guias when the widget is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ListaGuiaProvider>().fetchGuias();
+      final ruc = context.read<Authprovider>().ruc;
+      context.read<ListaGuiaProvider>().fetchGuias(ruc);
     });
   }
 
@@ -121,6 +124,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                                     cliente: guia.cliente,
                                     guia: guia.guia,
                                     cant: guia.cant,
+                                    llegada: guia.llegada
                                   ),
                                 ),
                               );

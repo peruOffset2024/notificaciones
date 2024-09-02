@@ -9,10 +9,9 @@ class ListaGuiaProvider with ChangeNotifier {
 
   List<ListaGuias> get guias => _filteredGuia.isEmpty ? _guia : _filteredGuia;
 
-  Future<void> fetchGuias() async {
+  Future<void> fetchGuias(String ruc) async {
     try {
-      final response = await http.get(Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_guias.php'));
-
+      final response = await http.get(Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_guias.php?ruc=$ruc'));
       if (response.statusCode == 200) {
         print('Verificar el status ${response.statusCode}');
         

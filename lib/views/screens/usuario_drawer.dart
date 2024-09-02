@@ -13,9 +13,10 @@ class MyCustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nombUsuario = context.watch<Authprovider>().conductor;
+    final ruc = context.watch<Authprovider>().ruc;
     
     List<String> nombCompleto = nombUsuario.split(' ');
-    String resultado = nombCompleto.sublist(0, nombCompleto.length >= 2 ? 2 : nombCompleto.length).join(' ');
+    String nombUserComplete = nombCompleto.sublist(0, nombCompleto.length >= 2 ? 2 : nombCompleto.length).join(' ');
     
 
     return Drawer(
@@ -56,13 +57,14 @@ class MyCustomDrawer extends StatelessWidget {
                       ),
                     ),
                      Text(
-                      resultado,
+                      nombUserComplete,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
-                    )
+                    ),
+                    Text(ruc, style: TextStyle(fontSize: 10, color: Colors.grey[400]),)
                   ],
                 ),
               ],

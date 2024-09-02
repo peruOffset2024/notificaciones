@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/asistencia_provider.dart';
+import 'package:push_notificaciones/providers/auth_provider.dart';
 
 
-class RegistroAsistencia extends StatelessWidget {
+
+class RegistroAsistencia extends StatefulWidget {
+
+  const RegistroAsistencia({super.key});
+
+  @override
+  State<RegistroAsistencia> createState() => _RegistroAsistenciaState();
+}
+
+class _RegistroAsistenciaState extends State<RegistroAsistencia> {
   final TextEditingController _comentariosController = TextEditingController();
+
+
 
   // Datos del usuario simulados
   final Map<String, String> _userData = {
@@ -14,12 +26,11 @@ class RegistroAsistencia extends StatelessWidget {
     "Foto": "https://scontent.flim23-1.fna.fbcdn.net/v/t1.18169-9/18698096_10203319177977549_1786612228346692954_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=53a332&_nc_ohc=rLPZeELVB64Q7kNvgEDO-mg&_nc_ht=scontent.flim23-1.fna&oh=00_AYCj_bKNojDBbubXZmbyONRM9rbsHP92QHmjOJOmPQ2zDw&oe=66F3812E", // Reemplaza con la URL de la foto real
   };
 
-  RegistroAsistencia({super.key});
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isPortrait = size.height > size.width;
+
 
     return Scaffold(
       appBar: AppBar(
@@ -66,15 +77,15 @@ class RegistroAsistencia extends StatelessWidget {
               controller: _comentariosController,
               decoration: InputDecoration(
                 labelText: 'Comentarios (Opcional)',
-                prefixIcon: const Icon(Icons.comment, color: Colors.white),
+                prefixIcon: const Icon(Icons.comment, color: Colors.black),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                labelStyle: const TextStyle(color: Colors.white),
-                fillColor: Colors.grey[800],
+                labelStyle: const TextStyle(color: Colors.black),
+                fillColor: Colors.grey[200],
                 filled: true,
               ),
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.black),
               maxLines: 3,
             ),
             const SizedBox(height: 20),
@@ -132,6 +143,7 @@ class RegistroAsistencia extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildUserCard(Size size) {
   return Card(
     color: Colors.blue[100],
@@ -143,19 +155,13 @@ class RegistroAsistencia extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-          // Foto de perfil
-          CircleAvatar(
-            radius: size.width * 0.1,
-            backgroundImage: NetworkImage(_userData["Foto"]!),
-          ),
-          const SizedBox(width: 16),
           // Información del usuario
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _userData["Nombre"]!,
+                  context.watch<Authprovider>().conductor,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -164,20 +170,14 @@ class RegistroAsistencia extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'DNI: ${_userData["Puesto"]!}',
+                  'DNI: ${context.watch<Authprovider>().username}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 16,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  'PLACA: ${_userData["Departamento"]!}',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                  ),
-                ),
+                
               ],
             ),
           ),
@@ -186,5 +186,4 @@ class RegistroAsistencia extends StatelessWidget {
     ),
   );
 }
-
 }

@@ -15,19 +15,41 @@ class _IniciarSesionState extends State<IniciarSesion> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
 
-  bool _obcureText = true;
-
   @override
   void dispose() {
     _usernameController.dispose();
     super.dispose();
   }
 
-  // ignore: unused_element
-  void _passwordVisibility() {
-    setState(() {
-      _obcureText = !_obcureText;
-    });
+  void _alertUser() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              'Error al Identificarse',
+              style: TextStyle(color: Colors.blue),
+            ),
+            content: SizedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text('Ingrese un DNI válido'),
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                          size: 30, color: Colors.blue, Icons.cancel_rounded)),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -88,7 +110,6 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: size.height * 0.05),
 
                   // Campo de Usuario
@@ -136,52 +157,71 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       ),
                     ),
                   ),
-                 
+
                   SizedBox(height: size.height * 0.03),
 
                   // Botón de Ingresar
                   Consumer<Authprovider>(
-                    builder: ( context, authprovider,child) { 
+                    builder: (context, authprovider, child) {
                       return ElevatedButton(
-                      onPressed: authprovider.authenticated ? () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => NavegadorIndex(usuario: _usernameController.text,)));
-                      } : () async {
-                        if(_formkey.currentState?.validate() ?? false){
-                          try {
-                            await authprovider.login(_usernameController.text);
-                            if(authprovider.authenticated){
-                              // ignore: use_build_context_synchronously
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => NavegadorIndex(usuario: _usernameController.text)));
-                            } else {
-                              // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Datos Invalidos')));
-                            }
-                          } catch (e){
-                            // ignore: use_build_context_synchronously
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error al Autentificarse')));
-                          }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding:
-                            EdgeInsets.symmetric(vertical: size.height * 0.02),
-                        backgroundColor: Colors.lightBlueAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                        onPressed: authprovider.authenticated
+                            ? () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NavegadorIndex(
+                                              usuario: _usernameController.text,
+                                            )));
+                                _usernameController.clear();
+                              }
+                            : () async {
+                                if (_formkey.currentState?.validate() ??
+                                    false) {
+                                  try {
+                                    await authprovider
+                                        .login(_usernameController.text);
+                                    if (authprovider.authenticated) {
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.push(
+                                          // ignore: use_build_context_synchronously
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  NavegadorIndex(
+                                                      usuario:
+                                                          _usernameController
+                                                              .text)));
+                                    } else {
+                                      // ignore: use_build_context_synchronously
+                                      _alertUser();
+                                      //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Datos Invalidos')));
+                                    }
+                                  } catch (e) {
+                                    // ignore: use_build_context_synchronously
+                                    _alertUser();
+                                    //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error al Autentificarse')));
+                                  }
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              vertical: size.height * 0.02),
+                          backgroundColor: Colors.lightBlueAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          elevation: 0,
                         ),
-                        elevation: 0,
-                      ),
-                      child: Text(
-                        'Ingresar',
-                        style: TextStyle(
-                          fontSize: size.width * 0.05,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                        child: Text(
+                          'Ingresar',
+                          style: TextStyle(
+                            fontSize: size.width * 0.05,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    );
-                     },
-                    
+                      );
+                    },
                   ),
                   SizedBox(height: size.height * 0.02),
                 ],
@@ -192,45 +232,4 @@ class _IniciarSesionState extends State<IniciarSesion> {
       ),
     );
   }
-}
-
-class CustomText extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ejemplo de TextSpan'),
-      ),
-      body: Center(
-        child: RichText(
-          text: const TextSpan(
-            children: <TextSpan>[
-              TextSpan(
-                text: 'A',
-                style: TextStyle(color: Colors.white, fontSize: 40),
-              ),
-              TextSpan(
-                text: 'Q',
-                style: TextStyle(color: Colors.black, fontSize: 40),
-              ),
-              TextSpan(
-                text: 'N',
-                style: TextStyle(color: Colors.white, fontSize: 40),
-              ),
-              TextSpan(
-                text: 'Q',
-                style: TextStyle(color: Colors.black, fontSize: 40),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: CustomText(),
-  ));
 }
