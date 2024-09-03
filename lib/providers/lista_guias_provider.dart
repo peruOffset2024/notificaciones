@@ -13,6 +13,7 @@ class ListaGuiaProvider with ChangeNotifier {
     try {
       final response = await http.get(Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_guias.php?ruc=$ruc'));
       if (response.statusCode == 200) {
+        // ignore: avoid_print
         print('Verificar el status ${response.statusCode}');
         
         // Decodificar la respuesta JSON
@@ -27,6 +28,7 @@ class ListaGuiaProvider with ChangeNotifier {
         throw Exception('Failed to load guias');
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error: $e');
       throw Exception('Failed to load guias');
     }

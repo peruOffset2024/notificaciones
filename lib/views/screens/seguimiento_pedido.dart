@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
+import 'package:push_notificaciones/providers/lista_guias_provider.dart';
+import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 
 class SeguimientoPedidoScreen extends StatefulWidget {
@@ -18,7 +20,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
   @override
   Widget build(BuildContext context) {
     final estados = context.watch<PedidoProvider>().estados;
-
+   
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -31,13 +33,13 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
         ),
       ),
       body: Container(
-        color: Colors.blue,
+        color: Colors.white,
         child: ListView.builder(
           itemCount: estados.length,
           itemBuilder: (context, index) {
             final estado = estados[index];
             final isLast = index == estados.length - 1;
-
+            final locationProv = context.read<LocationProvider>().currentLocation;
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
@@ -51,18 +53,22 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                         title: Text(
                           estado.estado,
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         subtitle: Text(
                           '${estado.descripcion}\n${_formatDate(estado.fecha)}',
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 12,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
+                        trailing: Column(children: [
+                          Text(locationProv!.latitude.toString()),
+                          Text(locationProv.longitude.toString()),
+                        ],),
                         isThreeLine: true,
                       ),
                       onTap: () {
@@ -94,7 +100,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
           Container(
             height: 100,
             width: 2,
-            color: Colors.white,
+            color: Colors.grey,
           ),
       ],
     );
@@ -105,7 +111,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
@@ -131,7 +137,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                 const Text(
                   'Observaciones',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
@@ -139,10 +145,10 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                 const SizedBox(height: 10),
                 TextField(
                   controller: _observacionController,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.black),
                   decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.comment, color: Colors.white),
-                    fillColor: Colors.black,
+                    prefixIcon: const Icon(Icons.comment, color: Colors.black),
+                    fillColor: Colors.white,
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -168,21 +174,27 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                   ),
                   onPressed: () {
                     final provider = context.read<PedidoProvider>();
+                    final locationProv = context.read<LocationProvider>().currentLocation;
+                    final clienteProvider = context.read<ListaGuiaProvider>().guias;
+                    
+                    
+
                     final estadosSecuenciales = [
                       PedidoEstado(
-                        estado: 'Destino: Nestle',
-                        descripcion: 'SMP',
-                        fecha: DateTime.now(),
+                        estado: 'Destino: ${clienteProvider.first.cliente}',
+                        descripcion: clienteProvider.first.llegada, 
+                        fecha: DateTime.now(), 
+                        latitude: locationProv!.latitude.toString(), longitude: locationProv.longitude.toString(),
                       ),
                       PedidoEstado(
-                        estado: 'Salida de: Nestle',
-                        descripcion: 'SMP',
-                        fecha: DateTime.now(),
+                        estado: 'Salida de: ${clienteProvider.first.cliente} \n -> guia: ${clienteProvider.first.guia} ',
+                        descripcion: clienteProvider.first.llegada,
+                        fecha: DateTime.now(), latitude: locationProv.latitude.toString(), longitude: locationProv.longitude.toString(),
                       ),
                       PedidoEstado(
                         estado: 'Llegada a PeruOfset Digital',
-                        descripcion: 'Huachipa',
-                        fecha: DateTime.now(),
+                        descripcion: 'Lurigancho-La Capitana Cal.- Archipielago Mza. C Lote. 9',
+                        fecha: DateTime.now(), latitude: locationProv.latitude.toString(), longitude: locationProv.longitude.toString(),
                       ),
                     ];
 

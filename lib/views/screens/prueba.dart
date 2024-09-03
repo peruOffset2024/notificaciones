@@ -3,6 +3,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
 import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
+import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 
 class RegistroSalida extends StatefulWidget {
@@ -210,11 +211,12 @@ class _RegistroSalidaState extends State<RegistroSalida> {
         child: ElevatedButton(
           onPressed: () {
             final provider = context.read<PedidoProvider>();
+            final locationProv = context.read<LocationProvider>().currentLocation;
             provider.actualizarEstado(
               PedidoEstado(
                 estado: 'Salida de Perú Offset Digital',
                 descripcion: widget.cliente,
-                fecha: DateTime.now(),
+                fecha: DateTime.now(), latitude: locationProv!.latitude.toString(), longitude: locationProv.longitude.toString(),
               ),
             );
 

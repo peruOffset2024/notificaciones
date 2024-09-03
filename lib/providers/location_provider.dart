@@ -1,56 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 class LocationProvider with ChangeNotifier {
-  Position? _currentPosition;
+  Location _location = Location();
+  LocationData? _currentLocation;
   String _locationMessage = "";
   bool _isLoading = false;
 
-  Position? get currentPosition => _currentPosition;
+  LocationData? get currentLocation => _currentLocation;
   String get locationMessage => _locationMessage;
   bool get isLoading => _isLoading;
 
-  Future<void> fetchCurrentLocation() async {
+  LocationProvider() {
+    _initializeLocation();
+  }
+
+  Future<void> _initializeLocation() async {
     _isLoading = true;
     notifyListeners();
 
-    if (!await Geolocator.isLocationServiceEnabled()) {
-      _locationMessage = "Location services are disabled.";
-      _isLoading = false;
-      notifyListeners();
-      return;
+    bool _serviceEnabled = await _location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await _location.requestService();
+      if (!_serviceEnabled) {
+        _locationMessage = "Location services are disabled.";
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
     }
 
-    final permission = await _checkAndRequestPermission();
-
-    if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
-      _locationMessage = "Location permissions are denied.";
-      _isLoading = false;
-      notifyListeners();
-      return;
+    PermissionStatus _permissionGranted = await _location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await _location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        _locationMessage = "Location permissions are denied.";
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
     }
 
+    // Start listening to location changes
+    _location.onLocationChanged.listen((LocationData currentLocation) {
+      _currentLocation = currentLocation;
+      _locationMessage =
+          "Latitude: ${currentLocation.latitude}, Longitude: ${currentLocation.longitude}";
+      notifyListeners();
+    });
+
+    // Initial location fetch
     try {
-      _currentPosition = await Geolocator.getCurrentPosition(
-        // ignore: deprecated_member_use
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      _locationMessage = "Location fetched successfully.";
+      _currentLocation = await _location.getLocation();
+      _locationMessage =
+          "Latitude: ${_currentLocation?.latitude}, Longitude: ${_currentLocation?.longitude}";
     } catch (e) {
       _locationMessage = "Failed to get location.";
     }
 
     _isLoading = false;
     notifyListeners();
-  }
-
-  Future<LocationPermission> _checkAndRequestPermission() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
-
-    return permission;
   }
 }

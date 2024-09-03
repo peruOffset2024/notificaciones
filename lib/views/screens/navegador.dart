@@ -23,7 +23,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
   List<Widget> navegador = [
     const ProductosGridScreen(),
     const GuiasServicios(),
-     RegistroAsistencia(),
+     const RegistroAsistencia(),
     const Center(
       child: Text(
         'Pag4',

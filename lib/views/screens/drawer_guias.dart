@@ -68,9 +68,9 @@ class GuiasScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: ListTile(
-            leading: CircleAvatar(
+            leading: const CircleAvatar(
               backgroundColor: Colors.blue,
-              child: const Icon(Icons.description, color: Colors.black),
+              child: Icon(Icons.description, color: Colors.black),
             ),
             title: Text(
               'Guía ${index + 1}',

@@ -3,8 +3,11 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
+import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
+import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
+import 'package:push_notificaciones/providers/seguimiento_estado_provider.dart';
 
 class RegistroSalida extends StatefulWidget {
   const RegistroSalida({
@@ -27,57 +30,24 @@ final TextEditingController _lugarEntrega = TextEditingController();
 
 class _RegistroSalidaState extends State<RegistroSalida> {
   Location location = Location();
-  String _locationMessage  = "";
+  // ignore: prefer_final_fields
+  
+  
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<GuiaxClienteProvider>().obtenerGuiasDetalle(widget.guia);
     });
   }
 
-  Future<void> _getCurrentLocation() async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        setState(() {
-          _locationMessage = "Los servicios de ubicación están deshabilitados.";
-        });
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        setState(() {
-          _locationMessage = "Location permissions are denied.";
-        });
-        return;
-      }
-    }
-
-    LocationData _locationData = await location.getLocation();
-
-    setState(() {
-      _locationMessage =
-          "Latitude: ${_locationData.latitude}, Longitude: ${_locationData.longitude}";
-    });
-  }
-  
-
-
   @override
   Widget build(BuildContext context) {
     final providers = context.watch<GuiaxClienteProvider>().guiaxCliente;
     final screenWidth = MediaQuery.of(context).size.width;
+    final usuarioProvider = context.read<Authprovider>().username;
+    final locationProv = context.read<LocationProvider>().currentLocation;
    
     return Scaffold(
   backgroundColor: Colors.white,
@@ -102,163 +72,185 @@ class _RegistroSalidaState extends State<RegistroSalida> {
       },
     ),
   ),
-  body: KeyboardVisibilityBuilder(
-    builder: (context, isKeyboardVisible) {
-      return Padding(
-        padding: EdgeInsets.only(
-              bottom: isKeyboardVisible ? 100 : 20, right: 10, left: 10),
-        child: SingleChildScrollView(
-          
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Text(widget.cliente,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center),
-              ),
-               Text(_locationMessage),
-              const SizedBox(
-                height: 40,
-              ),
-        
-              const Text(
-                'DETALLE:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-                
-              ),
-        
-              Card(
-                color: Colors.white,
-                elevation: 2,
-                shape: const RoundedRectangleBorder(
-                  side: BorderSide(
-                      color: Color.fromARGB(255, 227, 242, 253), width: 2),
-                 
+  body: Consumer<LocationProvider>(
+    builder: (context, locationProvider, child) {
+      if(locationProvider.isLoading){
+        return const Center(child: CircularProgressIndicator());
+      }
+      return KeyboardVisibilityBuilder(
+      builder: (context, isKeyboardVisible) {
+        return Padding(
+          padding: EdgeInsets.only(
+                bottom: isKeyboardVisible ? 100 : 20, right: 10, left: 10),
+          child: SingleChildScrollView(
+            
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Text(widget.cliente,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center),
                 ),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  // Ajustar el ListView.builder con shrinkWrap y physics
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: providers.length,
-                    itemBuilder: (context, index) {
-                      final jsonIndice = providers[index];
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 4.0, horizontal: 5.0),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 16.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          jsonIndice.op,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10,
+                Center(
+                  child: Text('Latitud: ${locationProv?.latitude.toString()} y este la longitud: ${locationProv?.longitude.toString()}',
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center),
+                ),
+                
+               
+                const SizedBox(
+                  height: 40,
+                ),
+          
+                const Text(
+                  'DETALLE:',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  
+                ),
+                 
+                  
+                Card(
+                  color: Colors.white,
+                  elevation: 2,
+                  shape: const RoundedRectangleBorder(
+                    side: BorderSide(
+                        color: Color.fromARGB(255, 227, 242, 253), width: 2),
+                   
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    // Ajustar el ListView.builder con shrinkWrap y physics
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: providers.length,
+                      itemBuilder: (context, index) {
+                        final jsonIndice = providers[index];
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4.0, horizontal: 5.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 16.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            jsonIndice.op,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10,
+                                            ),
+                                            overflow: TextOverflow.visible,
+                                            textAlign: TextAlign.start,
                                           ),
-                                          overflow: TextOverflow.visible,
-                                          textAlign: TextAlign.start,
-                                        ),
-                                        Text(
-                                          jsonIndice.und,
-                                          style: const TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.black,
+                                          Text(
+                                            jsonIndice.und,
+                                            style: const TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.black,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 16.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          jsonIndice.cant,
-                                          style: const TextStyle(
-                                            fontSize: 13,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 16.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            jsonIndice.cant,
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.end,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.end,
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          const Divider(
-                            height: 1.0,
-                          ),
-                        ],
-                      );
-                    },
+                            const Divider(
+                              height: 1.0,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-        
-              const Text(
-                'DIRECCIÓN DE ENTREGA:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.start,
-              ),
-              // Aqui esta la direccion de destino del la guia
-               Text(
-                widget.llegada,
-                textAlign: TextAlign.start,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              // Añadir un espacio adicional antes del TextField
-              const SizedBox(height: 16),
-              _buildObservationsField(), // Este es el campo de texto
-              // Espacio adicional para evitar la superposición con el botón flotante
-              const SizedBox(height: 80),
-            ],
+                const SizedBox(
+                  height: 20,
+                ),
+          
+                const Text(
+                  'DIRECCIÓN DE ENTREGA:',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                ),
+                // Aqui esta la direccion de destino del la guia
+                 Text(
+                  widget.llegada,
+                  textAlign: TextAlign.start,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                // Añadir un espacio adicional antes del TextField
+                const SizedBox(height: 16),
+                _buildObservationsField(), // Este es el campo de texto
+                // Espacio adicional para evitar la superposición con el botón flotante
+                const SizedBox(height: 80),
+              ],
+            ),
           ),
-        ),
-      );
-    },
+        );
+      },
+    );
+      },
+    
   ),
   floatingActionButton: SizedBox(
     width: screenWidth * 0.95,
     child: ElevatedButton(
       onPressed: () {
         final provider = context.read<PedidoProvider>();
+        final locationProv = context.read<LocationProvider>().currentLocation;
         provider.actualizarEstado(
           PedidoEstado(
             estado: 'Salida de Perú Offset Digital',
             descripcion: widget.cliente,
-            fecha: DateTime.now(),
+            fecha: DateTime.now(), 
+            latitude: locationProv!.latitude.toString(), 
+            longitude: locationProv.longitude.toString(), 
+            
           ),
         );
+        // Aqui se puede agregar la lógica para actualizar el estado del pedido
+        context.read<SeguimientoEstadoProvider>().estadoGuia(widget.guia,_lugarEntrega.text, usuarioProvider, locationProv.latitude.toString(),locationProv.longitude.toString(),);
 
         showDialog(
           context: context,
@@ -284,6 +276,8 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             );
           },
         );
+
+        _lugarEntrega.clear();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.green,

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
@@ -129,6 +129,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
   }
 
   Future<void> _pickImagesFromGallery() async {
+    // ignore: unnecessary_nullable_for_final_variable_declarations
     final List<XFile>? pickedFiles = await _picker.pickMultiImage();
 
     if (pickedFiles != null && pickedFiles.isNotEmpty) {
@@ -184,3 +185,4 @@ class _RegistroDatosState extends State<RegistroDatos> {
     });
   }
 }
+*/

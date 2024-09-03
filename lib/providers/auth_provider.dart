@@ -21,6 +21,7 @@ class Authprovider with ChangeNotifier {
     try {
       await login(usuario);
     } catch (e) {
+      // ignore: avoid_print
       print('Error ; $e');
       // Mostrar un mensaje de error al usuario
     }
@@ -30,9 +31,11 @@ class Authprovider with ChangeNotifier {
   try {
     final url = Uri.parse('http://190.107.181.163:81/aqnq/ajax/login.php?dni=$dni');
     final response = await http.get(url);
+    // ignore: avoid_print
     print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
+      // ignore: avoid_print
       print('Response Status: ${response.statusCode}');
       
       final responsedata = jsonDecode(response.body);
@@ -41,6 +44,7 @@ class Authprovider with ChangeNotifier {
         _conductor = responsedata['CONDUCTOR'] ?? '';
         _ruc = responsedata['RUC'];
         _authenticated = true;
+        // ignore: avoid_print
         print('Este es el ruc ---->>: $_ruc');
         notifyListeners();
       } else {
@@ -54,6 +58,7 @@ class Authprovider with ChangeNotifier {
   _username = '';
   _conductor = '';
   _ruc = '';
+  // ignore: avoid_print
   print('Error ---->: $e');
   notifyListeners();
   }

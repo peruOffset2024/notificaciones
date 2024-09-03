@@ -55,7 +55,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                     // Add functionality for "Otros" button here (e.g., show a dialog)
                     Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) =>  LocationScreen()),);
+                    MaterialPageRoute(builder: (context) =>   LocationScreen()),);
                   },
                 ),
               ],
@@ -114,6 +114,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
       ),
     );
   }
+  // ignore: non_constant_identifier_names
   Widget _ServiceButton({
     required BuildContext context,
     required String label,

@@ -66,6 +66,7 @@ class _RutaDetailsScreenState extends State<RutaDetailsScreen> {
                 ),
               ),
             );
+          // ignore: unnecessary_to_list_in_spreads
           }).toList(),
 
           // Movimiento del carro

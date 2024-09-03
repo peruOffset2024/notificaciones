@@ -24,10 +24,10 @@ class ControlView extends StatelessWidget {
               },
               child: const Text('Avanzar al Siguiente Punto'),
             ),
-            SizedBox(height: 100,),
+            const SizedBox(height: 100,),
             ElevatedButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> RegistroSalida( cliente: '', guia: '', cant: '', llegada: '',)));
-            }, child: Text('search'))
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegistroSalida( cliente: '', guia: '', cant: '', llegada: '',)));
+            }, child: const Text('search'))
           ],
         ),
       ),

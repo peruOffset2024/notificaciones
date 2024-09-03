@@ -28,6 +28,7 @@ class ProductosProvider with ChangeNotifier {
         throw Exception('Failed to load products');
       }
     } catch (error) {
+      // ignore: avoid_print
       print('Error fetching products: $error');
     }
   }

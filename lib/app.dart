@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
   PushNotificationService.messagesStream.listen((mensaje){
+      // ignore: avoid_print
       print('------------------- > DESDE MYAPP mensaje: $mensaje');
 
     navigatorKey.currentState?.pushNamed('/mensaje', arguments: mensaje);
