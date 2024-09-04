@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
-import 'package:push_notificaciones/providers/lista_guias_provider.dart';
+
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 
@@ -20,7 +20,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
   @override
   Widget build(BuildContext context) {
     final estados = context.watch<PedidoProvider>().estados;
-   
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -39,7 +39,8 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
           itemBuilder: (context, index) {
             final estado = estados[index];
             final isLast = index == estados.length - 1;
-            final locationProv = context.read<LocationProvider>().currentLocation;
+            final locationProv =
+                context.read<LocationProvider>().currentLocation;
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
@@ -65,10 +66,12 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
-                        trailing: Column(children: [
-                          Text(locationProv!.latitude.toString()),
-                          Text(locationProv.longitude.toString()),
-                        ],),
+                        trailing: Column(
+                          children: [
+                            Text(locationProv!.latitude.toString()),
+                            Text(locationProv.longitude.toString()),
+                          ],
+                        ),
                         isThreeLine: true,
                       ),
                       onTap: () {
@@ -152,8 +155,8 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide:
-                          BorderSide(color: Colors.greenAccent.withOpacity(0.5)),
+                      borderSide: BorderSide(
+                          color: Colors.greenAccent.withOpacity(0.5)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -174,32 +177,44 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                   ),
                   onPressed: () {
                     final provider = context.read<PedidoProvider>();
-                    final locationProv = context.read<LocationProvider>().currentLocation;
-                    final clienteProvider = context.read<ListaGuiaProvider>().guias;
-                    
-                    
+                    final locationProv =
+                        context.read<LocationProvider>().currentLocation;
+                    // final clienteProvider =context.read<ListaGuiaProvider>().guias;
+
+                    /*final guiaprovider = context.read<ListaGuiaProvider>().guias;
+                    final numGuia = widget.guia;
+                    final cliente = guiaprovider.firstWhere((cliente) => cliente.cliente == numGuia,
+                    orElse: () => null,
+                    );*/
 
                     final estadosSecuenciales = [
                       PedidoEstado(
-                        estado: 'Destino: ${clienteProvider.first.cliente}',
-                        descripcion: clienteProvider.first.llegada, 
-                        fecha: DateTime.now(), 
-                        latitude: locationProv!.latitude.toString(), longitude: locationProv.longitude.toString(),
+                        estado: 'Destino: ',
+                        descripcion: 'yy',
+                        fecha: DateTime.now(),
+                        latitude: locationProv!.latitude.toString(),
+                        longitude: locationProv.longitude.toString(),
                       ),
                       PedidoEstado(
-                        estado: 'Salida de: ${clienteProvider.first.cliente} \n -> guia: ${clienteProvider.first.guia} ',
-                        descripcion: clienteProvider.first.llegada,
-                        fecha: DateTime.now(), latitude: locationProv.latitude.toString(), longitude: locationProv.longitude.toString(),
+                        estado: 'Salida de:  ',
+                        descripcion: 'sss',
+                        fecha: DateTime.now(),
+                        latitude: locationProv.latitude.toString(),
+                        longitude: locationProv.longitude.toString(),
                       ),
                       PedidoEstado(
                         estado: 'Llegada a PeruOfset Digital',
-                        descripcion: 'Lurigancho-La Capitana Cal.- Archipielago Mza. C Lote. 9',
-                        fecha: DateTime.now(), latitude: locationProv.latitude.toString(), longitude: locationProv.longitude.toString(),
+                        descripcion:
+                            'Lurigancho-La Capitana Cal.- Archipielago Mza. C Lote. 9',
+                        fecha: DateTime.now(),
+                        latitude: locationProv.latitude.toString(),
+                        longitude: locationProv.longitude.toString(),
                       ),
                     ];
 
                     if (_estadoIndex < estadosSecuenciales.length) {
-                      provider.actualizarEstado(estadosSecuenciales[_estadoIndex]);
+                      provider
+                          .actualizarEstado(estadosSecuenciales[_estadoIndex]);
                       _estadoIndex++;
                     }
 

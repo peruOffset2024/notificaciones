@@ -45,4 +45,11 @@ class ListaGuiaProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  ListaGuias? obtenerClientePorGuia(String numGuia){
+    return _guia.firstWhere(
+      (cliente) => cliente.guia == numGuia,
+     
+    );
+  }
 }

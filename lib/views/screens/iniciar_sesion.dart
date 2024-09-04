@@ -150,10 +150,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                           filled: true,
                           fillColor: Colors.black.withOpacity(0.7),
                         ),
-                        onChanged: (value) {
-                          // Aquí podrías actualizar el estado global si es necesario
-                          context.read<Authprovider>().authentication(value);
-                        },
+                        
                       ),
                     ),
                   ),

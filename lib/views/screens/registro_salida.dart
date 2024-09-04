@@ -14,7 +14,8 @@ class RegistroSalida extends StatefulWidget {
     super.key,
     required this.cliente,
     required this.guia,
-    required this.cant, required this.llegada,
+    required this.cant,
+    required this.llegada,
   });
 
   final String cliente;
@@ -30,12 +31,10 @@ final TextEditingController _lugarEntrega = TextEditingController();
 
 class _RegistroSalidaState extends State<RegistroSalida> {
   Location location = Location();
-  // ignore: prefer_final_fields
-  
-  
+  bool _isLoading = false; // Variable para controlar el estado de carga
 
   @override
-  void initState() {
+  void initState() { 
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<GuiaxClienteProvider>().obtenerGuiasDetalle(widget.guia);
@@ -47,258 +46,300 @@ class _RegistroSalidaState extends State<RegistroSalida> {
     final providers = context.watch<GuiaxClienteProvider>().guiaxCliente;
     final screenWidth = MediaQuery.of(context).size.width;
     final usuarioProvider = context.read<Authprovider>().username;
-    final locationProv = context.read<LocationProvider>().currentLocation;
-   
+    //final locationProv = context.read<LocationProvider>().currentLocation;
+
     return Scaffold(
-  backgroundColor: Colors.white,
-  resizeToAvoidBottomInset: true,
-  appBar: AppBar(
-    backgroundColor: Colors.white,
-    automaticallyImplyLeading: false,
-    title: Text(
-      widget.guia,
-      style: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        title: Text(
+          widget.guia,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
-    ),
-    centerTitle: true,
-    elevation: 0,
-    leading: IconButton(
-      icon: const Icon(Icons.arrow_back, color: Colors.black),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    ),
-  ),
-  body: Consumer<LocationProvider>(
-    builder: (context, locationProvider, child) {
-      if(locationProvider.isLoading){
-        return const Center(child: CircularProgressIndicator());
-      }
-      return KeyboardVisibilityBuilder(
-      builder: (context, isKeyboardVisible) {
-        return Padding(
-          padding: EdgeInsets.only(
-                bottom: isKeyboardVisible ? 100 : 20, right: 10, left: 10),
-          child: SingleChildScrollView(
-            
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Text(widget.cliente,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center),
-                ),
-                Center(
-                  child: Text('Latitud: ${locationProv?.latitude.toString()} y este la longitud: ${locationProv?.longitude.toString()}',
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center),
-                ),
-                
-               
-                const SizedBox(
-                  height: 40,
-                ),
-          
-                const Text(
-                  'DETALLE:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  
-                ),
-                 
-                  
-                Card(
-                  color: Colors.white,
-                  elevation: 2,
-                  shape: const RoundedRectangleBorder(
-                    side: BorderSide(
-                        color: Color.fromARGB(255, 227, 242, 253), width: 2),
-                   
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    // Ajustar el ListView.builder con shrinkWrap y physics
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: providers.length,
-                      itemBuilder: (context, index) {
-                        final jsonIndice = providers[index];
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 4.0, horizontal: 5.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(right: 16.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            jsonIndice.op,
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 10,
+      body: Stack(
+        children: [
+          Consumer<LocationProvider>(
+            builder: (context, locationProvider, child) {
+              if (locationProvider.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return KeyboardVisibilityBuilder(
+                builder: (context, isKeyboardVisible) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                        bottom: isKeyboardVisible ? 100 : 20, right: 10, left: 10),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Center(
+                            child: Text(widget.cliente,
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
+                          ),
+                          
+                          const SizedBox(
+                            height: 50,
+                          ),
+                          const Text(
+                            'DETALLE:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Card(
+                            color: Colors.white,
+                            elevation: 2,
+                            shape: const RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: Color.fromARGB(255, 227, 242, 253),
+                                  width: 2),
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: providers.length,
+                                itemBuilder: (context, index) {
+                                  final jsonIndice = providers[index];
+                                  return Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 4.0, horizontal: 5.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 16.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      jsonIndice.op,
+                                                      style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: 10,
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.visible,
+                                                      textAlign: TextAlign.start,
+                                                    ),
+                                                    Text(
+                                                      jsonIndice.und,
+                                                      style: const TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.black,
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign: TextAlign.start,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                            overflow: TextOverflow.visible,
-                                            textAlign: TextAlign.start,
-                                          ),
-                                          Text(
-                                            jsonIndice.und,
-                                            style: const TextStyle(
-                                              fontSize: 10,
-                                              color: Colors.black,
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      jsonIndice.cant,
+                                                      style: const TextStyle(
+                                                        fontSize: 13,
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign: TextAlign.end,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 16.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            jsonIndice.cant,
-                                            style: const TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ],
+                                      const Divider(
+                                        height: 1.0,
                                       ),
-                                    ),
-                                  ),
-                                ],
+                                    ],
+                                  );
+                                },
                               ),
                             ),
-                            const Divider(
-                              height: 1.0,
-                            ),
-                          ],
-                        );
-                      },
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            'DIRECCIÓN DE ENTREGA:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                          ),
+                          Text(
+                            widget.llegada,
+                            textAlign: TextAlign.start,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const SizedBox(height: 16),
+                          _buildObservationsField(),
+                          const SizedBox(height: 80),
+                        ],
+                      ),
                     ),
-                  ),
+                  );
+                },
+              );
+            },
+          ),
+          if (_isLoading)
+            Center(
+              child: Container(
+                color: Colors.transparent, // Ajusta la opacidad aquí
+                child: const CircularProgressIndicator(
+                  color: Colors.blue,
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-          
-                const Text(
-                  'DIRECCIÓN DE ENTREGA:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                ),
-                // Aqui esta la direccion de destino del la guia
-                 Text(
-                  widget.llegada,
-                  textAlign: TextAlign.start,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // Añadir un espacio adicional antes del TextField
-                const SizedBox(height: 16),
-                _buildObservationsField(), // Este es el campo de texto
-                // Espacio adicional para evitar la superposición con el botón flotante
-                const SizedBox(height: 80),
-              ],
+              ),
+            ),
+        ],
+      ),
+      floatingActionButton: SizedBox(
+        width: screenWidth * 0.95,
+        child: ElevatedButton(
+          onPressed: () async {
+            setState(() {
+              _isLoading = true; // Mostrar el indicador de carga
+            });
+
+            final provider = context.read<PedidoProvider>();
+            final locationProv =
+                context.read<LocationProvider>().currentLocation;
+
+            // Actualizar el estado del pedido
+            provider.actualizarEstado(
+              PedidoEstado(
+                estado: 'Salida de Perú Offset Digital',
+                descripcion: widget.cliente,
+                fecha: DateTime.now(),
+                latitude: locationProv!.latitude.toString(),
+                longitude: locationProv.longitude.toString(),
+              ),
+            );
+
+            try {
+              await context.read<SeguimientoEstadoProvider>().estadoGuia(
+                    widget.guia,
+                    _lugarEntrega.text,
+                    usuarioProvider,
+                    locationProv.latitude.toString(),
+                    locationProv.longitude.toString(),
+                  );
+
+              showDialog(
+                // ignore: use_build_context_synchronously
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: const Color.fromRGBO(64, 64, 64, 1),
+                    title: const Text(
+                      'Excelente!.',
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                    content: const Text(
+                      'Tu registro de salida se realizó correctamente.',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Aceptar', style:  TextStyle(color: Colors.white),),
+                      ),
+                    ],
+                  );
+                },
+              );
+            } catch (error) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: const Color.fromRGBO(64, 64, 64, 1),
+                    
+                    content: const Text(
+                      'ESTA GUIA YA SE REGISTRO SU SALIDA.',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Aceptar',style:  TextStyle(color: Colors.white),),
+                      ),
+                    ],
+                  );
+                },
+              );
+            } finally {
+              setState(() {
+                _isLoading = false; // Ocultar el indicador de carga
+              });
+            }
+            _lugarEntrega.clear();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
           ),
-        );
-      },
-    );
-      },
-    
-  ),
-  floatingActionButton: SizedBox(
-    width: screenWidth * 0.95,
-    child: ElevatedButton(
-      onPressed: () {
-        final provider = context.read<PedidoProvider>();
-        final locationProv = context.read<LocationProvider>().currentLocation;
-        provider.actualizarEstado(
-          PedidoEstado(
-            estado: 'Salida de Perú Offset Digital',
-            descripcion: widget.cliente,
-            fecha: DateTime.now(), 
-            latitude: locationProv!.latitude.toString(), 
-            longitude: locationProv.longitude.toString(), 
-            
+          child: const Text(
+            'Registrar Salida',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
-        );
-        // Aqui se puede agregar la lógica para actualizar el estado del pedido
-        context.read<SeguimientoEstadoProvider>().estadoGuia(widget.guia,_lugarEntrega.text, usuarioProvider, locationProv.latitude.toString(),locationProv.longitude.toString(),);
-
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: const Color.fromRGBO(64, 64, 64, 1),
-              title: const Text(
-                'Éxito',
-                style: TextStyle(color: Colors.white, fontSize: 25),
-              ),
-              content: const Text(
-                'Se registró correctamente tu salida',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Aceptar'),
-                ),
-              ],
-            );
-          },
-        );
-
-        _lugarEntrega.clear();
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green,
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
         ),
       ),
-      child: const Text(
-        'Registrar Salida',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    ),
-  ),
-  floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-);
-
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 
   Widget _buildObservationsField() {
