@@ -1,33 +1,36 @@
 // To parse this JSON data, do
 //
-//     final productos = productosFromJson(jsonString);
-
+//     final salidaGuia = salidaGuiaFromJson(jsonString);
 import 'dart:convert';
 
-List<Productos> productosFromJson(String str) => List<Productos>.from(json.decode(str).map((x) => Productos.fromJson(x)));
+List<SalidaGuia> salidaGuiaFromJson(String str) => List<SalidaGuia>.from(json.decode(str).map((x) => SalidaGuia.fromJson(x)));
 
-String productosToJson(List<Productos> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String salidaGuiaToJson(List<SalidaGuia> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Productos {
-    String itemCode;
-    String descripcion;
-    String diferencia;
+class SalidaGuia {
+    String nroGuia;
+    String cliente;
+    String cant;
+    String entrega;
 
-    Productos({
-        required this.itemCode,
-        required this.descripcion,
-        required this.diferencia,
+    SalidaGuia({
+        required this.nroGuia,
+        required this.cliente,
+        required this.cant,
+        required this.entrega,
     });
 
-    factory Productos.fromJson(Map<String, dynamic> json) => Productos(
-        itemCode: json["ItemCode"],
-        descripcion: json["Descripcion"],
-        diferencia: json["diferencia"],
+    factory SalidaGuia.fromJson(Map<String, dynamic> json) => SalidaGuia(
+        nroGuia: json["nro_guia"] ?? '',
+        cliente: json["Cliente"]?? '',
+        cant: json["cant"]?? '',
+        entrega: json["Entrega"]?? '',
     );
 
     Map<String, dynamic> toJson() => {
-        "ItemCode": itemCode,
-        "Descripcion": descripcion,
-        "diferencia": diferencia,
+        "nro_guia": nroGuia,
+        "Cliente": cliente,
+        "cant": cant,
+        "Entrega": entrega,
     };
 }

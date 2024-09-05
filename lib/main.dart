@@ -11,6 +11,7 @@ import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/reg_sal_switch_provider.dart';
 import 'package:push_notificaciones/providers/rutas_provider.dart';
 import 'package:push_notificaciones/providers/seguimiento_estado_provider.dart';
+import 'package:push_notificaciones/providers/track_provider.dart';
 import 'package:push_notificaciones/providers/tracking_provider.dart';
 import 'package:push_notificaciones/services/models/push_notification_service.dart';
 
@@ -30,7 +31,8 @@ void main() async {
     ChangeNotifierProvider(create: (_) => AsistenciaProvider()), 
     ChangeNotifierProvider(create: (_) => ListaGuiaProvider()), 
     ChangeNotifierProvider(create: (_) => GuiaxClienteProvider()), 
-    ChangeNotifierProvider(create: (_) => SeguimientoEstadoProvider()),
+    ChangeNotifierProvider(create: (_) => SeguimientoEstadoProvider()), 
+    ChangeNotifierProvider(create: (_) => TrackProviderSegui()),
 
   ], child: const MyApp()));
 }

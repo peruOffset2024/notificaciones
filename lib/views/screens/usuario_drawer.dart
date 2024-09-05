@@ -75,7 +75,7 @@ class MyCustomDrawer extends StatelessWidget {
             title: const Text('Seguimiento', style: TextStyle(color: Colors.white)),
             onTap: () {
               // Acción al hacer clic en "Agregar cuenta"
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>  const SeguimientoPedidoScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>  const SeguimientoPedidoScreen(guia: '',)));
               
             },
           ),

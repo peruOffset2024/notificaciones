@@ -53,50 +53,44 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
         backgroundColor: Colors.white,
         body: RefreshIndicator(
           onRefresh: _refreshData, // Método para recargar los datos
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
+          child: Container(
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
                 // Fila de búsqueda
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        style: const TextStyle(color: Colors.black, fontSize: 12),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(10),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              _searchController.clear();
-                              context.read<ListaGuiaProvider>().searchGuia('');
-                            },
-                            icon: const Icon(Icons.cancel_outlined, color: Colors.black),
-                          ),
-                          prefixIcon: const Icon(Icons.search, color: Colors.black),
-                          hintText: 'Filtrar por Nro. Guía',
-                          hintStyle: const TextStyle(color: Colors.grey),
-                          labelStyle: const TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.grey, width: 2.0),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                        onChanged: (value) {
-                          context.read<ListaGuiaProvider>().searchGuia(value);
-                        },
-                      ),
+                TextField(
+                  controller: _searchController,
+                  style: const TextStyle(color: Colors.black, fontSize: 12),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(10),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _searchController.clear();
+                        context.read<ListaGuiaProvider>().searchGuia('');
+                      },
+                      icon: const Icon(Icons.cancel_outlined, color: Colors.black),
                     ),
-                  ],
+                    prefixIcon: const Icon(Icons.search, color: Colors.black),
+                    hintText: 'Filtrar por Nro. Guía',
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    labelStyle: const TextStyle(color: Colors.black),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.grey, width: 2.0),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  onChanged: (value) {
+                    context.read<ListaGuiaProvider>().searchGuia(value);
+                  },
                 ),
-                const SizedBox(height: 20),
-
+                const SizedBox(height: 10),
+            
                 // Tabla de resultados
                 Expanded(
                   child: Consumer<ListaGuiaProvider>(
@@ -109,7 +103,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                           ),
                         );
                       }
-
+            
                       return ListView.builder(
                         itemCount: provider.guias.length,
                         itemBuilder: (context, index) {
@@ -137,7 +131,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 14.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
@@ -165,7 +159,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                                                   fontSize: 10,
                                                   color: Colors.black,
                                                 ),
-                                                overflow: TextOverflow.ellipsis,
+                                                overflow: TextOverflow.visible,
                                                 textAlign: TextAlign.start,
                                               ),
                                             ],
@@ -202,6 +196,16 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                                             ],
                                           ),
                                         ),
+                                      ),
+                                      const SizedBox(width: 8,),
+                                      const Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          // Fila 1: Fecha de emisión
+                                          Icon(Icons.arrow_forward_ios,color: Color.fromARGB(255, 161, 188, 211),size: 15)
+                                          // Fila 2: Cantidad
+                                          
+                                        ],
                                       ),
                                     ],
                                    ),

@@ -4,9 +4,12 @@ import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
 
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
+import 'package:push_notificaciones/providers/track_provider.dart';
+import 'package:push_notificaciones/views/screens/registro_datos.dart';
 
 class SeguimientoPedidoScreen extends StatefulWidget {
-  const SeguimientoPedidoScreen({super.key});
+  const SeguimientoPedidoScreen({super.key, required this.guia});
+  final String guia;
 
   @override
   State<SeguimientoPedidoScreen> createState() =>
@@ -18,94 +21,189 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
   int _estadoIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<TrackProviderSegui>().obtenerTrack(widget.guia);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final estados = context.watch<PedidoProvider>().estados;
+    //final estados = context.watch<PedidoProvider>().estados;
+    final sizeW = MediaQuery.of(context).size.height;
+    final tracki = context.watch<TrackProviderSegui>().track;
+
+
+    String fecha1 = '';
+    String fecha2 = '';
+    String fecha3 = '';
+   
+  
+   /* for(var item in tracki){
+      fecha = item.fecha;
+      
+    } */
+
+    bool llegada = false;
+    bool salida = false;
+    bool fin = false;
+
+    for (var item in tracki) {
+      
+      if (item.paso == '1') {
+        fecha1 = item.fecha;
+        llegada = true;
+      } else if (item.paso == '2') {
+        fecha2 = item.fecha;
+        salida = true;
+      } else if (item.paso == '3') {
+        fecha3 = item.fecha;
+        fin = true;
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text(
-          'Seguimiento de Pedido',
-          style: TextStyle(
+        title: Text(
+          'Tracking: ${widget.guia}',
+          style: const TextStyle(
+            fontSize: 17,
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
       body: Container(
-        color: Colors.white,
-        child: ListView.builder(
-          itemCount: estados.length,
-          itemBuilder: (context, index) {
-            final estado = estados[index];
-            final isLast = index == estados.length - 1;
-            final locationProv =
-                context.read<LocationProvider>().currentLocation;
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          color: Colors.white,
+          height: sizeW,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  _buildEstadoIcon(isLast),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: GestureDetector(
-                      child: ListTile(
-                        title: Text(
-                          estado.estado,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Text(
-                          '${estado.descripcion}\n${_formatDate(estado.fecha)}',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: Column(
-                          children: [
-                            Text(locationProv!.latitude.toString()),
-                            Text(locationProv.longitude.toString()),
-                          ],
-                        ),
-                        isThreeLine: true,
-                      ),
-                      onTap: () {
-                        if (isLast) {
-                          _showDialog(context);
-                        }
-                      },
-                    ),
+                  const Center(
+                      child: Text(
+                    '',
+                    style: TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
+                  )),
+                  const SizedBox(
+                    height: 10,
                   ),
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if(llegada == true)
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> RegistroDatos()));
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.green,
+                            radius: 50,
+                            child: Text(
+                              llegada ? 'LLEGADA' : 'LLEGADA',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ) else GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> RegistroDatos()));
+                            _showDialog(context);
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.grey[350],
+                            radius: 50,
+                            child: Text(
+                              llegada ? 'LLEGADA' : 'LLEGADA',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        Text(fecha1 == '' ? '-' : 'CLIENTE: $fecha1'),
+                        Container(
+                          height: 50,
+                          width: 2,
+                          color: Colors.grey,
+                        ),
+                        if(salida == true)
+                        GestureDetector(
+                          
+                          child: CircleAvatar(
+                            backgroundColor: Colors.green,
+                            radius: 50,
+                            child: Text(
+                              salida ? 'SALIDA' : 'SALIDA',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ) else GestureDetector(
+                          onTap: () {
+                            _showDialog(context);
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.grey[350],
+                            radius: 50,
+                            child: Text(
+                              salida ? 'SALIDA' : 'SALIDA',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        Text(fecha2 == '' ? '-' : 'CLIENTE: $fecha2'),
+                        Container(
+                          height: 50,
+                          width: 2,
+                          color: Colors.grey,
+                        ),
+                        
+                        if(fin == true)
+                        GestureDetector(
+                          
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.green,
+                            radius: 50,
+                            child: Text(
+                              'FIN',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ) else GestureDetector(
+                          onTap: () {
+                            _showDialog(context);
+                          },
+                          child:  CircleAvatar(
+                            backgroundColor: Colors.grey[350],
+                            radius: 50,
+                            child: const Text(
+                              'FIN',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        Text(fecha3 == '' ? '-' : 'POD: $fecha3'),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEstadoIcon(bool isLast) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          Icons.circle,
-          color: isLast ? Colors.black : Colors.blue[100],
-          size: 20,
-        ),
-        if (!isLast)
-          Container(
-            height: 100,
-            width: 2,
-            color: Colors.grey,
-          ),
-      ],
+            ),
+          )),
     );
   }
 
@@ -236,6 +334,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
     );
   }
 
+  // ignore: unused_element
   String _formatDate(DateTime date) {
     return "${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}";
   }

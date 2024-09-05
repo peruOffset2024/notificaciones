@@ -5,24 +5,24 @@ import 'package:push_notificaciones/models/modelo_api_diferencias.dart';
 
 //Provider de la pantalla principal incluye consumo de api
 class ProductosProvider with ChangeNotifier {
-  List<Productos> _productos = [];
-  List<Productos> _filteredProductos = [];
+  List<SalidaGuia> _productos = [];
+  List<SalidaGuia> _filteredProductos = [];
 
-  List<Productos> get productos => _filteredProductos;
+  List<SalidaGuia> get productos => _filteredProductos.isEmpty ? _productos : _filteredProductos;
 
-  ProductosProvider() {
-    fetchProductos();
-  }
+  
 
-  Future<void> fetchProductos() async {
-    final url = Uri.parse('http://190.107.181.163:81/amq/flutter_ajax_home.php?');
+  Future<void> fetchProductos(String dni, String ruc) async {
+    final url = Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_salidas.php?dni=$dni&ruc=$ruc');
     try {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonData = json.decode(response.body);
-        _productos = jsonData.map((item) => Productos.fromJson(item)).toList();
+        _productos = jsonData.map((item) => SalidaGuia.fromJson(item)).toList();
         _filteredProductos = _productos;
+        print('El estado ----> ${response.statusCode}');
+         print('El Cuerpo ----> ${jsonData}');
         notifyListeners();
       } else {
         throw Exception('Failed to load products');
@@ -38,7 +38,7 @@ class ProductosProvider with ChangeNotifier {
       _filteredProductos = _productos;
     } else {
       _filteredProductos = _productos.where((producto) {
-        return producto.descripcion.toLowerCase().contains(query.toLowerCase());
+        return producto.cliente.toLowerCase().contains(query.toLowerCase());
       }).toList();
     }
     notifyListeners();

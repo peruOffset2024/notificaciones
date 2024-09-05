@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:push_notificaciones/views/screens/geolocalizacion.dart';
 import 'package:push_notificaciones/views/screens/lista_guias.dart';
+import 'package:push_notificaciones/views/screens/seguimiento_por_guia.dart';
 
 
 class GuiasServicios extends StatefulWidget {
@@ -56,7 +56,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                       // Add functionality for "Otros" button here (e.g., show a dialog)
                       Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>   LocationScreen()),);
+                      MaterialPageRoute(builder: (context) =>  const SeguimientoPorGuia()),);
                     },
                   ),
                 ],

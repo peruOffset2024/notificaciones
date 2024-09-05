@@ -1,9 +1,8 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:push_notificaciones/providers/location_provider.dart';
-
 
 class RegistroDatos extends StatefulWidget {
   const RegistroDatos({super.key});
@@ -13,11 +12,7 @@ class RegistroDatos extends StatefulWidget {
 }
 
 class _RegistroDatosState extends State<RegistroDatos> {
-  final TextEditingController _commentController = TextEditingController();
-
-  final String _nombre = 'Ricardo';
-
-  String _userComment = '';
+  final TextEditingController _observacionController = TextEditingController();
 
   final List<File> _selectedImages = [];
 
@@ -31,98 +26,140 @@ class _RegistroDatosState extends State<RegistroDatos> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ubicación'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.image),
-            onPressed: _showImagePickerOptions,
-          ),
-        ],
+        
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              Text(
-                'Bienvenido: $_nombre',
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: TextField(
-                  controller: _commentController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Ingrese su comentario',
+      body: SingleChildScrollView(
+        child: Column(
+          //crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (locationProvider.currentLocation != null)
+              Column(
+                children: [
+                  Text(
+                    'Latitud: ${locationProvider.currentLocation!.latitude}',
+                    style: const TextStyle(fontSize: 16),
                   ),
+                  Text(
+                    'Longitud: ${locationProvider.currentLocation!.longitude}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            
+            const SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.greenAccent.withOpacity(0.5),
                 ),
               ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _userComment = _commentController.text;
-                    _commentController.clear();
-                  });
-                },
-                child: const Text('Enviar'),
-              ),
-              const SizedBox(height: 20),
-              if (_userComment.isNotEmpty)
-                Text(
-                  'Comentario enviado: $_userComment',
-                  style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-                ),
-              const SizedBox(height: 20),
-              // Mostrar las imágenes seleccionadas
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: _selectedImages.map((image) {
-                  return Stack(
-                    children: [
-                      Image.file(
-                        image,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: IconButton(
-                          icon: const Icon(Icons.cancel_outlined, color: Colors.white),
-                          onPressed: () => _removeImage(image),
-                        ),
-                      ),
-                    ],
-                  );
-                }).toList(),
-              ),
-              // Mostrar ubicación obtenida
-              const SizedBox(height: 20),
-              if (locationProvider.currentPosition != null)
-                Column(
-                  children: [
-                    Text(
-                      'Latitud: ${locationProvider.currentPosition!.latitude}',
-                      style: const TextStyle(fontSize: 16),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Observaciones',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
-                    Text(
-                      'Longitud: ${locationProvider.currentPosition!.longitude}',
-                      style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: _observacionController,
+                    style: const TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      prefixIcon:
+                          const Icon(Icons.comment, color: Colors.black),
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                            color: Colors.greenAccent.withOpacity(0.5)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            const BorderSide(color: Colors.greenAccent),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 10.0),
+                    ),
+                    maxLines: null,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.greenAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      //final provider = context.read<PedidoProvider>();
+                      context.read<LocationProvider>().currentLocation;
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Guardar',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+                side: BorderSide(color: Colors.blue)
+              ),
+              child: Container(
+                height: 120,
+                width: 170,
+                color: Colors.white,
+                child: IconButton(
+                  onPressed: _showImagePickerOptions,
+                icon: const Icon(Icons.camera_front_rounded)),
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Mostrar las imágenes seleccionadas
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: _selectedImages.map((image) {
+                return Stack(
+                  children: [
+                    Image.file(
+                      image,
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: IconButton(
+                        icon: const Icon(Icons.cancel_outlined,
+                            color: Colors.white),
+                        onPressed: () => _removeImage(image),
+                      ),
                     ),
                   ],
-                ),
-              if (locationProvider.locationMessage.isNotEmpty)
-                Text(
-                  'Mensaje de ubicación: ${locationProvider.locationMessage}',
-                  style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-                ),
-            ],
-          ),
+                );
+              }).toList(),
+            ),
+            // Mostrar ubicación obtenida
+            const SizedBox(height: 20),
+            
+          ],
         ),
       ),
     );
@@ -134,7 +171,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
 
     if (pickedFiles != null && pickedFiles.isNotEmpty) {
       setState(() {
-        _selectedImages.addAll(pickedFiles.map((file) => File(file.path)).toList());
+        _selectedImages
+            .addAll(pickedFiles.map((file) => File(file.path)).toList());
       });
     }
   }
@@ -185,4 +223,3 @@ class _RegistroDatosState extends State<RegistroDatos> {
     });
   }
 }
-*/

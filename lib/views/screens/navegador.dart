@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:push_notificaciones/providers/auth_provider.dart';
+
 import 'package:push_notificaciones/views/screens/index_diferencias_despacho.dart';
 import 'package:push_notificaciones/views/screens/entrada_salida_registro.dart';
 import 'package:push_notificaciones/views/screens/guias_servicios.dart';
@@ -34,9 +33,9 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
 
   @override
   Widget build(BuildContext context) {
-    final nombUsuario = context.watch<Authprovider>().conductor;
+    //final nombUsuario = context.watch<Authprovider>().conductor;
     return Scaffold(
-      appBar:AppBar(
+      /*appBar:AppBar(
         backgroundColor: Colors.white,
         leading: Builder(builder: (context) {
           return GestureDetector(
@@ -56,7 +55,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
             },
           );
         }),
-      ),
+      ),*/
       drawer: MyCustomDrawer(usuario: widget.usuario),
       body: navegador[indice],
       bottomNavigationBar: Container(
