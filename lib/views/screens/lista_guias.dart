@@ -15,6 +15,7 @@ class ListaGuiasReporte extends StatefulWidget {
 class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
   final TextEditingController _searchController = TextEditingController();
 
+
   @override
   void initState() {
     super.initState();
@@ -203,7 +204,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                                         ),
                                       ),
                                     ],
-                                  ),
+                                   ),
                                 ),
                               ),
                             ),

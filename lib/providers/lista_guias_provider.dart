@@ -13,23 +13,14 @@ class ListaGuiaProvider with ChangeNotifier {
     try {
       final response = await http.get(Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_guias.php?ruc=$ruc'));
       if (response.statusCode == 200) {
-        // ignore: avoid_print
-        print('Verificar el status ${response.statusCode}');
-        
-        // Decodificar la respuesta JSON
         final List<dynamic> data = jsonDecode(response.body);
-
-        // Convertir cada elemento de la lista en un objeto ListaGuias
         _guia = data.map((jsonItem) => ListaGuias.fromJson(jsonItem)).toList();
-        _filteredGuia = List.from(_guia); // Inicializar la lista filtrada con todos los elementos
-
+        _filteredGuia = List.from(_guia); // Inicializar la lista filtrada
         notifyListeners();
       } else {
         throw Exception('Failed to load guias');
       }
     } catch (e) {
-      // ignore: avoid_print
-      print('Error: $e');
       throw Exception('Failed to load guias');
     }
   }
@@ -46,10 +37,10 @@ class ListaGuiaProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  ListaGuias? obtenerClientePorGuia(String numGuia){
-    return _guia.firstWhere(
-      (cliente) => cliente.guia == numGuia,
-     
-    );
+  // Método para eliminar una guía localmente
+  void eliminarGuia(String guia) {
+    _guia.removeWhere((item) => item.guia == guia);
+    _filteredGuia.removeWhere((item) => item.guia == guia);
+    notifyListeners();
   }
 }

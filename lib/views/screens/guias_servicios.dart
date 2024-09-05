@@ -19,46 +19,48 @@ class _GuiasServiciosState extends State<GuiasServicios> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Center(
-            child: Column(
-              
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment:
-                  CrossAxisAlignment.center, // Center content horizontally
-              children: [
-                const SizedBox(height: 20.0),
-                _buildServiceButton(
-                  context: context,
-                  label: 'Guias',
-                  icon: Icons.file_copy_outlined, // Material icon for guides
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) =>  const ListaGuiasReporte()),
+            child: SingleChildScrollView(
+              child: Column(
+                
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment:
+                    CrossAxisAlignment.center, // Center content horizontally
+                children: [
+                  const SizedBox(height: 20.0),
+                  _buildServiceButton(
+                    context: context,
+                    label: 'Guias',
+                    icon: Icons.file_copy_outlined, // Material icon for guides
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>  const ListaGuiasReporte()),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20.0),
-                _buildService(
-                  context: context,
-                  label: 'Servicios',
-                  icon: Icons
-                      .delivery_dining_outlined, // Material icon for services
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ListaGuiasReporte()),
+                  const SizedBox(height: 20.0),
+                  _buildService(
+                    context: context,
+                    label: 'Servicios',
+                    icon: Icons
+                        .delivery_dining_outlined, // Material icon for services
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ListaGuiasReporte()),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20.0),
-                _ServiceButton(
-                  context: context,
-                  label: 'Otros',
-                  icon: Icons.more_horiz_outlined, // Material icon for others
-                  onPressed: () {
-                    // Add functionality for "Otros" button here (e.g., show a dialog)
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) =>   LocationScreen()),);
-                  },
-                ),
-              ],
+                  const SizedBox(height: 20.0),
+                  _ServiceButton(
+                    context: context,
+                    label: 'Otros',
+                    icon: Icons.more_horiz_outlined, // Material icon for others
+                    onPressed: () {
+                      // Add functionality for "Otros" button here (e.g., show a dialog)
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>   LocationScreen()),);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

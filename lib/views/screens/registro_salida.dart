@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
+import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/seguimiento_estado_provider.dart';
@@ -36,6 +37,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
   @override
   void initState() { 
     super.initState();
+    _lugarEntrega.clear();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<GuiaxClienteProvider>().obtenerGuiasDetalle(widget.guia);
     });
@@ -82,7 +84,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                 builder: (context, isKeyboardVisible) {
                   return Padding(
                     padding: EdgeInsets.only(
-                        bottom: isKeyboardVisible ? 100 : 20, right: 10, left: 10),
+                        bottom: isKeyboardVisible ? 100 : 20, right: 8, left: 8),
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,22 +100,24 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                           ),
                           
                           const SizedBox(
-                            height: 50,
+                            height: 30,
                           ),
                           const Text(
                             'DETALLE:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                           ),
                           Card(
                             color: Colors.white,
                             elevation: 2,
-                            shape: const RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: Color.fromARGB(255, 227, 242, 253),
-                                  width: 2),
+                            shape:  RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  color: Colors.white,
+                                  width: 1),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Padding(
+                              padding:  EdgeInsets.symmetric(horizontal: 3.0),
+                             
                               child: ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
@@ -139,8 +143,8 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                                                   children: [
                                                     Text(
                                                       jsonIndice.op,
-                                                      style: const TextStyle(
-                                                        color: Colors.black,
+                                                      style:  TextStyle(
+                                                        color: Colors.grey[600],
                                                         fontWeight: FontWeight.bold,
                                                         fontSize: 10,
                                                       ),
@@ -149,10 +153,10 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                                                       textAlign: TextAlign.start,
                                                     ),
                                                     Text(
-                                                      jsonIndice.und,
-                                                      style: const TextStyle(
+                                                      'OP',
+                                                      style:  TextStyle(
                                                         fontSize: 10,
-                                                        color: Colors.black,
+                                                        color: Colors.grey[600],
                                                       ),
                                                       overflow:
                                                           TextOverflow.ellipsis,
@@ -172,10 +176,21 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                                                   children: [
                                                     Text(
                                                       jsonIndice.cant,
-                                                      style: const TextStyle(
-                                                        fontSize: 13,
-                                                        color: Colors.black,
+                                                      style:  TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.grey[600],
                                                         fontWeight: FontWeight.bold,
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign: TextAlign.end,
+                                                    ),
+                                                    Text(
+                                                      jsonIndice.und,
+                                                      style:  TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.grey[600],
+                                                       
                                                       ),
                                                       overflow:
                                                           TextOverflow.ellipsis,
@@ -202,12 +217,12 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                           ),
                           const Text(
                             'DIRECCIÓN DE ENTREGA:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.start,
                           ),
                           Text(
-                            widget.llegada,
+                            widget.llegada, style: TextStyle(fontSize: 11,color: Colors.grey[600],),
                             textAlign: TextAlign.start,
                           ),
                           const SizedBox(
@@ -237,8 +252,10 @@ class _RegistroSalidaState extends State<RegistroSalida> {
       ),
       floatingActionButton: SizedBox(
         width: screenWidth * 0.95,
+        height: 45,
         child: ElevatedButton(
           onPressed: () async {
+            
             setState(() {
               _isLoading = true; // Mostrar el indicador de carga
             });
@@ -267,6 +284,9 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                     locationProv.longitude.toString(),
                   );
 
+              // Eliminar la guía localmente en el provider
+              context.read<ListaGuiaProvider>().eliminarGuia(widget.guia);
+
               showDialog(
                 // ignore: use_build_context_synchronously
                 context: context,
@@ -275,16 +295,17 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                     backgroundColor: const Color.fromRGBO(64, 64, 64, 1),
                     title: const Text(
                       'Excelente!.',
-                      style: TextStyle(color: Colors.white, fontSize: 25),
+                      style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                     content: const Text(
                       'Tu registro de salida se realizó correctamente.',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                     actions: [
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pop(context, true);
+                          Navigator.of(context).pop();
                         },
                         child: const Text('Aceptar', style:  TextStyle(color: Colors.white),),
                       ),
@@ -292,6 +313,8 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                   );
                 },
               );
+              
+            
             } catch (error) {
               showDialog(
                 context: context,
@@ -300,7 +323,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                     backgroundColor: const Color.fromRGBO(64, 64, 64, 1),
                     
                     content: const Text(
-                      'ESTA GUIA YA SE REGISTRO SU SALIDA.',
+                      'La guía ya tiene salida.',
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     actions: [
@@ -322,8 +345,8 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             _lugarEntrega.clear();
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            backgroundColor: Colors.blue,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -331,7 +354,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
           child: const Text(
             'Registrar Salida',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
@@ -352,21 +375,24 @@ class _RegistroSalidaState extends State<RegistroSalida> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          const Row(children: [
+            Text(
             'OTRO LUGAR DE ENTREGA',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 12,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
           ),
+          Text(' (Diferente a la guía.)',style: TextStyle(fontSize: 11),)
+          ],),
           const SizedBox(height: 10),
           TextField(
-            style: const TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black, fontSize: 13),
             controller: _lugarEntrega,
             maxLines: null,
             decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.comment),
+              prefixIcon: const Icon(Icons.comment, size: 25,),
               filled: true,
               fillColor: Colors.grey[200],
               border: OutlineInputBorder(
@@ -379,8 +405,9 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                 borderSide: const BorderSide(color: Colors.grey),
               ),
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 14.0, vertical: 5.0),
+                  const EdgeInsets.all(10),
             ),
+            
           ),
         ],
       ),
