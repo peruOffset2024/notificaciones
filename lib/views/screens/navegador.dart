@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:push_notificaciones/views/screens/index_diferencias_despacho.dart';
+import 'package:push_notificaciones/views/screens/tus_guias.dart';
 import 'package:push_notificaciones/views/screens/entrada_salida_registro.dart';
 import 'package:push_notificaciones/views/screens/guias_servicios.dart';
 import 'dart:io';

@@ -14,9 +14,10 @@ class MyCustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final nombUsuario = context.watch<Authprovider>().conductor;
     final ruc = context.watch<Authprovider>().ruc;
-    
+  
     List<String> nombCompleto = nombUsuario.split(' ');
     String nombUserComplete = nombCompleto.sublist(0, nombCompleto.length >= 2 ? 2 : nombCompleto.length).join(' ');
+    
     
 
     return Drawer(

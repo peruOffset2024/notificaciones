@@ -22,7 +22,7 @@ class ProductosProvider with ChangeNotifier {
         _productos = jsonData.map((item) => SalidaGuia.fromJson(item)).toList();
         _filteredProductos = _productos;
         print('El estado ----> ${response.statusCode}');
-         print('El Cuerpo ----> ${jsonData}');
+         print('El Cuerpo ----> ${jsonData} aqui');
         notifyListeners();
       } else {
         throw Exception('Failed to load products');

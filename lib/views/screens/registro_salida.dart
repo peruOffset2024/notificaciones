@@ -116,7 +116,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Padding(
-                              padding:  EdgeInsets.symmetric(horizontal: 3.0),
+                              padding:  const EdgeInsets.symmetric(horizontal: 3.0),
                              
                               child: ListView.builder(
                                 shrinkWrap: true,
@@ -285,6 +285,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                   );
 
               // Eliminar la guía localmente en el provider
+              // ignore: use_build_context_synchronously
               context.read<ListaGuiaProvider>().eliminarGuia(widget.guia);
 
               showDialog(
@@ -317,6 +318,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             
             } catch (error) {
               showDialog(
+                // ignore: use_build_context_synchronously
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(

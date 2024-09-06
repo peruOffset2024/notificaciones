@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
-
-import 'package:push_notificaciones/providers/location_provider.dart';
-import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/track_provider.dart';
 import 'package:push_notificaciones/views/screens/registro_datos.dart';
 
@@ -17,8 +13,8 @@ class SeguimientoPedidoScreen extends StatefulWidget {
 }
 
 class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
-  final TextEditingController _observacionController = TextEditingController();
-  int _estadoIndex = 0;
+  
+ 
 
   @override
   void initState() {
@@ -28,12 +24,13 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
+    
     //final estados = context.watch<PedidoProvider>().estados;
     final sizeW = MediaQuery.of(context).size.height;
     final tracki = context.watch<TrackProviderSegui>().track;
-
 
     String fecha1 = '';
     String fecha2 = '';
@@ -98,8 +95,9 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                       children: [
                         if(llegada == true)
                         GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> RegistroDatos()));
+                          onTap: () {
+                            
+                             Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegistroDatos()));
                           },
                           child: CircleAvatar(
                             backgroundColor: Colors.green,
@@ -113,8 +111,8 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                           ),
                         ) else GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> RegistroDatos()));
-                            _showDialog(context);
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegistroDatos()));
+                           
                           },
                           child: CircleAvatar(
                             backgroundColor: Colors.grey[350],
@@ -148,7 +146,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                           ),
                         ) else GestureDetector(
                           onTap: () {
-                            _showDialog(context);
+                           
                           },
                           child: CircleAvatar(
                             backgroundColor: Colors.grey[350],
@@ -183,7 +181,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                           ),
                         ) else GestureDetector(
                           onTap: () {
-                            _showDialog(context);
+                            
                           },
                           child:  CircleAvatar(
                             backgroundColor: Colors.grey[350],
@@ -207,135 +205,5 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
     );
   }
 
-  void _showDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          title: const Text(
-            'Actualizar Estado',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          content: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Colors.greenAccent.withOpacity(0.5),
-              ),
-            ),
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'Observaciones',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: _observacionController,
-                  style: const TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.comment, color: Colors.black),
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                          color: Colors.greenAccent.withOpacity(0.5)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.greenAccent),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 10.0),
-                  ),
-                  maxLines: null,
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.greenAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () {
-                    final provider = context.read<PedidoProvider>();
-                    final locationProv =
-                        context.read<LocationProvider>().currentLocation;
-                    // final clienteProvider =context.read<ListaGuiaProvider>().guias;
-
-                    /*final guiaprovider = context.read<ListaGuiaProvider>().guias;
-                    final numGuia = widget.guia;
-                    final cliente = guiaprovider.firstWhere((cliente) => cliente.cliente == numGuia,
-                    orElse: () => null,
-                    );*/
-
-                    final estadosSecuenciales = [
-                      PedidoEstado(
-                        estado: 'Destino: ',
-                        descripcion: 'yy',
-                        fecha: DateTime.now(),
-                        latitude: locationProv!.latitude.toString(),
-                        longitude: locationProv.longitude.toString(),
-                      ),
-                      PedidoEstado(
-                        estado: 'Salida de:  ',
-                        descripcion: 'sss',
-                        fecha: DateTime.now(),
-                        latitude: locationProv.latitude.toString(),
-                        longitude: locationProv.longitude.toString(),
-                      ),
-                      PedidoEstado(
-                        estado: 'Llegada a PeruOfset Digital',
-                        descripcion:
-                            'Lurigancho-La Capitana Cal.- Archipielago Mza. C Lote. 9',
-                        fecha: DateTime.now(),
-                        latitude: locationProv.latitude.toString(),
-                        longitude: locationProv.longitude.toString(),
-                      ),
-                    ];
-
-                    if (_estadoIndex < estadosSecuenciales.length) {
-                      provider
-                          .actualizarEstado(estadosSecuenciales[_estadoIndex]);
-                      _estadoIndex++;
-                    }
-
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    'Guardar',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  // ignore: unused_element
-  String _formatDate(DateTime date) {
-    return "${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}";
-  }
+  
 }

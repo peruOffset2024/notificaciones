@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
+import 'package:push_notificaciones/providers/auth_provider.dart';
+import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 
 class RegistroDatos extends StatefulWidget {
@@ -14,212 +15,276 @@ class RegistroDatos extends StatefulWidget {
 class _RegistroDatosState extends State<RegistroDatos> {
   final TextEditingController _observacionController = TextEditingController();
 
-  final List<File> _selectedImages = [];
+  @override
+  void initState() {
+    super.initState();
+    // Limpiar las imágenes cuando se inicializa la vista
+   WidgetsBinding.instance.addPostFrameCallback((_){
+    context.read<ImagenesProvider>().clearImages();
+   });
 
-  final ImagePicker _picker = ImagePicker();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Obtenemos el LocationProvider
+    // ignore: unused_local_variable
     final locationProvider = context.watch<LocationProvider>();
+    final imagenesProvider = context.watch<ImagenesProvider>();
+    final usuario = context.watch<Authprovider>().username;
+    final conduct = context.watch<Authprovider>().conductor;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ubicación'),
-        
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (locationProvider.currentLocation != null)
-              Column(
-                children: [
-                  Text(
-                    'Latitud: ${locationProvider.currentLocation!.latitude}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    'Longitud: ${locationProvider.currentLocation!.longitude}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-            
-            const SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.greenAccent.withOpacity(0.5),
-                ),
-              ),
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Observaciones',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: _observacionController,
-                    style: const TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      prefixIcon:
-                          const Icon(Icons.comment, color: Colors.black),
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                            color: Colors.greenAccent.withOpacity(0.5)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide:
-                            const BorderSide(color: Colors.greenAccent),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 10.0),
-                    ),
-                    maxLines: null,
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.greenAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onPressed: () {
-                      //final provider = context.read<PedidoProvider>();
-                      context.read<LocationProvider>().currentLocation;
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text(
-                      'Guardar',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-                side: BorderSide(color: Colors.blue)
-              ),
-              child: Container(
-                height: 120,
-                width: 170,
+        backgroundColor: Colors.blue,
+        title: const Text('Registro de Datos',
+            style: TextStyle(
+                fontSize: 17,
                 color: Colors.white,
-                child: IconButton(
-                  onPressed: _showImagePickerOptions,
-                icon: const Icon(Icons.camera_front_rounded)),
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Mostrar las imágenes seleccionadas
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: _selectedImages.map((image) {
-                return Stack(
-                  children: [
-                    Image.file(
-                      image,
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: IconButton(
-                        icon: const Icon(Icons.cancel_outlined,
-                            color: Colors.white),
-                        onPressed: () => _removeImage(image),
+                fontWeight: FontWeight.bold)),
+        elevation: 0,
+        actions: [
+          TextButton(
+              onPressed: () {
+                _showImagePickerOptions(imagenesProvider);
+              },
+              child: const Icon(
+                Icons.camera_alt_outlined,
+                color: Colors.white,
+              ))
+        ],
+      ),
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
+      body: Stack(
+        children: [
+          KeyboardVisibilityBuilder(
+            builder: (context, isKeyboardVisible) {
+              return Padding(
+                padding: EdgeInsets.only(
+                    bottom: isKeyboardVisible ? 100 : 20, right: 8, left: 8),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(usuario),
+                      Text(conduct),
+                      const Text(
+                        'Imagenes',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
+                      const SizedBox(height: 20),
+                      _buildSelectedImages(imagenesProvider),
+                      const SizedBox(height: 20),
+                      _buildObservacionInput(),
+                      const SizedBox(height: 30), // Espacio adicional para el FAB
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+          if (imagenesProvider.isLoading) // Mostrar el indicador de carga si isLoading es verdadero
+            Container(
+              color: Colors.white, // Fondo semitransparente
+              child:  Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(
+                      backgroundColor: Colors.blue,
+                      color: Colors.grey[100],
+                      strokeWidth: 6.0, // Grosor de la línea
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Cargando, por favor espere...',
+                      style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
                   ],
-                );
-              }).toList(),
+                ),
+              ),
             ),
-            // Mostrar ubicación obtenida
-            const SizedBox(height: 20),
-            
-          ],
-        ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: _buildGuardarFotos(),
+    );
+  }
+
+  Widget _buildObservacionInput() {
+    final size = MediaQuery.of(context).size.width;
+    return Container(
+      width: size,
+      padding: const EdgeInsets.only(left: 5, right: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 4,
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Observaciones',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            autocorrect: false,
+            autofocus: false,
+            controller: _observacionController,
+            style: const TextStyle(color: Colors.black, fontSize: 14),
+            decoration: InputDecoration(
+              prefixIcon: const Icon(
+                Icons.comment,
+                color: Colors.black,
+                size: 22,
+              ),
+              fillColor: Colors.white,
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide:
+                    const BorderSide(color: Color.fromARGB(255, 161, 188, 211)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide:
+                    const BorderSide(color: Color.fromARGB(255, 161, 188, 211)),
+              ),
+              contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+            ),
+            maxLines: null,
+          ),
+        ],
       ),
     );
   }
 
-  Future<void> _pickImagesFromGallery() async {
-    // ignore: unnecessary_nullable_for_final_variable_declarations
-    final List<XFile>? pickedFiles = await _picker.pickMultiImage();
-
-    if (pickedFiles != null && pickedFiles.isNotEmpty) {
-      setState(() {
-        _selectedImages
-            .addAll(pickedFiles.map((file) => File(file.path)).toList());
-      });
-    }
+  Widget _buildGuardarFotos() {
+    final sizeW = MediaQuery.of(context).size.width;
+    return TextButton(
+        onPressed: () {},
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.blue,
+          ),
+          width: sizeW * 0.95,
+          height: 45,
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.save, size: 25, color: Colors.white),
+              SizedBox(width: 10),
+              Text('Guardar', style: TextStyle(fontSize: 16, color: Colors.white)),
+            ],
+          ),
+        ));
   }
 
-  Future<void> _takePhoto() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImages.add(File(pickedFile.path));
-      });
-    }
+  Widget _buildSelectedImages(ImagenesProvider imagenesProvider) {
+    return Center(
+      child: Wrap(
+        spacing: 10,
+        runSpacing: 10,
+        children: imagenesProvider.selectedImages.map((image) {
+          return Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.file(
+                  image,
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                top: 5,
+                right: 0,
+                left: 0,
+                child: IconButton(
+                  icon:
+                      const Icon(Icons.delete_forever_sharp, color: Colors.red),
+                  onPressed: () => imagenesProvider.removeImage(image),
+                ),
+              ),
+            ],
+          );
+        }).toList(),
+      ),
+    );
   }
 
-  void _showImagePickerOptions() {
+  void _showImagePickerOptions(ImagenesProvider imagenesProvider) {
     showModalBottomSheet(
       context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+      ),
+      backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return Container(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _pickImagesFromGallery();
-                },
-                child: const Text('Seleccionar imágenes de la galería'),
+              Container(
+                width: 60,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-              TextButton(
-                onPressed: () {
+              const SizedBox(height: 10),
+              const Text(
+                'Selecciona una opción',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              Divider(color: Colors.grey[300]),
+              ListTile(
+                leading: Icon(Icons.photo_library, color: Colors.blue[100]),
+                title: const Text(
+                  'Galería',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                onTap: () {
                   Navigator.pop(context);
-                  _takePhoto();
+                  imagenesProvider.pickImagesFromGallery();
                 },
-                child: const Text('Tomar foto con la cámara'),
+              ),
+              ListTile(
+                leading: Icon(Icons.camera_alt, color: Colors.blue[100]),
+                title: const Text(
+                  'Cámara',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  imagenesProvider.takePhoto();
+                },
               ),
             ],
           ),
         );
       },
     );
-  }
-
-  void _removeImage(File image) {
-    setState(() {
-      _selectedImages.remove(image);
-    });
   }
 }
