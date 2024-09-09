@@ -6,7 +6,18 @@ import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 
 class RegistroDatos extends StatefulWidget {
-  const RegistroDatos({super.key});
+  const RegistroDatos({
+    super.key,
+    required this.guia,
+    required this.inicio,
+    required this.llegada,
+    required this.fin,
+  });
+
+  final String guia;
+  final String inicio;
+  final String llegada;
+  final String fin;
 
   @override
   State<RegistroDatos> createState() => _RegistroDatosState();
@@ -19,19 +30,29 @@ class _RegistroDatosState extends State<RegistroDatos> {
   void initState() {
     super.initState();
     // Limpiar las imágenes cuando se inicializa la vista
-   WidgetsBinding.instance.addPostFrameCallback((_){
-    context.read<ImagenesProvider>().clearImages();
-   });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ImagenesProvider>().clearImages();
+    });
+  }
 
+  String _calculo() {
+    if (widget.inicio == '' && widget.llegada == '' && widget.fin != '') {
+      return widget.fin;
+    } else if (widget.inicio == '' && widget.fin == '' && widget.llegada != '') {
+      return widget.llegada;
+    } else if (widget.llegada == '' && widget.fin == '' && widget.inicio != '') {
+      return widget.inicio;
+    }
+    return '';
   }
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
     final locationProvider = context.watch<LocationProvider>();
     final imagenesProvider = context.watch<ImagenesProvider>();
-    final usuario = context.watch<Authprovider>().username;
-    final conduct = context.watch<Authprovider>().conductor;
+    final userName = context.watch<Authprovider>().username;
+
+    final resultado = _calculo();  // Aquí debes llamar a la función
 
     return Scaffold(
       appBar: AppBar(
@@ -44,13 +65,14 @@ class _RegistroDatosState extends State<RegistroDatos> {
         elevation: 0,
         actions: [
           TextButton(
-              onPressed: () {
-                _showImagePickerOptions(imagenesProvider);
-              },
-              child: const Icon(
-                Icons.camera_alt_outlined,
-                color: Colors.white,
-              ))
+            onPressed: () {
+              _showImagePickerOptions(imagenesProvider);
+            },
+            child: const Icon(
+              Icons.camera_alt_outlined,
+              color: Colors.white,
+            ),
+          ),
         ],
       ),
       backgroundColor: Colors.white,
@@ -67,12 +89,18 @@ class _RegistroDatosState extends State<RegistroDatos> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(usuario),
-                      Text(conduct),
+                      // Muestra el resultado calculado
+                       Text('Usuario: $userName', style: const TextStyle(fontSize: 16)),
+                      Text('Paso: $resultado', style: const TextStyle(fontSize: 16)),
+                     
+                      
+                      const SizedBox(height: 20),
                       const Text(
                         'Imagenes',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
+                      Text('${locationProvider.currentLocation?.latitude } latitud'),
+                      Text('${locationProvider.currentLocation?.longitude } longitude'),
                       const SizedBox(height: 20),
                       _buildSelectedImages(imagenesProvider),
                       const SizedBox(height: 20),
@@ -87,7 +115,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
           if (imagenesProvider.isLoading) // Mostrar el indicador de carga si isLoading es verdadero
             Container(
               color: Colors.white, // Fondo semitransparente
-              child:  Center(
+              child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -174,23 +202,24 @@ class _RegistroDatosState extends State<RegistroDatos> {
   Widget _buildGuardarFotos() {
     final sizeW = MediaQuery.of(context).size.width;
     return TextButton(
-        onPressed: () {},
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.blue,
-          ),
-          width: sizeW * 0.95,
-          height: 45,
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.save, size: 25, color: Colors.white),
-              SizedBox(width: 10),
-              Text('Guardar', style: TextStyle(fontSize: 16, color: Colors.white)),
-            ],
-          ),
-        ));
+      onPressed: () {},
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.blue,
+        ),
+        width: sizeW * 0.95,
+        height: 45,
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.save, size: 25, color: Colors.white),
+            SizedBox(width: 10),
+            Text('Guardar', style: TextStyle(fontSize: 16, color: Colors.white)),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildSelectedImages(ImagenesProvider imagenesProvider) {
@@ -216,8 +245,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                 right: 0,
                 left: 0,
                 child: IconButton(
-                  icon:
-                      const Icon(Icons.delete_forever_sharp, color: Colors.red),
+                  icon: const Icon(Icons.delete_forever_sharp, color: Colors.red),
                   onPressed: () => imagenesProvider.removeImage(image),
                 ),
               ),
@@ -271,7 +299,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.camera_alt, color: Colors.blue[100]),
+                leading: Icon(Icons.photo_camera, color: Colors.blue[100]),
                 title: const Text(
                   'Cámara',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/app.dart';
-import 'package:push_notificaciones/providers/api_diferencias_provider.dart';
+import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/asistencia_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
@@ -26,7 +26,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => Authprovider()),
     ChangeNotifierProvider(create: (_) => TrackingProvider()),
     ChangeNotifierProvider(create: (_) => LocationProvider()), 
-    ChangeNotifierProvider(create: (_) => ProductosProvider()), 
+    ChangeNotifierProvider(create: (_) => GuiasSalidasProvider()), 
     ChangeNotifierProvider(create: (_) => SwitchStateProvider()),
     ChangeNotifierProvider(create: (_) => PedidoProvider()), 
     ChangeNotifierProvider(create: (_) => AsistenciaProvider()), 

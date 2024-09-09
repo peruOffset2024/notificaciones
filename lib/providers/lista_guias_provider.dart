@@ -7,7 +7,7 @@ class ListaGuiaProvider with ChangeNotifier {
   List<ListaGuias> _guia = [];
   List<ListaGuias> _filteredGuia = [];
 
-  List<ListaGuias> get guias => _filteredGuia.isEmpty ? _guia : _filteredGuia;
+  List<ListaGuias> get guias => _filteredGuia;
 
   Future<void> fetchGuias(String ruc) async {
     try {
@@ -15,13 +15,13 @@ class ListaGuiaProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         _guia = data.map((jsonItem) => ListaGuias.fromJson(jsonItem)).toList();
-        _filteredGuia = List.from(_guia); // Inicializar la lista filtrada
+        _filteredGuia = _guia; // Al principio, ambas listas son iguales
         notifyListeners();
       } else {
         throw Exception('Failed to load guias');
       }
     } catch (e) {
-      throw Exception('Failed to load guias');
+      throw Exception('Failed to load guias: $e');
     }
   }
 

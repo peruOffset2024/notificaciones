@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:push_notificaciones/providers/api_diferencias_provider.dart';
+import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/seguimiento_pedido.dart';
 
@@ -14,20 +14,26 @@ class ProductosGridScreen extends StatefulWidget {
 class _ProductosGridScreenState extends State<ProductosGridScreen> {
   final TextEditingController _cleanData = TextEditingController();
 
+
+
+
   @override
   void initState() {
     super.initState();
+
+    
     // Fetch guias when the widget is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ruc = context.read<Authprovider>().ruc;
       final dni = context.read<Authprovider>().username;
-      context.read<ProductosProvider>().fetchProductos(dni, ruc);
+      context.read<GuiasSalidasProvider>().fetchProductos(dni, ruc);
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
-    final productosProvider = Provider.of<ProductosProvider>(context);
+    final productosProvider = Provider.of<GuiasSalidasProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +90,7 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
                   },
                 ),
               ),
-              Expanded(child: Consumer<ProductosProvider>(
+              Expanded(child: Consumer<GuiasSalidasProvider>(
                   builder: (context, provider, child) {
                 if (provider.productos.isEmpty) {
                   return const Center(
