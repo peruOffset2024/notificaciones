@@ -7,11 +7,16 @@ import 'package:push_notificaciones/models/modelo_api_diferencias.dart';
 class GuiasSalidasProvider with ChangeNotifier {
   List<SalidaGuia> _productos = [];
   List<SalidaGuia> _filteredProductos = [];
+  bool _isLoading = false; // Estado de carga
 
   // Si hay resultados filtrados, los retorna, de lo contrario devuelve una lista vacía.
   List<SalidaGuia> get productos => _filteredProductos;
+  bool get isLoading => _isLoading; // Getter para el estado de carga
 
   Future<void> fetchProductos(String dni, String ruc) async {
+    _isLoading = true;
+    notifyListeners(); // Notificar que ha cambiado el estado de carga
+
     final url = Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_salidas.php?dni=$dni&ruc=$ruc');
     try {
       final response = await http.get(url);
@@ -20,12 +25,15 @@ class GuiasSalidasProvider with ChangeNotifier {
         final List<dynamic> jsonData = jsonDecode(response.body);
         _productos = jsonData.map((item) => SalidaGuia.fromJson(item)).toList();
         _filteredProductos = _productos; // Al principio, ambas listas son iguales
-        notifyListeners();
       } else {
         throw Exception('Failed to load products');
       }
     } catch (error) {
+      // ignore: avoid_print
       print('Error fetching products: $error');
+    } finally {
+      _isLoading = false;
+      notifyListeners(); // Notificar que ha terminado la carga
     }
   }
 
@@ -42,3 +50,5 @@ class GuiasSalidasProvider with ChangeNotifier {
   }
 }
 
+
+////// conte ////

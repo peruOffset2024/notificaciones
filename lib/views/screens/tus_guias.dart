@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/seguimiento_pedido.dart';
+import 'package:push_notificaciones/views/screens/skeleton_carga.dart';
 
 class ProductosGridScreen extends StatefulWidget {
   const ProductosGridScreen({super.key});
@@ -92,11 +93,16 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
               ),
               Expanded(child: Consumer<GuiasSalidasProvider>(
                   builder: (context, provider, child) {
+                if (provider.isLoading) {
+                      // Mostrar shimmer loader mientras se obtienen los datos
+                      return ShimmerLoaderWidget();
+                    }   
                 if (provider.productos.isEmpty) {
                   return const Center(
                     child: Text('no hay resultados'),
                   );
                 }
+                
                 return ListView.builder(
                   itemCount: provider.productos.length,
                   itemBuilder: (context, index) {

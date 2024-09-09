@@ -77,6 +77,7 @@ class SeguimientoEstadoProviders with ChangeNotifier {
   void _handleError(String message) {
     // Aquí puedes mostrar un diálogo o snackbar con el mensaje de error
     // Por ejemplo:
+    
     print('Error: $message');
     
     // Notificar a los listeners si es necesario
