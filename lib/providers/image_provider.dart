@@ -40,12 +40,12 @@ class ImagenesProvider with ChangeNotifier {
     }
     setLoading(false);
   }
-
+  //metodo para comprimir la imagen
   Future<File> _compressImage(File imageFile) async {
     final bytes = await imageFile.readAsBytes();
     final image = img.decodeImage(bytes);
 
-    // Comprimir la imagen
+    //Comprimir la imagen
     final resized = img.copyResize(image!, width: 800, height: 800); // Cambia según tu necesidad
 
     final compressedBytes = img.encodeJpg(resized, quality: 85);

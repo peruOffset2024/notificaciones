@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:push_notificaciones/views/screens/tus_guias.dart';
-import 'package:push_notificaciones/views/screens/entrada_salida_registro.dart';
-import 'package:push_notificaciones/views/screens/guias_servicios.dart';
+import 'package:push_notificaciones/views/screens/inicio.dart';
+import 'package:push_notificaciones/views/screens/asistencia.dart';
+import 'package:push_notificaciones/views/screens/transporte.dart';
 import 'dart:io';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 

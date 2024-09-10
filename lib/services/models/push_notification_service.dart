@@ -49,12 +49,12 @@ class PushNotificationService {
     print('Estado FOREGROUND  abierta');
     //print('Mensaje de la notificacion: ${mjs.messageId}');
     // ignore: avoid_print
-    print('Mensaje Titulo: ${mjs.notification?.title}');
+    print('Mensaje Titulo: ${mjs.notification?.title}  y el cuerpo: ${mjs.notification?.body}');
     // ignore: avoid_print
-    print('Mensaje Titulo: ${mjs.notification?.body}');
+    
     
     _msjStream.add(mjs.notification?.title ?? 'No title');
-    _msjStream.add(mjs.data['usuario'] ?? 'No hay datos o personalizados');
+    //_msjStream.add(mjs.data['usuario'] ?? 'No hay datos o personalizados');
     // ignore: avoid_print
     print('MENSAJE DATOS-DATA datos adicionales: ${mjs.data}');
 
@@ -68,9 +68,9 @@ class PushNotificationService {
     print('Estado OPEN APP  cerrada');
     _msjStream.add(mjs.notification?.body ?? 'No body');
     // ignore: avoid_print
-    print('Mensaje Titulo: ${mjs.notification?.title}');
+    print('Mensaje cuando el celular esta cerrado o apagado: ${mjs.notification?.title}');
     // ignore: avoid_print
-    print('Mensaje Titulo: ${mjs.notification?.body}');
+    print('Mensaje cuando el celular esta cerrado o apagado: ${mjs.notification?.body}');
   }
 
   static closeStreams(){

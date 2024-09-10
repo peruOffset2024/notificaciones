@@ -26,7 +26,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
       context.read<ListaGuiaProvider>().fetchGuias(ruc);
     });
   }
-
+  /// aqui vamos a mejorar este codigo---------
   Future<void> _refreshData() async {
     final ruc = context.read<Authprovider>().ruc;
     await context.read<ListaGuiaProvider>().fetchGuias(ruc);
@@ -112,6 +112,8 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                             padding: const EdgeInsets.only(bottom: 0.0), // Espacio mínimo entre cada Card
                             child: GestureDetector(
                               onTap: () {
+
+                                
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

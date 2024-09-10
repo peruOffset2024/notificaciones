@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/lista_guias.dart';
-
-
+import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
 class GuiasServicios extends StatefulWidget {
   const GuiasServicios({super.key});
@@ -13,7 +14,37 @@ class GuiasServicios extends StatefulWidget {
 class _GuiasServiciosState extends State<GuiasServicios> {
   @override
   Widget build(BuildContext context) {
+    
+    final user = context.watch<Authprovider>().conductor;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        actions: [
+          Builder(builder: (context) {
+          return GestureDetector(
+            child:  CircleAvatar(
+              backgroundColor:  Colors.red[100],
+              minRadius: 20,
+              child: Text(
+                user[0],
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            onTap: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
+        Text('    '),
+        
+        
+        ],
+      ),
+      drawer: MyCustomDrawer(usuario: user),
       backgroundColor: Colors.white, //  background
       body: SafeArea(
         child: Padding(
@@ -21,42 +52,87 @@ class _GuiasServiciosState extends State<GuiasServicios> {
           child: Center(
             child: SingleChildScrollView(
               child: Column(
-                
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment:
                     CrossAxisAlignment.center, // Center content horizontally
                 children: [
                   const SizedBox(height: 20.0),
                   _buildServiceButton(
-                    context: context,
-                    label: 'Guias',
-                    icon: Icons.file_copy_outlined, // Material icon for guides
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>  const ListaGuiasReporte()),
-                    ),
-                  ),
+                      context: context,
+                      label: 'Guias',
+                      icon:
+                          Icons.file_copy_outlined, // Material icon for guides
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        const ListaGuiasReporte(),
+                                transitionDuration:
+                                    const Duration(milliseconds: 500),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      end: Offset.zero,
+                                      begin: const Offset(1.0, 0.0),
+                                    ).animate(animation),
+                                    child: child,
+                                  );
+                                }));
+                      }),
                   const SizedBox(height: 20.0),
                   _buildService(
-                    context: context,
-                    label: 'Servicios',
-                    icon: Icons
-                        .delivery_dining_outlined, // Material icon for services
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ListaGuiasReporte()),
-                    ),
-                  ),
+                      context: context,
+                      label: 'Servicios',
+                      icon: Icons
+                          .delivery_dining_outlined, // Material de Servicios
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        const ListaGuiasReporte(),
+                                transitionDuration:
+                                    const Duration(milliseconds: 500),
+                                transitionsBuilder: (context, animation,
+                                    animationSecondary, child) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      end: Offset.zero,
+                                      begin: const Offset(1.0, 0.0),
+                                    ).animate(animation),
+                                    child: child,
+                                  );
+                                }));
+                      }),
                   const SizedBox(height: 20.0),
                   _ServiceButton(
                     context: context,
                     label: 'Otros',
-                    icon: Icons.more_horiz_outlined, // Material icon for others
+                    icon: Icons
+                        .more_horiz_outlined, // Material de otros Servicios
                     onPressed: () {
-                      // Add functionality for "Otros" button here (e.g., show a dialog)
                       Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>  const ListaGuiasReporte()),);
+                          context,
+                          PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      const ListaGuiasReporte(),
+                              transitionDuration:
+                                  const Duration(milliseconds: 500),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return SlideTransition(
+                                  position: Tween<Offset>(
+                                    end: Offset.zero,
+                                    begin: const Offset(1.0, 0.0),
+                                  ).animate(animation),
+                                  child: child,
+                                );
+                              }));
                     },
                   ),
                 ],
@@ -75,7 +151,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
     required VoidCallback onPressed,
   }) {
     return Container(
-       height: 100,
+      height: 100,
       width: 250,
       decoration: BoxDecoration(
         color: Colors.amber[700],
@@ -116,6 +192,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
       ),
     );
   }
+
   // ignore: non_constant_identifier_names
   Widget _ServiceButton({
     required BuildContext context,
@@ -173,7 +250,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
     required VoidCallback onPressed,
   }) {
     return Container(
-       height: 100,
+      height: 100,
       width: 250,
       decoration: BoxDecoration(
         color: Colors.blue,

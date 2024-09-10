@@ -16,6 +16,7 @@ import 'package:push_notificaciones/providers/track_provider.dart';
 import 'package:push_notificaciones/providers/tracking_provider.dart';
 import 'package:push_notificaciones/services/models/push_notification_service.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // los plugins usan widgets - crear unos widgets

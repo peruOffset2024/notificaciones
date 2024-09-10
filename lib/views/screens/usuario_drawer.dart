@@ -4,7 +4,7 @@ import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/configuraciones_privacidad.dart';
 import 'package:push_notificaciones/views/screens/drawer_control_asistencia.dart';
 import 'package:push_notificaciones/views/screens/drawer_guias.dart';
-import 'package:push_notificaciones/views/screens/seguimiento_pedido.dart';
+
 
 class MyCustomDrawer extends StatelessWidget {
   const MyCustomDrawer({super.key, required this.usuario});
@@ -71,15 +71,7 @@ class MyCustomDrawer extends StatelessWidget {
               ],
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.add, color: Colors.white),
-            title: const Text('Seguimiento', style: TextStyle(color: Colors.white)),
-            onTap: () {
-              // Acción al hacer clic en "Agregar cuenta"
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>  const SeguimientoPedidoScreen(guia: '',)));
-              
-            },
-          ),
+          
           ListTile(
             leading: const Icon(Icons.flash_on, color: Colors.white),
             title: const Text('Guias', style: TextStyle(color: Colors.white)),

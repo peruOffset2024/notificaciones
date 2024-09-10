@@ -4,6 +4,7 @@ import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/seguimiento_pedido.dart';
 import 'package:push_notificaciones/views/screens/skeleton_carga.dart';
+import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
 class ProductosGridScreen extends StatefulWidget {
   const ProductosGridScreen({super.key});
@@ -35,6 +36,8 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
   @override
   Widget build(BuildContext context) {
     final productosProvider = Provider.of<GuiasSalidasProvider>(context);
+    final user = context.watch<Authprovider>().conductor;
+   
 
     return Scaffold(
       appBar: AppBar(
@@ -47,7 +50,33 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
                 fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
+        actions: [
+          
+        
+          Builder(builder: (context) {
+          return GestureDetector(
+            child:  CircleAvatar(
+              backgroundColor:  Colors.red[100],
+              minRadius: 20,
+              child: Text(
+                user[0],
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            onTap: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
+        const Text('    '),
+        
+        
+        ],
       ),
+      drawer: MyCustomDrawer(usuario: user),
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -112,11 +141,23 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
                       child: GestureDetector(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SeguimientoPedidoScreen(
-                                        guia: indice.nroGuia,
-                                      )));
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                         SeguimientoPedidoScreen(guia:indice.nroGuia),
+                                transitionDuration:
+                                    const Duration(milliseconds: 500),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      end: Offset.zero,
+                                      begin: const Offset(1.0, 0.0),
+                                    ).animate(animation),
+                                    child: child,
+                                  );
+                                }));
                         },
                         child: Card(
                           color: Colors.blue[100],
