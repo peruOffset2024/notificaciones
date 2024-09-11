@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
+import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/services/scroll_behavior.dart';
 import 'package:push_notificaciones/views/screens/registro_salida.dart';
 import 'package:push_notificaciones/views/screens/skltn_inicio_%20guia_emitidas.dart';
+import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class ListaGuiasReporte extends StatefulWidget {
   const ListaGuiasReporte({super.key});
@@ -31,7 +33,10 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollConfiguration(
+    final isConnected = context.watch<ConnectivityProvider>().isConnected;
+
+    return isConnected ? 
+    ScrollConfiguration(
       behavior: CustomScrollBehavior(), // Aplica el comportamiento personalizado
       child: Scaffold(
         appBar: AppBar(
@@ -222,6 +227,6 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
           ),
         ),
       ),
-    );
+    ) : NoInternetScreen(onRetry: (){});
   }
 }

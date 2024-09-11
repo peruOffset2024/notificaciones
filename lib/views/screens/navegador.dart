@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 
 import 'package:push_notificaciones/views/screens/inicio.dart';
 import 'package:push_notificaciones/views/screens/asistencia.dart';
 import 'package:push_notificaciones/views/screens/transporte.dart';
 import 'dart:io';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
-
-
+import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class NavegadorIndex extends StatefulWidget {
   const NavegadorIndex({super.key, required this.usuario});
@@ -22,60 +23,63 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
   List<Widget> navegador = [
     const ProductosGridScreen(),
     const GuiasServicios(),
-     const RegistroAsistencia(),
+    const RegistroAsistencia(),
     const Center(
-      child: Text(
-        'Pag4',
-        style: TextStyle(fontSize: 30),
-      ),
+      child: Text('Pag4', style: TextStyle(fontSize: 30)),
     )
   ];
 
   @override
   Widget build(BuildContext context) {
-    
-    return Scaffold(
-      drawer: MyCustomDrawer(usuario: widget.usuario),
-      body: navegador[indice],
-      bottomNavigationBar: Container(
-        color: Colors.black,
-        child: BottomNavigationBar(
-          onTap: (indice) {
-            if (indice == 3) {
-              _showExitDialog(context); // Muestra el diálogo de confirmación
-            } else {
-              setState(() {
-                this.indice = indice;
-              });
-            }
-          },
-          currentIndex: indice,
-          backgroundColor: Colors.blue, // Fondo negro
-          selectedItemColor: Colors.white, // Ícono seleccionado blanco
-          unselectedItemColor: Colors.black
-              .withOpacity(0.7), // Íconos no seleccionados blanco con opacidad
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Inicio',
+    final isConnected = context.watch<ConnectivityProvider>().isConnected;
+
+    return isConnected
+        ? Scaffold(
+            drawer: MyCustomDrawer(usuario: widget.usuario),
+            body: navegador[indice],
+            bottomNavigationBar: Container(
+              color: Colors.black,
+              child: BottomNavigationBar(
+                onTap: (indice) {
+                  if (indice == 3) {
+                    _showExitDialog(
+                        context); // Muestra el diálogo de confirmación
+                  } else {
+                    setState(() {
+                      this.indice = indice;
+                    });
+                  }
+                },
+                currentIndex: indice,
+                backgroundColor: Colors.blue, // Fondo negro
+                selectedItemColor: Colors.white, // Ícono seleccionado blanco
+                unselectedItemColor: Colors.black.withOpacity(
+                    0.7), // Íconos no seleccionados blanco con opacidad
+                type: BottomNavigationBarType.fixed,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Inicio',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.fire_truck_rounded),
+                    label: 'Trasnporte',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.timer),
+                    label: 'Asistencia',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.exit_to_app_rounded),
+                    label: 'Salir',
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.fire_truck_rounded),
-              label: 'Trasnporte',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.timer),
-              label: 'Asistencia',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.exit_to_app_rounded),
-              label: 'Salir',
-            ),
-          ],
-        ),
-      ),
-    );
+          )
+        : NoInternetScreen(
+            onRetry: () {},
+          );
   }
 
   void _showExitDialog(BuildContext context) {
@@ -83,23 +87,26 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shadowColor: Colors.red,
-          surfaceTintColor: Colors.blue,
-          iconColor: Colors.amber,
+          //shadowColor: Colors.red,
+          //surfaceTintColor: Colors.blue,
+          //iconColor: Colors.amber,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
           backgroundColor: Colors.white,
           elevation: 0,
-          title: const Text('¿Estás seguro de que deseas salir de la aplicación?',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-              textAlign: TextAlign.center),      
+          title:
+              const Text('¿Estás seguro de que deseas salir de la aplicación?',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center),
           actions: <Widget>[
-            const SizedBox(height: 100,),
+            const SizedBox(
+              height: 100,
+            ),
             TextButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.yellowAccent[400],
@@ -113,6 +120,9 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   )),
+            ),
+            const SizedBox(
+              width: 10,
             ),
             TextButton(
               style: ElevatedButton.styleFrom(

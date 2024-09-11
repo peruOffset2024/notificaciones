@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
+import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
+import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class RegistroDatos extends StatefulWidget {
   const RegistroDatos({
@@ -51,10 +53,11 @@ class _RegistroDatosState extends State<RegistroDatos> {
     final locationProvider = context.watch<LocationProvider>();
     final imagenesProvider = context.watch<ImagenesProvider>();
     final userName = context.watch<Authprovider>().username;
+    final isConnected = context.watch<ConnectivityProvider>().isConnected;
 
     final resultado = _calculo();  // Aquí debes llamar a la función
 
-    return Scaffold(
+    return isConnected ? Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: const Text('Registro de Datos',
@@ -137,7 +140,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: _buildGuardarFotos(),
-    );
+    ) : NoInternetScreen(onRetry: (){});
   }
 
   Widget _buildObservacionInput() {

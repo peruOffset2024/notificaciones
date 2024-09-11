@@ -4,12 +4,14 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
+import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
 import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/seguimiento_estado_provider.dart';
 import 'package:push_notificaciones/views/screens/skeleton_registro_datos.dart';
+import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class RegistroSalida extends StatefulWidget {
   const RegistroSalida({
@@ -49,9 +51,11 @@ class _RegistroSalidaState extends State<RegistroSalida> {
     final providers = context.watch<GuiaxClienteProvider>().guiaxCliente;
     final screenWidth = MediaQuery.of(context).size.width;
     final usuarioProvider = context.read<Authprovider>().username;
+    final isConnected = context.watch<ConnectivityProvider>().isConnected;
     //final locationProv = context.read<LocationProvider>().currentLocation;
 
-    return Scaffold(
+    return isConnected ?
+    Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -365,7 +369,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+    ): NoInternetScreen(onRetry: (){});
   }
 
   Widget _buildObservationsField() {
