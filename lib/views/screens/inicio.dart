@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/seguimiento_pedido.dart';
-import 'package:push_notificaciones/views/screens/skeleton_carga.dart';
+import 'package:push_notificaciones/views/screens/skltn_inicio_%20guia_emitidas.dart';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
 class ProductosGridScreen extends StatefulWidget {
@@ -51,29 +51,26 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
           ),
         ),
         actions: [
-          
-        
           Builder(builder: (context) {
-          return GestureDetector(
-            child:  CircleAvatar(
-              backgroundColor:  Colors.red[100],
-              minRadius: 20,
-              child: Text(
-                user[0],
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
+            return GestureDetector(
+              child: CircleAvatar(
+                backgroundColor: Colors.red[100],
+                minRadius: 25,
+                child: Text(
+                  user[0].toUpperCase(),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            onTap: () {
-              Scaffold.of(context).openDrawer();
-            },
-          );
-        }),
-        const Text('    '),
-        
-        
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          }),
+          const SizedBox(width: 10),
         ],
       ),
       drawer: MyCustomDrawer(usuario: user),
@@ -123,8 +120,8 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
               Expanded(child: Consumer<GuiasSalidasProvider>(
                   builder: (context, provider, child) {
                 if (provider.isLoading) {
-                      // Mostrar shimmer loader mientras se obtienen los datos
-                      return ShimmerLoaderWidget();
+                      // Mostrar shimmer Loading mientras se obtienen los datos
+                      return const ShimmerLoaderWidget();
                     }   
                 if (provider.productos.isEmpty) {
                   return const Center(
@@ -147,7 +144,7 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
                                     (context, animation, secondaryAnimation) =>
                                          SeguimientoPedidoScreen(guia:indice.nroGuia),
                                 transitionDuration:
-                                    const Duration(milliseconds: 500),
+                                    const Duration(milliseconds: 350),
                                 transitionsBuilder: (context, animation,
                                     secondaryAnimation, child) {
                                   return SlideTransition(

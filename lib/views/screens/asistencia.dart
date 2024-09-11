@@ -1,42 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
+import 'package:push_notificaciones/providers/ingreso_salida_provider.dart';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
-class RegistroAsistencia extends StatefulWidget {
+class RegistroAsistencia extends StatelessWidget {
   const RegistroAsistencia({super.key});
 
-  @override
-  State<RegistroAsistencia> createState() => _RegistroAsistenciaState();
-}
-
-class _RegistroAsistenciaState extends State<RegistroAsistencia> {
   @override
   Widget build(BuildContext context) {
     final sizeW = MediaQuery.of(context).size.width;
     final sizeH = MediaQuery.of(context).size.height;
     final user = context.watch<Authprovider>().conductor;
+    final asistenciaProvider = context.watch<IngresoSalidaAsistencia>();
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: const Center(
-          child: Text(
-            'Tus guías',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
         actions: [
           Builder(builder: (context) {
             return GestureDetector(
               child: CircleAvatar(
                 backgroundColor: Colors.red[100],
-                minRadius: 20,
+                minRadius: 25,
                 child: Text(
                   user[0].toUpperCase(),
                   style: const TextStyle(
@@ -59,101 +46,92 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
         width: sizeW,
         height: sizeH,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF36D1DC),
-              Color(0xFF5B86E5),
-            ],
-          ),
         ),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CircleAvatar(
-                  radius: 60,
-                  backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY6pBebZ9bw6O9gLnittGG3K2pnA7O76DgPQ&s', 
-                  ),
-                  backgroundColor: Colors.transparent,
-                ),
                 const SizedBox(height: 30),
-                Card(
-                  color: Colors.white.withOpacity(0.9),
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Bienvenido',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black54,
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 20),
+                      // Botón de Ingreso
+                      GestureDetector(
+                        onTap: asistenciaProvider.ingresoHabilitado ? asistenciaProvider.registrarIngreso : null,
+                        child: ClipOval(
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            color: asistenciaProvider.ingresoHabilitado ? Colors.green : Colors.green.withOpacity(0.5),
+                            child: const Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.login,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'INGRESO',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            // Acción para registrar inicio
-                          },
-                          icon: const Icon(Icons.login, color: Colors.white),
-                          label: const Text(
-                            'Registrar Ingreso',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
+                      ),
+                      const SizedBox(height: 50),
+                
+                      // Botón de Salida
+                      GestureDetector(
+                        onTap: asistenciaProvider.salidaHabilitada ? asistenciaProvider.registrarSalida : null,
+                        child: ClipOval(
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            color: asistenciaProvider.salidaHabilitada ? Colors.red : Colors.red.withOpacity(0.5),
+                            child: const Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.logout,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'SALIDA',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green[700],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 20),
-                            elevation: 5,
-                            shadowColor: Colors.greenAccent,
                           ),
                         ),
-                        const SizedBox(height: 30),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            // Acción para registrar salida
-                          },
-                          icon: const Icon(Icons.logout, color: Colors.white),
-                          label: const Text(
-                            'Registrar Salida',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red[700],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 20),
-                            elevation: 5,
-                            shadowColor: Colors.redAccent,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'Tus guías estarán aquí',
+                  'Es importante registrar Tu ingreso y salida',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,

@@ -17,31 +17,30 @@ class _GuiasServiciosState extends State<GuiasServicios> {
     
     final user = context.watch<Authprovider>().conductor;
     return Scaffold(
-      appBar: AppBar(
+      appBar:  AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         actions: [
           Builder(builder: (context) {
-          return GestureDetector(
-            child:  CircleAvatar(
-              backgroundColor:  Colors.red[100],
-              minRadius: 20,
-              child: Text(
-                user[0],
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
+            return GestureDetector(
+              child: CircleAvatar(
+                backgroundColor: Colors.red[100],
+                minRadius: 25,
+                child: Text(
+                  user[0].toUpperCase(),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            onTap: () {
-              Scaffold.of(context).openDrawer();
-            },
-          );
-        }),
-        Text('    '),
-        
-        
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          }),
+          const SizedBox(width: 10),
         ],
       ),
       drawer: MyCustomDrawer(usuario: user),
@@ -70,7 +69,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                                     (context, animation, secondaryAnimation) =>
                                         const ListaGuiasReporte(),
                                 transitionDuration:
-                                    const Duration(milliseconds: 500),
+                                    const Duration(milliseconds: 350),
                                 transitionsBuilder: (context, animation,
                                     secondaryAnimation, child) {
                                   return SlideTransition(
@@ -96,7 +95,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                                     (context, animation, secondaryAnimation) =>
                                         const ListaGuiasReporte(),
                                 transitionDuration:
-                                    const Duration(milliseconds: 500),
+                                    const Duration(milliseconds: 350),
                                 transitionsBuilder: (context, animation,
                                     animationSecondary, child) {
                                   return SlideTransition(
@@ -122,7 +121,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                                   (context, animation, secondaryAnimation) =>
                                       const ListaGuiasReporte(),
                               transitionDuration:
-                                  const Duration(milliseconds: 500),
+                                  const Duration(milliseconds: 350),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 return SlideTransition(

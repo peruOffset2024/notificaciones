@@ -33,29 +33,8 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
 
   @override
   Widget build(BuildContext context) {
-    //final nombUsuario = context.watch<Authprovider>().conductor;
+    
     return Scaffold(
-      /*appBar:AppBar(
-        backgroundColor: Colors.white,
-        leading: Builder(builder: (context) {
-          return GestureDetector(
-            child:  CircleAvatar(
-              backgroundColor:  Colors.blue[100],
-              minRadius: 5,
-              child: Text(
-                nombUsuario[0],
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            onTap: () {
-              Scaffold.of(context).openDrawer();
-            },
-          );
-        }),
-      ),*/
       drawer: MyCustomDrawer(usuario: widget.usuario),
       body: navegador[indice],
       bottomNavigationBar: Container(
@@ -110,13 +89,13 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.white,
           elevation: 0,
           title: const Text('¿Estás seguro de que deseas salir de la aplicación?',
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.black,
               ),
               textAlign: TextAlign.center),      
           actions: <Widget>[

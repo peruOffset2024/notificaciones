@@ -59,13 +59,14 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          'Tracking: ${widget.guia}',
+          'TRACKING:  ${widget.guia}',
           style: const TextStyle(
             fontSize: 17,
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
+        centerTitle: true,
       ),
       body: Container(
           color: Colors.white,
@@ -94,17 +95,22 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                               // Navigator.push(context, MaterialPageRoute(builder: (context)=>  RegistroDatos(guia: widget.guia,)));
                             },
                             // Si el valor es 1 se muestra el color  verder
-                            
-                            child: CircleAvatar(
+                            child: const CircleAvatar(
                               backgroundColor: Colors
                                   .green, // Cambio de color cuando se presiona
                               radius: 50,
-                              child: Text(
-                                'LLEGADA :$valor1',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.location_pin),
+                                  Text(
+                                    'LLEGADA', // :$valor1
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           )
@@ -126,32 +132,46 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                             child: CircleAvatar(
                               backgroundColor: Colors.grey[350],
                               radius: 50,
-                              child: Text(
-                                'LLEGADA: $valor1', // aqui el valor de valor
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.location_pin),
+                                  Text(
+                                    'LLEGADA', // :$valor1
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        Text(fecha1 == '' ? '-' : 'CLIENTE: $fecha1'),
+                        Text(fecha1 == ''
+                            ? '-'
+                            : 'CLIENTE: ${fecha1.substring(0, 19)}'),
                         Container(
                           height: 50,
-                          width: 2,
+                          width: 5,
                           color: Colors.grey,
                         ),
                         if (salida == true)
                           GestureDetector(
-                            child: CircleAvatar(
+                            child: const CircleAvatar(
                               backgroundColor: Colors.green,
                               radius: 50,
-                              child: Text(
-                                salida ? 'SALIDA' : 'SALIDA',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.local_shipping),
+                                  Text(
+                                    'SALIDA',// : $valor2
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           )
@@ -173,19 +193,25 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                             child: CircleAvatar(
                               backgroundColor: Colors.grey[350],
                               radius: 50,
-                              child: Text(
-                                'SALIDA: $valor2',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.local_shipping),
+                                  Text(
+                                    'SALIDA', //: $valor2
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        Text(fecha2 == '' ? '-' : 'CLIENTE: $fecha2'),
+                        Text(fecha2 == '' ? '-' : 'CLIENTE: ${fecha2.substring(0,19)}'),
                         Container(
                           height: 50,
-                          width: 2,
+                          width: 5,
                           color: Colors.grey,
                         ),
                         if (fin == true)
@@ -193,12 +219,17 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                             child: const CircleAvatar(
                               backgroundColor: Colors.green,
                               radius: 50,
-                              child: Text(
-                                'FIN',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.check_circle),
+                                  Text(
+                                    'FIN',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           )
@@ -220,16 +251,22 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                             child: CircleAvatar(
                               backgroundColor: Colors.grey[350],
                               radius: 50,
-                              child: Text(
-                                'FIN: $valor3',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.flag_circle),
+                                  Text(
+                                    'FIN', //: $valor3
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        Text(fecha3 == '' ? '-' : 'POD: $fecha3'),
+                        Text(fecha3 == '' ? '-' : 'POD: ${fecha3.substring(0,19)}'),
                       ],
                     ),
                   )
@@ -237,7 +274,6 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
               ),
             ),
           )),
-          
     );
   }
 }

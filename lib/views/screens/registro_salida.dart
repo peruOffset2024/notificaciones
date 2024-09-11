@@ -9,6 +9,7 @@ import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/seguimiento_estado_provider.dart';
+import 'package:push_notificaciones/views/screens/skeleton_registro_datos.dart';
 
 class RegistroSalida extends StatefulWidget {
   const RegistroSalida({
@@ -78,7 +79,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
           Consumer<LocationProvider>(
             builder: (context, locationProvider, child) {
               if (locationProvider.isLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: ShimmerRegistroSalida());
               }
               return KeyboardVisibilityBuilder(
                 builder: (context, isKeyboardVisible) {

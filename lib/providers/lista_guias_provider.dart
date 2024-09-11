@@ -6,22 +6,30 @@ import 'package:push_notificaciones/models/modelo_lista_guias.dart';
 class ListaGuiaProvider with ChangeNotifier {
   List<ListaGuias> _guia = [];
   List<ListaGuias> _filteredGuia = [];
+  bool _isLoading = false;
 
   List<ListaGuias> get guias => _filteredGuia;
+  bool get isLoading => _isLoading;
 
   Future<void> fetchGuias(String ruc) async {
+    _isLoading = true;
+    notifyListeners();
     try {
       final response = await http.get(Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_guias.php?ruc=$ruc'));
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         _guia = data.map((jsonItem) => ListaGuias.fromJson(jsonItem)).toList();
         _filteredGuia = _guia; // Al principio, ambas listas son iguales
-        notifyListeners();
+        
       } else {
         throw Exception('Failed to load guias');
       }
     } catch (e) {
       throw Exception('Failed to load guias: $e');
+    }
+    finally{
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
