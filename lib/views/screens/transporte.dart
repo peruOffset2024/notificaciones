@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/lista_guias.dart';
+import 'package:push_notificaciones/views/screens/sin_ubicacion.dart';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
 class GuiasServicios extends StatefulWidget {
@@ -119,7 +120,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                           PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      const ListaGuiasReporte(),
+                                      const VistaSinUbicacion(),
                               transitionDuration:
                                   const Duration(milliseconds: 350),
                               transitionsBuilder: (context, animation,

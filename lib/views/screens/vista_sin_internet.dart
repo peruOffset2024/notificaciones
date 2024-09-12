@@ -12,23 +12,20 @@ class NoInternetScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-        ),
+        decoration: const BoxDecoration(),
         child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Image(
+                image: AssetImage(
+              'assets/movil.jfif',
+            )),
             // Ícono de advertencia
-            Icon(
-              Icons.wifi_off_rounded,
-              size: 100,
-              color: Colors.redAccent,
-            ),
-            SizedBox(height: 30),
 
             // Mensaje de "No Conexión"
             Text(
-              "Oops, no hay conexión a internet",
+              "Sin conexión a internet",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 24,
@@ -37,20 +34,6 @@ class NoInternetScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-
-            // Subtítulo explicativo
-            Text(
-              "Por favor verifica tu conexión e intenta nuevamente.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black54,
-              ),
-            ),
-            SizedBox(height: 40),
-
-            // Botón de reintentar
-            
           ],
         ),
       ),

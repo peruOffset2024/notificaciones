@@ -33,10 +33,10 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
   Widget build(BuildContext context) {
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
 
-    return isConnected
-        ? Scaffold(
+    return  Scaffold(
             drawer: MyCustomDrawer(usuario: widget.usuario),
-            body: navegador[indice],
+            body: isConnected
+        ? navegador[indice] : NoInternetScreen(onRetry: () {}, ),
             bottomNavigationBar: Container(
               color: Colors.black,
               child: BottomNavigationBar(
@@ -76,10 +76,8 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
                 ],
               ),
             ),
-          )
-        : NoInternetScreen(
-            onRetry: () {},
-          );
+          ); 
+       
   }
 
   void _showExitDialog(BuildContext context) {
