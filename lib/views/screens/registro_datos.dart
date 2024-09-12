@@ -3,6 +3,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
+import 'package:push_notificaciones/providers/env_img_provider.dart';
 import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
@@ -40,9 +41,13 @@ class _RegistroDatosState extends State<RegistroDatos> {
   String _calculo() {
     if (widget.inicio == '' && widget.llegada == '' && widget.fin != '') {
       return widget.fin;
-    } else if (widget.inicio == '' && widget.fin == '' && widget.llegada != '') {
+    } else if (widget.inicio == '' &&
+        widget.fin == '' &&
+        widget.llegada != '') {
       return widget.llegada;
-    } else if (widget.llegada == '' && widget.fin == '' && widget.inicio != '') {
+    } else if (widget.llegada == '' &&
+        widget.fin == '' &&
+        widget.inicio != '') {
       return widget.inicio;
     }
     return '';
@@ -55,92 +60,102 @@ class _RegistroDatosState extends State<RegistroDatos> {
     final userName = context.watch<Authprovider>().username;
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
 
-    final resultado = _calculo();  // Aquí debes llamar a la función
+    final resultado = _calculo(); // Aquí debes llamar a la función
 
-    return isConnected ? Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text('Registro de Datos',
-            style: TextStyle(
-                fontSize: 17,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
-        elevation: 0,
-        actions: [
-          TextButton(
-            onPressed: () {
-              _showImagePickerOptions(imagenesProvider);
-            },
-            child: const Icon(
-              Icons.camera_alt_outlined,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: [
-          KeyboardVisibilityBuilder(
-            builder: (context, isKeyboardVisible) {
-              return Padding(
-                padding: EdgeInsets.only(
-                    bottom: isKeyboardVisible ? 100 : 20, right: 8, left: 8),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Muestra el resultado calculado
-                       Text('Usuario: $userName', style: const TextStyle(fontSize: 16)),
-                      Text('Paso: $resultado', style: const TextStyle(fontSize: 16)),
-                     
-                      
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Imagenes',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text('${locationProvider.currentLocation?.latitude } latitud'),
-                      Text('${locationProvider.currentLocation?.longitude } longitude'),
-                      const SizedBox(height: 20),
-                      _buildSelectedImages(imagenesProvider),
-                      const SizedBox(height: 20),
-                      _buildObservacionInput(),
-                      const SizedBox(height: 30), // Espacio adicional para el FAB
-                    ],
+    return isConnected
+        ? Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.blue,
+              title:  Text('Guia: ${widget.guia}',
+                  style: const TextStyle(
+                      fontSize: 17,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold)),
+              elevation: 0,
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _showImagePickerOptions(imagenesProvider);
+                  },
+                  child: const Icon(
+                    Icons.camera_alt_outlined,
+                    color: Colors.white,
                   ),
                 ),
-              );
-            },
-          ),
-          if (imagenesProvider.isLoading) // Mostrar el indicador de carga si isLoading es verdadero
-            Container(
-              color: Colors.white, // Fondo semitransparente
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircularProgressIndicator(
-                      backgroundColor: Colors.blue,
-                      color: Colors.grey[100],
-                      strokeWidth: 6.0, // Grosor de la línea
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Cargando, por favor espere...',
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _buildGuardarFotos(),
-    ) : NoInternetScreen(onRetry: (){});
+            backgroundColor: Colors.white,
+            resizeToAvoidBottomInset: true,
+            body: Stack(
+              children: [
+                KeyboardVisibilityBuilder(
+                  builder: (context, isKeyboardVisible) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                          bottom: isKeyboardVisible ? 100 : 20,
+                          right: 8,
+                          left: 8),
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Muestra el resultado calculado
+                            Text('Usuario: $userName',
+                                style: const TextStyle(fontSize: 16)),
+                            Text('Paso: $resultado',
+                                style: const TextStyle(fontSize: 16)),
+
+                            const SizedBox(height: 20),
+                            const Text(
+                              'Imagenes',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                                '${locationProvider.currentLocation?.latitude} latitud'),
+                            Text(
+                                '${locationProvider.currentLocation?.longitude} longitude'),
+                            const SizedBox(height: 20),
+                            _buildSelectedImages(imagenesProvider),
+                            const SizedBox(height: 20),
+                            _buildObservacionInput(),
+                            const SizedBox(
+                                height: 30), // Espacio adicional para el FAB
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                if (imagenesProvider
+                    .isLoading) // Mostrar el indicador de carga si isLoading es verdadero
+                  Container(
+                    color: Colors.white, // Fondo semitransparente
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(
+                            backgroundColor: Colors.blue,
+                            color: Colors.grey[100],
+                            strokeWidth: 6.0, // Grosor de la línea
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'Cargando, por favor espere...',
+                            style: TextStyle(color: Colors.black, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: _buildGuardarFotos(),
+          )
+        : NoInternetScreen(onRetry: () {});
   }
 
   Widget _buildObservacionInput() {
@@ -204,8 +219,22 @@ class _RegistroDatosState extends State<RegistroDatos> {
 
   Widget _buildGuardarFotos() {
     final sizeW = MediaQuery.of(context).size.width;
+    final resultado2 = _calculo();
+    final latitud = context.watch<LocationProvider>().currentLocation;
+    final longitud = context.watch<LocationProvider>().currentLocation;
+    final usuario = context.watch<Authprovider>().username;
+    final imagen = context.watch<ImagenesProvider>().selectedImages;
+
     return TextButton(
-      onPressed: () {},
+      onPressed: () {
+        context.read<EnvioImagenesProvider>().enviarDatosConImagenes(
+            nroGuia: widget.guia,
+            track: resultado2,
+            latitud: '${latitud?.latitude}',
+            longitud: '${longitud?.longitude}',
+            usuario: usuario,
+            imagenes: imagen);
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -218,7 +247,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
           children: [
             Icon(Icons.save, size: 25, color: Colors.white),
             SizedBox(width: 10),
-            Text('Guardar', style: TextStyle(fontSize: 16, color: Colors.white)),
+            Text('Guardar',
+                style: TextStyle(fontSize: 16, color: Colors.white)),
           ],
         ),
       ),
@@ -248,7 +278,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
                 right: 0,
                 left: 0,
                 child: IconButton(
-                  icon: const Icon(Icons.delete_forever_sharp, color: Colors.red),
+                  icon:
+                      const Icon(Icons.delete_forever_sharp, color: Colors.red),
                   onPressed: () => imagenesProvider.removeImage(image),
                 ),
               ),

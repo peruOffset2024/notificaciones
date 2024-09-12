@@ -18,8 +18,10 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
   @override
   void initState() {
     super.initState();
+     
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<TrackProviderSegui>().obtenerTrack(widget.guia);
+      context.read<TrackProviderSegui>().track;
     });
   }
 

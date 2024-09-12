@@ -1,8 +1,10 @@
+
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
+
 
 class ImagenesProvider with ChangeNotifier {
   final ImagePicker _picker = ImagePicker();
@@ -11,6 +13,7 @@ class ImagenesProvider with ChangeNotifier {
 
   List<File> get selectedImages => _selectedImages;
   bool get isLoading => _isLoading;
+
 
   Future<void> pickImagesFromGallery() async {
     setLoading(true);
@@ -67,5 +70,9 @@ class ImagenesProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+
+
+
+
 
 

@@ -6,10 +6,12 @@ class LocationProvider with ChangeNotifier {
   LocationData? _currentLocation;
   String _locationMessage = "";
   bool _isLoading = false;
+  bool _isLocationEnabled = false; // Nueva variable para controlar si la ubicación está habilitada
 
   LocationData? get currentLocation => _currentLocation;
   String get locationMessage => _locationMessage;
   bool get isLoading => _isLoading;
+  bool get isLocationEnabled => _isLocationEnabled; // Getter para la nueva variable
 
   LocationProvider() {
     _initializeLocation();
@@ -20,8 +22,10 @@ class LocationProvider with ChangeNotifier {
     notifyListeners();
 
     bool _serviceEnabled = await _location.serviceEnabled();
+    _isLocationEnabled = _serviceEnabled; // Asigna si la ubicación está habilitada
     if (!_serviceEnabled) {
       _serviceEnabled = await _location.requestService();
+      _isLocationEnabled = _serviceEnabled; // Actualiza si se habilita el servicio de ubicación
       if (!_serviceEnabled) {
         _locationMessage = "Location services are disabled.";
         _isLoading = false;
