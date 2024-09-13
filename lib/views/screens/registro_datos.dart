@@ -66,7 +66,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
         ? Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.blue,
-              title:  Text('Guia: ${widget.guia}',
+              title: Text('Guia: ${widget.guia}',
                   style: const TextStyle(
                       fontSize: 17,
                       color: Colors.white,
@@ -226,14 +226,85 @@ class _RegistroDatosState extends State<RegistroDatos> {
     final imagen = context.watch<ImagenesProvider>().selectedImages;
 
     return TextButton(
-      onPressed: () {
-        context.read<EnvioImagenesProvider>().enviarDatosConImagenes(
-            nroGuia: widget.guia,
-            track: resultado2,
-            latitud: '${latitud?.latitude}',
-            longitud: '${longitud?.longitude}',
-            usuario: usuario,
-            imagenes: imagen);
+      onPressed: () async {
+        showDialog(
+            context: context,
+            barrierDismissible:
+                false, // para no cerrar el dialogo al tocar fuera el dialog
+            builder: (BuildContext context) {
+              return const Dialog(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: 20),
+                      Text('Cargando...'),
+                    ],
+                  ),
+                ),
+              );
+            });
+
+        try {
+          await context.read<EnvioImagenesProvider>().enviarDatosConImagenes(
+              nroGuia: widget.guia,
+              track: resultado2,
+              latitud: '${latitud?.latitude}',
+              longitud: '${longitud?.longitude}',
+              usuario: usuario,
+              imagenes: imagen);
+
+          showDialog(
+            // ignore: use_build_context_synchronously
+            context: context,
+            barrierDismissible:
+                false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Éxito'),
+                content: const Text('Los datos se han guardado correctamente.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Cierra el diálogo de éxito
+                      Navigator.of(context)
+                          .pop();
+                           Navigator.of(context)
+                          .pop(); // Retorna a la página anterior
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        } catch (error) {
+          // Si hay algún error, muestra un mensaje de error
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).pop(); // Cierra el indicador de carga
+          showDialog(
+            // ignore: use_build_context_synchronously
+            context: context,
+            barrierDismissible:
+                false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title:  Text('Error: $error'),
+                content: const Text(
+                    'Hubo un error al guardar los datos. Inténtalo nuevamente.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Cierra el diálogo de error
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       },
       child: Container(
         decoration: BoxDecoration(

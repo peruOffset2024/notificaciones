@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
@@ -7,6 +9,7 @@ class LocationProvider with ChangeNotifier {
   String _locationMessage = "";
   bool _isLoading = false;
   bool _isLocationEnabled = false; // Nueva variable para controlar si la ubicación está habilitada
+  Timer? _locationCheckTimer; // Nuevo Timer para revisar la ubicación constantemente
 
   LocationData? get currentLocation => _currentLocation;
   String get locationMessage => _locationMessage;
@@ -15,6 +18,7 @@ class LocationProvider with ChangeNotifier {
 
   LocationProvider() {
     _initializeLocation();
+    _startLocationServiceCheck(); // Inicia la verificación constante
   }
 
   Future<void> _initializeLocation() async {
@@ -64,5 +68,22 @@ class LocationProvider with ChangeNotifier {
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  // Método para verificar constantemente si los servicios de ubicación están habilitados
+  void _startLocationServiceCheck() {
+    _locationCheckTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      bool serviceEnabled = await _location.serviceEnabled();
+      if (serviceEnabled != _isLocationEnabled) {
+        _isLocationEnabled = serviceEnabled;
+        notifyListeners();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _locationCheckTimer?.cancel(); // Asegúrate de cancelar el Timer cuando el Provider se destruya
+    super.dispose();
   }
 }

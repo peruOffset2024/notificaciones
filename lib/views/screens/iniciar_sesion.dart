@@ -37,7 +37,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                 children: [
                   const Text('Ingrese un DNI válido'),
                   const SizedBox(
-                    width: 40,
+                    width: 20,
                   ),
                   IconButton(
                       onPressed: () {
@@ -150,7 +150,6 @@ class _IniciarSesionState extends State<IniciarSesion> {
                           filled: true,
                           fillColor: Colors.black.withOpacity(0.7),
                         ),
-                        
                       ),
                     ),
                   ),
@@ -163,7 +162,6 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       return ElevatedButton(
                         onPressed: authprovider.authenticated
                             ? () {
-                            
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(

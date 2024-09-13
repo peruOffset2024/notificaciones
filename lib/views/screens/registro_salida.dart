@@ -55,7 +55,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
     final locationProv = context.read<LocationProvider>().isLoading;
 
-    return locationProv ? isConnected
+    return isConnected ? ( locationProv
         ? Scaffold(
             backgroundColor: Colors.white,
             resizeToAvoidBottomInset: true,
@@ -399,6 +399,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                 child: const Text(
                   'Registrar Salida',
                   style: TextStyle(
+                    
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -409,7 +410,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
           )
-        :  NoInternetScreen(onRetry: () {  },) : LocationDisabledScreen(); 
+        :  const LocationDisabledScreen() ) : NoInternetScreen(onRetry: () {  },) ;
   }
 
 

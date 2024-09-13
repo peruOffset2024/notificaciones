@@ -54,7 +54,7 @@ class EnvioImagenesProvider with ChangeNotifier {
     // Verificar el estado de la respuesta
     if (response.statusCode == 200) {
       final responseBody = await response.stream.bytesToString();
-      print('Respuesta cruda del servidor: $responseBody');
+      print('Respuesta del servidor: $responseBody');
       final responseData = json.decode(responseBody);
       print('Respuesta del servidor: $responseBody');
       print('Datos enviados correctamente: $responseData');
