@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/ingreso_salida_provider.dart';
+import 'package:push_notificaciones/views/screens/foto_registro.dart';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
 class RegistroAsistencia extends StatelessWidget {
@@ -61,7 +62,11 @@ class RegistroAsistencia extends StatelessWidget {
                       const SizedBox(height: 20),
                       // Botón de Ingreso
                       GestureDetector(
-                        onTap: asistenciaProvider.ingresoHabilitado ? asistenciaProvider.registrarIngreso : null,
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const FotoRegistro()));
+                          asistenciaProvider.ingresoHabilitado ? asistenciaProvider.registrarIngreso : null;
+                          
+                        },
                         child: ClipOval(
                           child: Container(
                             width: 100,

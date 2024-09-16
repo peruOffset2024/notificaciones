@@ -47,11 +47,13 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Notificaciones push',
         initialRoute: '/home',
+        //theme: ThemeData.dark(),
         scaffoldMessengerKey: scaffoldKey,
         navigatorKey: navigatorKey,
         routes: {
           '/home': (_) => const IniciarSesion(),
           '/mensaje': (_) => const MessageScreen(),
-        });
+        }
+        );
   }
 }

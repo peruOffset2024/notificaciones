@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
+import 'package:push_notificaciones/views/screens/iniciar_sesion.dart';
 
 import 'package:push_notificaciones/views/screens/inicio.dart';
 import 'package:push_notificaciones/views/screens/asistencia.dart';
 import 'package:push_notificaciones/views/screens/transporte.dart';
-import 'dart:io';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
@@ -28,6 +29,17 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
       child: Text('Pag4', style: TextStyle(fontSize: 30)),
     )
   ];
+  
+  void _selectVista(int index){
+    if(index == 3){
+      _showExitDialog(context);
+    } else {
+      setState(() { 
+        indice = index;
+    });
+    }
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +52,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
             bottomNavigationBar: Container(
               color: Colors.black,
               child: BottomNavigationBar(
-                onTap: (indice) {
-                  if (indice == 3) {
-                    _showExitDialog(
-                        context); // Muestra el diálogo de confirmación
-                  } else {
-                    setState(() {
-                      this.indice = indice;
-                    });
-                  }
-                },
+                onTap: _selectVista,
                 currentIndex: indice,
                 backgroundColor: Colors.blue, // Fondo negro
                 selectedItemColor: Colors.white, // Ícono seleccionado blanco
@@ -62,7 +65,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
                     label: 'Inicio',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.fire_truck_rounded),
+                    icon: Icon(Icons.fire_truck_rounded,),
                     label: 'Trasnporte',
                   ),
                   BottomNavigationBarItem(
@@ -80,8 +83,8 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
        
   }
 
-  void _showExitDialog(BuildContext context) {
-    showDialog(
+  void _showExitDialog(BuildContext context) async {
+    bool? salir = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -111,7 +114,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
                 elevation: 0,
               ),
               onPressed: () {
-                Navigator.of(context).pop(); // Cierra el diálogo sin salir
+                Navigator.of(context).pop(false); // Cierra el diálogo sin salir
               },
               child: const Text('Cancelar',
                   style: TextStyle(
@@ -128,7 +131,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
                 elevation: 0,
               ),
               onPressed: () {
-                exit(0); // Cierra la aplicación
+                Navigator.of(context).pop(true); // Cierra la aplicación
               },
               child: const Text(
                 'Sí',
@@ -142,5 +145,9 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
         );
       },
     );
+    if(salir == true){
+      context.read<Authprovider>().logout();
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const IniciarSesion()), (Route<dynamic> route) => false);
+    }
   }
 }

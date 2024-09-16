@@ -28,6 +28,11 @@ class RegistroDatos extends StatefulWidget {
 
 class _RegistroDatosState extends State<RegistroDatos> {
   final TextEditingController _observacionController = TextEditingController();
+  List<String> _tipeDelivery = [];
+
+  String? _selectedTipeDelivery;
+
+  
 
   @override
   void initState() {
@@ -55,11 +60,11 @@ class _RegistroDatosState extends State<RegistroDatos> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final locationProvider = context.watch<LocationProvider>();
     final imagenesProvider = context.watch<ImagenesProvider>();
-    final userName = context.watch<Authprovider>().username;
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
-
+    // ignore: unused_local_variable
     final resultado = _calculo(); // Aquí debes llamar a la función
 
     return isConnected
@@ -100,27 +105,19 @@ class _RegistroDatosState extends State<RegistroDatos> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Muestra el resultado calculado
-                            Text('Usuario: $userName',
-                                style: const TextStyle(fontSize: 16)),
-                            Text('Paso: $resultado',
-                                style: const TextStyle(fontSize: 16)),
-
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 10),
                             const Text(
                               'Imagenes',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            Text(
-                                '${locationProvider.currentLocation?.latitude} latitud'),
-                            Text(
-                                '${locationProvider.currentLocation?.longitude} longitude'),
                             const SizedBox(height: 20),
                             _buildSelectedImages(imagenesProvider),
                             const SizedBox(height: 20),
                             _buildObservacionInput(),
                             const SizedBox(
-                                height: 30), // Espacio adicional para el FAB
+                                height: 30),
+                             // Espacio adicional para el FAB
+
                           ],
                         ),
                       ),
@@ -156,6 +153,24 @@ class _RegistroDatosState extends State<RegistroDatos> {
             floatingActionButton: _buildGuardarFotos(),
           )
         : NoInternetScreen(onRetry: () {});
+  }
+
+  Widget _ComboBox(String title, List<String> items, String? value, ValueChanged<String?> onChanged){
+    return DropdownButtonFormField<String>(
+      value: value,
+      onChanged: onChanged,
+      items: items.map((String item){
+        return DropdownMenuItem<String>(
+          value: item,
+          child: Text(item,style: const TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold),),
+         
+        );
+      }).toList(), decoration:  InputDecoration(
+        labelText: title,
+        border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
+      ),
+      );
   }
 
   Widget _buildObservacionInput() {
@@ -253,13 +268,13 @@ class _RegistroDatosState extends State<RegistroDatos> {
               latitud: '${latitud?.latitude}',
               longitud: '${longitud?.longitude}',
               usuario: usuario,
-              imagenes: imagen, comentario: _observacionController.text);
+              imagenes: imagen,
+              comentario: _observacionController.text);
 
           showDialog(
             // ignore: use_build_context_synchronously
             context: context,
-            barrierDismissible:
-                false,
+            barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Éxito'),
@@ -268,9 +283,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(); // Cierra el diálogo de éxito
+                      Navigator.of(context).pop();
                       Navigator.of(context)
-                          .pop();
-                           Navigator.of(context)
                           .pop(); // Retorna a la página anterior
                     },
                     child: const Text('OK'),
@@ -286,11 +300,10 @@ class _RegistroDatosState extends State<RegistroDatos> {
           showDialog(
             // ignore: use_build_context_synchronously
             context: context,
-            barrierDismissible:
-                false,
+            barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title:  Text('Error: $error'),
+                title: Text('Error: $error'),
                 content: const Text(
                     'Hubo un error al guardar los datos. Inténtalo nuevamente.'),
                 actions: [

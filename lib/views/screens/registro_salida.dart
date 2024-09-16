@@ -12,7 +12,6 @@ import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/envios_al_servidor.dart';
 import 'package:push_notificaciones/views/screens/skeleton_registro_datos.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
-import 'package:push_notificaciones/views/screens/vista_sin_ubicacion.dart';
 
 class RegistroSalida extends StatefulWidget {
   const RegistroSalida({
@@ -47,16 +46,17 @@ class _RegistroSalidaState extends State<RegistroSalida> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     final providers = context.watch<GuiaxClienteProvider>().guiaxCliente;
     final screenWidth = MediaQuery.of(context).size.width;
     final usuarioProvider = context.read<Authprovider>().username;
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
-    final locationProv = context.read<LocationProvider>().isLoading;
+    //final locationProv = context.read<LocationProvider>().isLoading;
 
-    return isConnected ? ( locationProv
-        ? Scaffold(
+    return isConnected ? 
+         Scaffold(
             backgroundColor: Colors.white,
             resizeToAvoidBottomInset: true,
             appBar: AppBar(
@@ -410,7 +410,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
           )
-        :  const LocationDisabledScreen() ) : NoInternetScreen(onRetry: () {  },) ;
+          :  NoInternetScreen(onRetry: () {  },);
   }
 
 
