@@ -8,6 +8,7 @@ import 'package:image/image.dart' as img;
 
 class ImagenesProvider with ChangeNotifier {
   final ImagePicker _picker = ImagePicker();
+  // ignore: prefer_final_fields
   List<File> _selectedImages = [];
   bool _isLoading = false;
 
@@ -17,6 +18,7 @@ class ImagenesProvider with ChangeNotifier {
 
   Future<void> pickImagesFromGallery() async {
     setLoading(true);
+    
     final List<XFile>? pickedFiles = await _picker.pickMultiImage();
 
     if (pickedFiles != null && pickedFiles.isNotEmpty) {

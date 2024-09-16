@@ -18,11 +18,17 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
   @override
   void initState() {
     super.initState();
-     
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<TrackProviderSegui>().obtenerTrack(widget.guia);
       context.read<TrackProviderSegui>().track;
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Recargar los datos al volver a esta pantalla
+    context.read<TrackProviderSegui>().obtenerTrack(widget.guia);
   }
 
   @override
@@ -124,7 +130,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                                 )
                               else
                                 GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(

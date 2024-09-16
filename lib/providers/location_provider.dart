@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 class LocationProvider with ChangeNotifier {
+  // ignore: prefer_final_fields
   Location _location = Location();
   LocationData? _currentLocation;
   String _locationMessage = "";
@@ -25,6 +26,7 @@ class LocationProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
+    // ignore: no_leading_underscores_for_local_identifiers
     bool _serviceEnabled = await _location.serviceEnabled();
     _isLocationEnabled = _serviceEnabled; // Asigna si la ubicación está habilitada
     if (!_serviceEnabled) {
@@ -38,6 +40,7 @@ class LocationProvider with ChangeNotifier {
       }
     }
 
+    // ignore: no_leading_underscores_for_local_identifiers
     PermissionStatus _permissionGranted = await _location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await _location.requestPermission();
@@ -72,7 +75,7 @@ class LocationProvider with ChangeNotifier {
 
   // Método para verificar constantemente si los servicios de ubicación están habilitados
   void _startLocationServiceCheck() {
-    _locationCheckTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+    _locationCheckTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       bool serviceEnabled = await _location.serviceEnabled();
       if (serviceEnabled != _isLocationEnabled) {
         _isLocationEnabled = serviceEnabled;

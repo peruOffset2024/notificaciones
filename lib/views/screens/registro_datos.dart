@@ -253,7 +253,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
               latitud: '${latitud?.latitude}',
               longitud: '${longitud?.longitude}',
               usuario: usuario,
-              imagenes: imagen);
+              imagenes: imagen, comentario: _observacionController.text);
 
           showDialog(
             // ignore: use_build_context_synchronously

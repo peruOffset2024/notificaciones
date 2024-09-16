@@ -117,7 +117,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                     key: _formkey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: SizedBox(
-                      height: size.height * 0.08,
+                      height: 55,
                       child: TextFormField(
                         maxLength: 15,
                         inputFormatters: [

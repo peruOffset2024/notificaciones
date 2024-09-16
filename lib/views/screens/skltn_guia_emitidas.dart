@@ -51,7 +51,7 @@ class ShimmerLoaderWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     // Placeholder para el lado derecho (cantidad)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,

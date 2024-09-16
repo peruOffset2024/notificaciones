@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/seguimiento_pedido.dart';
-import 'package:push_notificaciones/views/screens/skltn_inicio_%20guia_emitidas.dart';
+import 'package:push_notificaciones/views/screens/skltn_guia_emitidas.dart';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
 class ProductosGridScreen extends StatefulWidget {

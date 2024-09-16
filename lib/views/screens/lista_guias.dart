@@ -5,7 +5,7 @@ import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/services/scroll_behavior.dart';
 import 'package:push_notificaciones/views/screens/registro_salida.dart';
-import 'package:push_notificaciones/views/screens/skltn_inicio_%20guia_emitidas.dart';
+import 'package:push_notificaciones/views/screens/skltn_guia_emitidas.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class ListaGuiasReporte extends StatefulWidget {

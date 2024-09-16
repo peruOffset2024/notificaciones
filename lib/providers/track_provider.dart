@@ -15,6 +15,7 @@ class TrackProviderSegui with ChangeNotifier{
       if(response.statusCode == 200){
         final List<dynamic> data = jsonDecode(response.body);
         _track  = data.map((track) => Track.fromJson(track)).toList();
+        // ignore: avoid_print
         print('Json : $data');
         notifyListeners();
       } else {
