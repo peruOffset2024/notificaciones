@@ -48,7 +48,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
     return  Scaffold(
             drawer: MyCustomDrawer(usuario: widget.usuario),
             body: isConnected
-        ? navegador[indice] : NoInternetScreen(onRetry: () {}, ),
+        ? navegador[indice] : const NoInternetScreen(),
             bottomNavigationBar: Container(
               color: Colors.black,
               child: BottomNavigationBar(

@@ -28,11 +28,10 @@ class RegistroDatos extends StatefulWidget {
 
 class _RegistroDatosState extends State<RegistroDatos> {
   final TextEditingController _observacionController = TextEditingController();
-  List<String> _tipeDelivery = [];
-
+  List<String> _tipeDelivery = ['ENTREGADO', 'RECHAZADO', 'OTRO..'];
+  bool isSwitched = false;
+  String condicion = '0';
   String? _selectedTipeDelivery;
-
-  
 
   @override
   void initState() {
@@ -76,6 +75,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                       fontSize: 17,
                       color: Colors.white,
                       fontWeight: FontWeight.bold)),
+              centerTitle: true,
               elevation: 0,
               actions: [
                 TextButton(
@@ -114,10 +114,16 @@ class _RegistroDatosState extends State<RegistroDatos> {
                             _buildSelectedImages(imagenesProvider),
                             const SizedBox(height: 20),
                             _buildObservacionInput(),
-                            const SizedBox(
-                                height: 30),
-                             // Espacio adicional para el FAB
-
+                            const SizedBox(height: 30),
+                            _comboBox('ESTADO DE PEDIDO', _tipeDelivery,
+                                _selectedTipeDelivery, (String? valor) {
+                              setState(() {
+                                _selectedTipeDelivery = valor;
+                              });
+                            }),
+                            const SizedBox(height: 20),
+                            _toogleButton()
+                            // Espacio adicional para el FAB
                           ],
                         ),
                       ),
@@ -152,25 +158,88 @@ class _RegistroDatosState extends State<RegistroDatos> {
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButton: _buildGuardarFotos(),
           )
-        : NoInternetScreen(onRetry: () {});
+        : const NoInternetScreen();
   }
 
-  Widget _ComboBox(String title, List<String> items, String? value, ValueChanged<String?> onChanged){
-    return DropdownButtonFormField<String>(
-      value: value,
-      onChanged: onChanged,
-      items: items.map((String item){
-        return DropdownMenuItem<String>(
-          value: item,
-          child: Text(item,style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold),),
-         
-        );
-      }).toList(), decoration:  InputDecoration(
-        labelText: title,
-        border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
-      ),
-      );
+   Widget _toogleButton(){
+    return Column(
+      children: [
+        const Text('Desactivado / Activo'),
+        const SizedBox(height: 15,),
+        Transform.scale(
+              scale: 1.2, // Escala el Switch
+              child: Switch(
+                
+                value: isSwitched,
+                
+                onChanged: (value) {
+                  setState(() {
+                    isSwitched = value;
+                    condicion = isSwitched ? '1' : '0'; // Asignar 1 cuando esté activo, 0 cuando esté inactivo
+                  });
+                },
+                inactiveThumbColor: Colors.grey[100], // circulo centro
+                activeColor: Colors.green,
+                inactiveTrackColor: Colors.grey,
+              ),
+            ),
+      ],
+    );
+      
+  
+  }
+
+
+  Widget _comboBox(String title, List<String> items, String? value,
+      ValueChanged<String?> onChanged) {
+    return widget.llegada == '2'
+        ? DropdownButtonFormField<String>(
+            iconDisabledColor: Colors.black,
+            dropdownColor: Colors.white,
+            value: value,
+            onChanged: onChanged,
+            items: items.map((String item) {
+              return DropdownMenuItem<String>(
+                value: item,
+                // 'ENTREGADO', 'RECHAZADO', 'OTRO..',
+                child: Text(
+                  item,
+                  style: TextStyle(
+                    color: item == 'ENTREGADO'
+                        ? Colors.green // Si es 'ENTREGADO', usa color verde
+                        : item == 'RECHAZADO'
+                            ? Colors.red // Si es 'RECHAZADO', usa color rojo
+                            : item == 'OTRO..'
+                                ? Colors
+                                    .amber // Si es 'OTRO..', usa color naranja (amber)
+                                : Colors
+                                    .black, // Si no coincide, usa color negro
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+              );
+            }).toList(),
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: Colors.black, width: 1.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: Colors.black, width: 1.0),
+              ),
+              focusColor: Colors.white,
+              labelText: title,
+              labelStyle: const TextStyle(
+                fontSize: 13,
+                color: Colors.grey,
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+            ),
+          )
+        : const Text('');
   }
 
   Widget _buildObservacionInput() {
@@ -269,7 +338,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
               longitud: '${longitud?.longitude}',
               usuario: usuario,
               imagenes: imagen,
-              comentario: _observacionController.text);
+              comentario: _observacionController.text,
+              condicion: _selectedTipeDelivery, distribucion: condicion);
 
           showDialog(
             // ignore: use_build_context_synchronously

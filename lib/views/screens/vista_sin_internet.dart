@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NoInternetScreen extends StatelessWidget {
-  final VoidCallback onRetry;
+  
 
-  const NoInternetScreen({super.key, required this.onRetry});
+  const NoInternetScreen({super.key, });
 
   @override
   Widget build(BuildContext context) {

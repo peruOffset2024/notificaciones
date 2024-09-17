@@ -227,6 +227,6 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
           ),
         ),
       ),
-    ) : NoInternetScreen(onRetry: (){});
+    ) : const NoInternetScreen();
   }
 }

@@ -296,6 +296,6 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                     ),
                   ),
                 )))
-        : NoInternetScreen(onRetry: () {});
+        : const NoInternetScreen();
   }
 }

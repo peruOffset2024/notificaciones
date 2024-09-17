@@ -410,7 +410,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
           )
-          :  NoInternetScreen(onRetry: () {  },);
+          : const NoInternetScreen();
   }
 
 
