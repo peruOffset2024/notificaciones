@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
-import 'package:push_notificaciones/providers/lista_guias_provider.dart';
+import 'package:push_notificaciones/providers/trasnporte_servicios_provider.dart';
 import 'package:push_notificaciones/services/scroll_behavior.dart';
-import 'package:push_notificaciones/views/screens/registro_salida.dart';
+import 'package:push_notificaciones/views/screens/registro_salida_servicio.dart';
 import 'package:push_notificaciones/views/screens/skltn_guia_emitidas.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
-class ListaGuiasReporte extends StatefulWidget {
-  const ListaGuiasReporte({super.key});
+class TransporteServicio extends StatefulWidget {
+  const TransporteServicio({super.key});
 
+  
   @override
-  State<ListaGuiasReporte> createState() => _ListaGuiasReporteState();
+  State<TransporteServicio> createState() => _TransporteServicioState();
 }
 
-class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
+class _TransporteServicioState extends State<TransporteServicio> {
   final TextEditingController _searchController = TextEditingController();
-
 
   @override
   void initState() {
@@ -26,10 +26,9 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
     // Fetch guias when the widget is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ruc = context.read<Authprovider>().ruc;
-      context.read<ListaGuiaProvider>().fetchGuias(ruc);
+      context.read<TransporteServiciosProvider>().fechtGuiasServicios(ruc);
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: const Text(
-            'Guias de Ventas',
+            'Guias de Servicio',
             style: TextStyle(
               fontSize: 16,
               color: Colors.black,
@@ -66,7 +65,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                   suffixIcon: IconButton(
                     onPressed: () {
                       _searchController.clear();
-                      context.read<ListaGuiaProvider>().searchGuia('');
+                      context.read<TransporteServiciosProvider>().searchGuiaServicio('');
                     },
                     icon: const Icon(Icons.cancel_outlined, color: Colors.black),
                   ),
@@ -86,19 +85,19 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                   fillColor: Colors.white,
                 ),
                 onChanged: (value) {
-                  context.read<ListaGuiaProvider>().searchGuia(value);
+                  context.read<TransporteServiciosProvider>().searchGuiaServicio(value);
                 },
               ),
               const SizedBox(height: 10),
           
               // Tabla de resultados
               Expanded(
-                child: Consumer<ListaGuiaProvider>(
-                  builder: (context, provider, child) {
-                    if(provider.isLoading){
+                child: Consumer<TransporteServiciosProvider>(
+                  builder: (context, providerS, child) {
+                    if(providerS.isLoading){
                       return const ShimmerLoaderWidget();
                     }
-                    if (provider.guias.isEmpty) {
+                    if (providerS.guiasServicios.isEmpty) {
                       return const Center(
                         child: Text(
                           'No hay resultados',
@@ -108,9 +107,9 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                     }
           
                     return ListView.builder(
-                      itemCount: provider.guias.length,
+                      itemCount: providerS.guiasServicios.length,
                       itemBuilder: (context, index) {
-                        final guia = provider.guias[index];
+                        final guia = providerS.guiasServicios[index];
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 0.0), // Espacio mínimo entre cada Card
                           child: GestureDetector(
@@ -120,7 +119,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => RegistroSalida(
+                                  builder: (context) => ServicioRegistroSalida(
                                     cliente: guia.cliente,
                                     guia: guia.guia,
                                     cant: guia.cant,
@@ -130,7 +129,7 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
                               );
                             },
                             child: Card(
-                              color: Colors.blue[100],
+                              color: Colors.orange[100],
                               elevation: 2,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),

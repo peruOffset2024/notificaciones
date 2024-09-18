@@ -6,38 +6,32 @@ import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
-import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/envios_al_servidor.dart';
+import 'package:push_notificaciones/providers/trasnporte_servicios_provider.dart';
 import 'package:push_notificaciones/views/screens/skeleton_registro_datos.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
-class RegistroSalida extends StatefulWidget {
-  const RegistroSalida({
-    super.key,
-    required this.cliente,
-    required this.guia,
-    required this.cant,
-    required this.llegada,
-  });
-
+class ServicioRegistroSalida extends StatefulWidget {
+  const ServicioRegistroSalida({super.key, required this.cliente, required this.guia, required this.cant, required this.llegada});
   final String cliente;
   final String guia;
   final String cant;
   final String llegada;
 
+  
   @override
-  State<RegistroSalida> createState() => _RegistroSalidaState();
+  State<ServicioRegistroSalida> createState() => _ServicioRegistroSalidaState();
 }
 
-
-
-class _RegistroSalidaState extends State<RegistroSalida> {
+class _ServicioRegistroSalidaState extends State<ServicioRegistroSalida> {
   final TextEditingController _lugarEntrega = TextEditingController();
-  Location location = Location();
-  bool _isLoading = false; // Variable para controlar el estado de carga
 
+  Location location = Location();
+
+  bool _isLoading = false; 
+ // Variable para controlar el estado de carga
   @override
   void initState() {
     super.initState();
@@ -46,7 +40,6 @@ class _RegistroSalidaState extends State<RegistroSalida> {
       context.read<GuiaxClienteProvider>().obtenerGuiasDetalle(widget.guia);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -297,10 +290,9 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                   setState(() {
                     _isLoading = true; // Mostrar el indicador de carga
                   });
-
+                   final locationProv = context.read<LocationProvider>().currentLocation; 
                   final provider = context.read<PedidoProvider>();
-                  final locationProv =
-                      context.read<LocationProvider>().currentLocation;
+                  
 
                   // Actualizar el estado del pedido
                   provider.actualizarEstado(
@@ -324,7 +316,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
 
                     // Eliminar la guía localmente en el provider
                     // ignore: use_build_context_synchronously
-                    context.read<ListaGuiaProvider>().eliminarGuia(widget.guia);
+                    context.read<TransporteServiciosProvider>().eliminarGuiaServicio(widget.guia);
 
                     showDialog(
                       // ignore: use_build_context_synchronously
@@ -413,7 +405,6 @@ class _RegistroSalidaState extends State<RegistroSalida> {
           )
           : const NoInternetScreen();
   }
-
 
   Widget _buildObservationsField() {
     return Container(

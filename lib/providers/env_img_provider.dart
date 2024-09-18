@@ -20,10 +20,10 @@ class EnvioImagenesProvider with ChangeNotifier {
     required String distribucion,
     required List<File> imagenes, // Agregamos las imágenes como parámetro
   }) async {
-    // Validar los campos requeridos
-    if (condicion == null || condicion.isEmpty) {
-      throw ArgumentError('El campo condicion es requerido.');
-    }
+    // Validar solo si condicion es requerida (cuando se pasa '2')
+  if (track == '2' && (condicion == null || condicion.isEmpty)) {
+    throw ArgumentError('El campo ESTADO DE PEDIDO es requerido.');
+  }
 
     final url = Uri.parse('http://190.107.181.163:81/aqnq/ajax/insert_track.php');
 
@@ -37,7 +37,7 @@ class EnvioImagenesProvider with ChangeNotifier {
       request.fields['longitud'] = longitud;
       request.fields['usuario'] = usuario;
       request.fields['comentario'] = comentario;
-      request.fields['condicion'] = condicion;
+      request.fields['condicion'] = condicion ?? '';
       request.fields['distribucion'] = distribucion;
 
       // Mostrar los datos que se están enviando

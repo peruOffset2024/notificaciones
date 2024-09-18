@@ -65,8 +65,8 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
                     label: 'Inicio',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.fire_truck_rounded,),
-                    label: 'Trasnporte',
+                    icon: Icon(Icons.local_shipping,),
+                    label: 'Transporte',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.timer),

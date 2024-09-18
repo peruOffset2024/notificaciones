@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/env_img_provider.dart';
+import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
@@ -162,14 +163,13 @@ class _RegistroDatosState extends State<RegistroDatos> {
   }
 
    Widget _toogleButton(){
-    return Column(
+    return widget.inicio  == '1' || widget.fin == '3'? const Text('') : Column(
       children: [
         const Text('Desactivado / Activo'),
         const SizedBox(height: 15,),
         Transform.scale(
               scale: 1.2, // Escala el Switch
               child: Switch(
-                
                 value: isSwitched,
                 
                 onChanged: (value) {
@@ -352,15 +352,18 @@ class _RegistroDatosState extends State<RegistroDatos> {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // Cierra el diálogo de éxito
+                      condicion == '1' ? context.read<GuiasSalidasProvider>().eliminarGuias(widget.guia) : '';
+                      widget.fin == "3" ? context.read<GuiasSalidasProvider>().eliminarGuias(widget.guia) : '';
+                          Navigator.of(context).pop(); // Cierra el diálogo de éxito
                       Navigator.of(context).pop();
-                      Navigator.of(context)
-                          .pop(); // Retorna a la página anterior
+                      Navigator.of(context).pop(); 
+                      // Retorna a la página anterior
                     },
                     child: const Text('OK'),
                   ),
                 ],
               );
+              
             },
           );
         } catch (error) {

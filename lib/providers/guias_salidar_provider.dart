@@ -14,28 +14,48 @@ class GuiasSalidasProvider with ChangeNotifier {
   bool get isLoading => _isLoading; // Getter para el estado de carga
 
   Future<void> fetchProductos(String dni, String ruc) async {
-    _isLoading = true;
-    notifyListeners(); // Notificar que ha cambiado el estado de carga
+  _isLoading = true;
+  notifyListeners(); // Notificar que ha cambiado el estado de carga
 
-    final url = Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_salidas.php?dni=$dni&ruc=$ruc');
-    try {
-      final response = await http.get(url);
+  final url = Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_salidas.php?dni=$dni&ruc=$ruc');
+  try {
+    final response = await http.get(url);
 
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonData = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+
+      // Verificar si la respuesta contiene un mensaje de error en lugar de una lista
+      if (jsonData is Map<String, dynamic> && jsonData.containsKey('error')) {
+        // Manejar el caso de error
+        print('Error: ${jsonData['error']}');
+        _productos = [];
+        _filteredProductos = [];
+      } else if (jsonData is List) {
+        // Si es una lista, procesarla normalmente
         _productos = jsonData.map((item) => SalidaGuia.fromJson(item)).toList();
         _filteredProductos = _productos; // Al principio, ambas listas son iguales
+        
       } else {
-        throw Exception('Failed to load products');
+        throw Exception('Unexpected response format');
       }
-    } catch (error) {
-      // ignore: avoid_print
-      print('Error fetching products: $error');
-    } finally {
-      _isLoading = false;
-      notifyListeners(); // Notificar que ha terminado la carga
+      
+    } else {
+      throw Exception('Failed to load products');
     }
+  } catch (error) {
+    print('Error fetching products: $error');
+  } finally {
+    _isLoading = false;
+    notifyListeners(); // Notificar que ha terminado la carga
   }
+}
+
+
+    void eliminarGuias(String product){
+      _productos.removeWhere((item) => item.nroGuia == product);
+      _filteredProductos.removeWhere((item) => item.nroGuia == product);
+      notifyListeners();
+    }
 
   void searchProducto(String query) {
     if (query.isEmpty) {
@@ -49,6 +69,3 @@ class GuiasSalidasProvider with ChangeNotifier {
     notifyListeners(); // Actualizar la UI
   }
 }
-
-
-////// conte ////

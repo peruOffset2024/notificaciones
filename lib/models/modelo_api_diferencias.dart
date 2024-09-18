@@ -12,19 +12,25 @@ class SalidaGuia {
     String cliente;
     String cant;
     String entrega;
+    String? tipo;
+    String ultimotrack;
 
     SalidaGuia({
         required this.nroGuia,
         required this.cliente,
         required this.cant,
         required this.entrega,
+        required this.tipo,
+        required this.ultimotrack
     });
 
     factory SalidaGuia.fromJson(Map<String, dynamic> json) => SalidaGuia(
         nroGuia: json["nro_guia"] ?? '',
         cliente: json["Cliente"]?? '',
         cant: json["cant"]?? '',
-        entrega: json["Entrega"]?? '',
+        entrega: json["Entrega"]?? '', 
+        tipo: json["tipo"] ?? '', 
+        ultimotrack: json["Ultimo_Track"]?? '',
     );
 
     Map<String, dynamic> toJson() => {
@@ -32,5 +38,7 @@ class SalidaGuia {
         "Cliente": cliente,
         "cant": cant,
         "Entrega": entrega,
+        "tipo": tipo,
+        "ultimotrack" : ultimotrack
     };
 }

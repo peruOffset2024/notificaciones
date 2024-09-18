@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/lista_guias.dart';
+import 'package:push_notificaciones/views/screens/transporte_servicios.dart';
 
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
@@ -59,7 +60,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                   const SizedBox(height: 20.0),
                   _buildServiceButton(
                       context: context,
-                      label: 'Guias',
+                      label: 'Guias de Venta',
                       icon:
                           Icons.file_copy_outlined, // Material icon for guides
                       onPressed: () {
@@ -85,16 +86,16 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                   const SizedBox(height: 20.0),
                   _buildService(
                       context: context,
-                      label: 'Servicios',
+                      label: 'Guias de Servicio',
                       icon: Icons
-                          .delivery_dining_outlined, // Material de Servicios
+                          .local_shipping, // Material de Servicios
                       onPressed: () {
                         Navigator.push(
                             context,
                             PageRouteBuilder(
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
-                                        const ListaGuiasReporte(),
+                                        const TransporteServicio(),
                                 transitionDuration:
                                     const Duration(milliseconds: 350),
                                 transitionsBuilder: (context, animation,
@@ -111,7 +112,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                   const SizedBox(height: 20.0),
                   _ServiceButton(
                     context: context,
-                    label: 'Otros',
+                    label: 'Otras Guias',
                     icon: Icons
                         .more_horiz_outlined, // Material de otros Servicios
                     onPressed: () {

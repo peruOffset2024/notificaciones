@@ -16,6 +16,7 @@ import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/reg_sal_switch_provider.dart';
 import 'package:push_notificaciones/providers/envios_al_servidor.dart';
 import 'package:push_notificaciones/providers/track_provider.dart';
+import 'package:push_notificaciones/providers/trasnporte_servicios_provider.dart';
 import 'package:push_notificaciones/services/models/push_notification_service.dart';
 
 
@@ -40,7 +41,9 @@ void main() async {
     ChangeNotifierProvider(create: (_) => IngresoSalidaAsistencia()), 
     ChangeNotifierProvider(create: (_) => ConnectivityProvider()), 
     ChangeNotifierProvider(create: (_) => EnvioImagenesProvider()), 
-    ChangeNotifierProvider(create: (_) => EstadosValoresProvider()),
+    ChangeNotifierProvider(create: (_) => EstadosValoresProvider()), 
+    ChangeNotifierProvider(create: (_) => TransporteServiciosProvider()),
+    
   ], child: const MyApp()));
 }
 
