@@ -22,6 +22,7 @@ class EnvioImagenesProvider with ChangeNotifier {
   }) async {
     // Validar solo si condicion es requerida (cuando se pasa '2')
   if (track == '2' && (condicion == null || condicion.isEmpty)) {
+    
     throw ArgumentError('El campo ESTADO DE PEDIDO es requerido.');
   }
 

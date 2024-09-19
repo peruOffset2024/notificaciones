@@ -347,10 +347,19 @@ class _RegistroDatosState extends State<RegistroDatos> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text('Éxito'),
+                backgroundColor: Colors.blue[50],
+                title: const Text('Excelente.'),
                 content: const Text('Los datos se han guardado correctamente.'),
                 actions: [
                   TextButton(
+                    style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[350],
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Colors.black38, width: 1)
+                )
+              ),
                     onPressed: () {
                       condicion == '1' ? context.read<GuiasSalidasProvider>().eliminarGuias(widget.guia) : '';
                       widget.fin == "3" ? context.read<GuiasSalidasProvider>().eliminarGuias(widget.guia) : '';
@@ -359,7 +368,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                       Navigator.of(context).pop(); 
                       // Retorna a la página anterior
                     },
-                    child: const Text('OK'),
+                    child: const Text('OK', style: TextStyle(color: Colors.black),),
                   ),
                 ],
               );
@@ -376,11 +385,20 @@ class _RegistroDatosState extends State<RegistroDatos> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Error: $error'),
+                title:  Icon(Icons.warning_amber_rounded, size: 100,color: Colors.yellow[700],),
                 content: const Text(
-                    'Hubo un error al guardar los datos. Inténtalo nuevamente.'),
+                    'FALTA EL ESTADO DE PEDIDO', style: TextStyle(fontSize: 14),),
+                    backgroundColor: Colors.red[100],
                 actions: [
                   TextButton(
+                    style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[350],
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Colors.black38, width: 1)
+                )
+              ),
                     onPressed: () {
                       Navigator.of(context).pop(); // Cierra el diálogo de error
                     },

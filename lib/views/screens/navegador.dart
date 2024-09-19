@@ -88,18 +88,15 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          //shadowColor: Colors.red,
-          //surfaceTintColor: Colors.blue,
-          //iconColor: Colors.amber,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.blue[50],
           elevation: 0,
           title:
               const Text('¿Estás seguro de que deseas salir de la aplicación?',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -110,8 +107,12 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
             ),
             TextButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.yellowAccent[400],
+                backgroundColor: Colors.grey[350],
                 elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Colors.black38, width: 1)
+                )
               ),
               onPressed: () {
                 Navigator.of(context).pop(false); // Cierra el diálogo sin salir
@@ -123,12 +124,16 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
                   )),
             ),
             const SizedBox(
-              width: 10,
+              width: 20,
             ),
             TextButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent[400],
+                backgroundColor: Colors.grey[350],
                 elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Colors.black38, width: 1)
+                )
               ),
               onPressed: () {
                 Navigator.of(context).pop(true); // Cierra la aplicación
@@ -146,7 +151,9 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
       },
     );
     if(salir == true){
+      // ignore: use_build_context_synchronously
       context.read<Authprovider>().logout();
+      // ignore: use_build_context_synchronously
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const IniciarSesion()), (Route<dynamic> route) => false);
     }
   }

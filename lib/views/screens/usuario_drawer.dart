@@ -41,6 +41,7 @@ class MyCustomDrawer extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
+                      overflow: TextOverflow.visible,
                     )
                 ),
                 const SizedBox(width: 10),

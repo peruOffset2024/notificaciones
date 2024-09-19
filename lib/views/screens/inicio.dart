@@ -13,13 +13,14 @@ class ProductosGridScreen extends StatefulWidget {
   State<ProductosGridScreen> createState() => _ProductosGridScreenState();
 }
 
-class _ProductosGridScreenState extends State<ProductosGridScreen> {
+class _ProductosGridScreenState extends State<ProductosGridScreen>  with WidgetsBindingObserver{
   final TextEditingController _cleanData = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
-
+    
     // Fetch guias when the widget is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ruc = context.read<Authprovider>().ruc;
@@ -27,11 +28,7 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
       context.read<GuiasSalidasProvider>().fetchProductos(dni, ruc);
     });
   }
-  @override
-  void didChangeDependencies() {
-    
-    super.didChangeDependencies();
-  }
+  
   
   Future<void> _refreshData() async {
     final ruc = context.read<Authprovider>().ruc;
@@ -158,7 +155,8 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> {
                                       pageBuilder: (context, animation,
                                               secondaryAnimation) =>
                                           SeguimientoPedidoScreen(
-                                              guia: indice.nroGuia),
+                                              guia: indice.nroGuia,),
+                                              
                                       transitionDuration:
                                           const Duration(milliseconds: 350),
                                       transitionsBuilder: (context, animation,

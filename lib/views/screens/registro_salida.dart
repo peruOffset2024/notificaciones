@@ -333,7 +333,7 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                         return AlertDialog(
                           backgroundColor: Colors.blue[50],
                           title: const Text(
-                            'Excelente!.',
+                            'Excelente.',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
@@ -345,6 +345,14 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                           ),
                           actions: [
                             TextButton(
+                              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[350],
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Colors.black38, width: 1)
+                )
+              ),
                               onPressed: () {
                                 Navigator.pop(context, true);
                                 Navigator.of(context).pop();
@@ -371,6 +379,14 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                           ),
                           actions: [
                             TextButton(
+                              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[350],
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Colors.black38, width: 1)
+                )
+              ),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
