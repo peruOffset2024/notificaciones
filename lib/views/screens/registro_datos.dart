@@ -498,6 +498,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
     );
   }
 
+
   void _showImagePickerOptions(ImagenesProvider imagenesProvider) {
     showModalBottomSheet(
       context: context,

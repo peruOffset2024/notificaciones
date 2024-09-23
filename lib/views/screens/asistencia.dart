@@ -2,11 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/ingreso_salida_provider.dart';
-import 'package:push_notificaciones/views/screens/foto_registro.dart';
+import 'package:push_notificaciones/providers/foto_asistencia_provider.dart';
+import 'package:push_notificaciones/views/screens/skeleton_carga_images.dart';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
-class RegistroAsistencia extends StatelessWidget {
+class RegistroAsistencia extends StatefulWidget {
   const RegistroAsistencia({super.key});
+
+  @override
+  State<RegistroAsistencia> createState() => _RegistroAsistenciaState();
+}
+
+class _RegistroAsistenciaState extends State<RegistroAsistencia> {
+  @override
+  void initState() {
+    super.initState();
+    // Limpiar las imágenes cuando se inicializa la vista
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<FotoAsistenciaProvider>().clearImages();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +29,7 @@ class RegistroAsistencia extends StatelessWidget {
     final sizeH = MediaQuery.of(context).size.height;
     final user = context.watch<Authprovider>().conductor;
     final asistenciaProvider = context.watch<IngresoSalidaAsistencia>();
+    final fotoProvider = context.watch<FotoAsistenciaProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -46,32 +62,54 @@ class RegistroAsistencia extends StatelessWidget {
       body: Container(
         width: sizeW,
         height: sizeH,
-        decoration: const BoxDecoration(
-        ),
+        decoration: const BoxDecoration(),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+             
               children: [
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    
                     children: [
+                      // Mostrar imágenes seleccionadas o tomadas
+                      
+                      const Text(
+                        'Foto Registro',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20),
+                      fotoProvider.isLoading
+                          ? GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 8,
+                                mainAxisSpacing: 8,
+                              ),
+                              itemCount: 2,
+                              itemBuilder: (context, index) {
+                                return const Center(child:  ShimmerCargaImages());
+                              })
+                          : _selectImages(fotoProvider),
+
                       const SizedBox(height: 20),
                       // Botón de Ingreso
                       GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const FotoRegistro()));
-                          asistenciaProvider.ingresoHabilitado ? asistenciaProvider.registrarIngreso : null;
-                          
-                        },
+                        onTap: asistenciaProvider.ingresoHabilitado
+                            ? asistenciaProvider.registrarIngreso
+                            : null,
                         child: ClipOval(
                           child: Container(
                             width: 100,
                             height: 100,
-                            color: asistenciaProvider.ingresoHabilitado ? Colors.green : Colors.green.withOpacity(0.5),
+                            color: asistenciaProvider.ingresoHabilitado
+                                ? Colors.green
+                                : Colors.green.withOpacity(0.5),
                             child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -97,15 +135,19 @@ class RegistroAsistencia extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 50),
-                
+
                       // Botón de Salida
                       GestureDetector(
-                        onTap: asistenciaProvider.salidaHabilitada ? asistenciaProvider.registrarSalida : null,
+                        onTap: asistenciaProvider.salidaHabilitada
+                            ? asistenciaProvider.registrarSalida
+                            : null,
                         child: ClipOval(
                           child: Container(
                             width: 100,
                             height: 100,
-                            color: asistenciaProvider.salidaHabilitada ? Colors.red : Colors.red.withOpacity(0.5),
+                            color: asistenciaProvider.salidaHabilitada
+                                ? Colors.red
+                                : Colors.red.withOpacity(0.5),
                             child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -130,13 +172,12 @@ class RegistroAsistencia extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'Es importante registrar Tu ingreso y salida',
+                  'Es importante registrar tu ingreso y salida',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -148,6 +189,109 @@ class RegistroAsistencia extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.white,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        onPressed: () {
+          _botonSheetModal(context, fotoProvider);
+        },
+        child: const Icon(
+          Icons.camera_alt_outlined,
+          color: Colors.white,
+          size: 35,
+        ),
+      ),
     );
+  }
+
+  Widget _selectImages(FotoAsistenciaProvider fotoProvider) {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: fotoProvider.selectedImagesAsis
+          .map((image) => Stack(
+                children: [
+                  Image.file(
+                    image,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        fotoProvider.removeImagen(image);
+                      },
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.red,
+                      ),
+                    ),
+                  )
+                ],
+              ))
+          .toList(),
+    );
+  }
+
+  Future<dynamic> _botonSheetModal(
+      BuildContext context, FotoAsistenciaProvider fotoProvider) {
+    return showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+        ),
+        builder: (BuildContext context) {
+          return Container(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 60,
+                  height: 5,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  'Seleccione un opción',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87),
+                ),
+                Divider(color: Colors.grey[300]),
+                ListTile(
+                  leading: Icon(Icons.photo_library, color: Colors.blue[100]),
+                  title: const Text(
+                    'Galería',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    fotoProvider.ImagesGallery();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.photo_camera, color: Colors.blue[100]),
+                  title: const Text(
+                    'Cámara',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    fotoProvider.takePhotoAsist();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
   }
 }

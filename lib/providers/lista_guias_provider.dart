@@ -51,4 +51,10 @@ class ListaGuiaProvider with ChangeNotifier {
     _filteredGuia.removeWhere((item) => item.guia == guia);
     notifyListeners();
   }
+
+  void eliminarVariasGuias(List<String> guiasEliminar){
+    _guia.removeWhere((item) => guiasEliminar.contains(item.guia));
+    _filteredGuia.removeWhere((item) => guiasEliminar.contains(item));
+    notifyListeners();
+  }
 }

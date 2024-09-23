@@ -20,7 +20,7 @@ class FotoAsistenciaProvider with ChangeNotifier {
     if (pickFiles != null && pickFiles.isNotEmpty) {
       List<File> compressedImages = [];
       for (var file in pickFiles) {
-        File compressedFile = await _compressImagen(File(file.path));
+        File compressedFile = await _compressImage(File(file.path));
         compressedImages.add(compressedFile);
       }
       _selectedImagesAsis.addAll(compressedImages);
@@ -34,25 +34,39 @@ class FotoAsistenciaProvider with ChangeNotifier {
     final pickedFiles =
         await _pickerAsistencia.pickImage(source: ImageSource.camera);
     if (pickedFiles != null) {
-      File compressedFile = await _compressImagen(File(pickedFiles.path));
+      File compressedFile = await _compressImage(File(pickedFiles.path));
       _selectedImagesAsis.add(compressedFile);
       notifyListeners();
     }
     setLoading(false);
   }
 
-  Future<File> _compressImagen(File imageFile) async {
-    final bytes = await imageFile.readAsBytes();
-    final image = img.decodeImage(bytes);
+  
+  
+  //metodo para comprimir la imagen
+  Future<File> _compressImage(File imageFile) async {
+  final bytes = await imageFile.readAsBytes();
+  final image = img.decodeImage(bytes);
 
-    // comprimier la imagen
-    final resized = img.copyResize(image!,
-        width: 800, height: 800); // aqui cambias el tamaño
-    final compressedBytes = img.encodeJpg(resized, quality: 85);
-    final compressedFile = File(imageFile.path)
-      ..writeAsBytesSync(compressedBytes);
-    return compressedFile;
+  if (image == null) {
+    throw Exception('No se pudo decodificar la imagen.');
   }
+
+  // Calcular las nuevas dimensiones reduciendo el 20%
+  final int newWidth = (image.width * 0.8).toInt();
+  final int newHeight = (image.height * 0.8).toInt();
+
+  // Redimensionar la imagen
+  final resized = img.copyResize(image, width: newWidth, height: newHeight);
+
+  // Comprimir la imagen con calidad 85 (puedes ajustar la calidad si es necesario)
+  final compressedBytes = img.encodeJpg(resized, quality: 85);
+
+  // Escribir la imagen comprimida a un nuevo archivo
+  final compressedFile = File(imageFile.path)..writeAsBytesSync(compressedBytes);
+
+  return compressedFile;
+}
 
   void removeImagen(File image) {
     _selectedImagesAsis.remove(image);
@@ -61,6 +75,7 @@ class FotoAsistenciaProvider with ChangeNotifier {
 
   void clearImages() {
     _selectedImagesAsis.clear();
+    notifyListeners();
   }
 
   void setLoading(bool value) {

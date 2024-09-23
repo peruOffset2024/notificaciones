@@ -31,8 +31,6 @@ class RegistroSalida extends StatefulWidget {
   State<RegistroSalida> createState() => _RegistroSalidaState();
 }
 
-
-
 class _RegistroSalidaState extends State<RegistroSalida> {
   final TextEditingController _lugarEntrega = TextEditingController();
   Location location = Location();
@@ -47,7 +45,6 @@ class _RegistroSalidaState extends State<RegistroSalida> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     final providers = context.watch<GuiaxClienteProvider>().guiaxCliente;
@@ -56,8 +53,8 @@ class _RegistroSalidaState extends State<RegistroSalida> {
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
     //final locationProv = context.read<LocationProvider>().isLoading;
 
-    return isConnected ? 
-         Scaffold(
+    return isConnected
+        ? Scaffold(
             backgroundColor: Colors.white,
             resizeToAvoidBottomInset: true,
             appBar: AppBar(
@@ -346,13 +343,12 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                           actions: [
                             TextButton(
                               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[350],
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide(color: Colors.black38, width: 1)
-                )
-              ),
+                                  backgroundColor: Colors.grey[350],
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      side: const BorderSide(
+                                          color: Colors.black38, width: 1))),
                               onPressed: () {
                                 Navigator.pop(context, true);
                                 Navigator.of(context).pop();
@@ -380,13 +376,12 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                           actions: [
                             TextButton(
                               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[350],
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide(color: Colors.black38, width: 1)
-                )
-              ),
+                                  backgroundColor: Colors.grey[350],
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      side: const BorderSide(
+                                          color: Colors.black38, width: 1))),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -416,7 +411,6 @@ class _RegistroSalidaState extends State<RegistroSalida> {
                 child: const Text(
                   'Registrar Salida',
                   style: TextStyle(
-                    
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -427,9 +421,8 @@ class _RegistroSalidaState extends State<RegistroSalida> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
           )
-          : const NoInternetScreen();
+        : const NoInternetScreen();
   }
-
 
   Widget _buildObservationsField() {
     return Container(

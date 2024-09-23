@@ -5,6 +5,7 @@ import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/env_img_provider.dart';
 import 'package:push_notificaciones/providers/env_lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/estados_valores_provider.dart';
+import 'package:push_notificaciones/providers/foto_asistencia_provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/asistencia_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
@@ -13,6 +14,7 @@ import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/ingreso_salida_provider.dart';
 import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
+import 'package:push_notificaciones/providers/multiples_guias_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/reg_sal_switch_provider.dart';
 import 'package:push_notificaciones/providers/envios_al_servidor.dart';
@@ -44,7 +46,9 @@ void main() async {
     ChangeNotifierProvider(create: (_) => EnvioImagenesProvider()), 
     ChangeNotifierProvider(create: (_) => EstadosValoresProvider()), 
     ChangeNotifierProvider(create: (_) => TransporteServiciosProvider()), 
-    ChangeNotifierProvider(create: (_) => EnviarListaGuiasProvider()),
+    ChangeNotifierProvider(create: (_) => EnviarListaGuiasProvider()), 
+    ChangeNotifierProvider(create: (_) => FotoAsistenciaProvider()), 
+    ChangeNotifierProvider(create: (_) => MultiplesGuiasProvider()),
   ], child: const MyApp()));
 }
 
