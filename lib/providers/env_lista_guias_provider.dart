@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+
+class EnviarListaGuiasProvider with ChangeNotifier {
+  List<String> _guiasSeleccionadas = [];
+
+  List<String> get guiasSeleccionadas => _guiasSeleccionadas;
+
+  void agregarGuia(String guia) {
+    _guiasSeleccionadas.add(guia);
+    notifyListeners();
+  }
+
+  void eliminarGuia(String guia) {
+    _guiasSeleccionadas.remove(guia);
+    notifyListeners();
+  }
+
+  void limpiar() {
+    _guiasSeleccionadas.clear();
+    notifyListeners();
+  }
+}

@@ -7,6 +7,7 @@ import 'package:push_notificaciones/providers/env_img_provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
+import 'package:push_notificaciones/views/screens/skeleton_carga_images.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class RegistroDatos extends StatefulWidget {
@@ -112,7 +113,43 @@ class _RegistroDatosState extends State<RegistroDatos> {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 20),
-                            _buildSelectedImages(imagenesProvider),
+                            // Aquí se muestra el shimmer mientras las imágenes están cargando
+                            imagenesProvider.isLoading
+                                ? GridView.builder(
+                                    // `shrinkWrap: true` indica que el GridView solo ocupará el espacio necesario para sus elementos.
+                                    // No expandirá su tamaño más allá del contenido visible.
+                                    shrinkWrap: true,
+
+                                    // `physics: NeverScrollableScrollPhysics()` desactiva el desplazamiento del GridView,
+                                    // ya que será contenido dentro de otro scroll (como un ScrollView o ListView).
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+
+                                    // `gridDelegate` define el diseño de la cuadrícula. En este caso, `SliverGridDelegateWithFixedCrossAxisCount`
+                                    // crea una cuadrícula con un número fijo de columnas. Aquí hay 3 columnas en total.
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount:
+                                          3, // Número de columnas en la cuadrícula, en este caso 3.
+                                      crossAxisSpacing:
+                                          8, // Espaciado horizontal entre los elementos de la cuadrícula.
+                                      mainAxisSpacing:
+                                          8, // Espaciado vertical entre los elementos de la cuadrícula.
+                                    ),
+
+                                    // `itemCount` especifica cuántos elementos o widgets mostrará el GridView.
+                                    // En este caso, se muestran 6 placeholders.
+                                    itemCount:
+                                        6, // Número de placeholders que quieres mostrar
+
+                                    // `itemBuilder` es la función que genera cada uno de los widgets que se mostrarán en el GridView.
+                                    // Recibe el contexto y el índice de cada widget y construye el widget correspondiente.
+                                    itemBuilder: (context, index) {
+                                      // Aquí estamos mostrando el widget `ShimmerCargaImages` como un placeholder en cada celda de la cuadrícula.
+                                      return const ShimmerCargaImages();
+                                    },
+                                  )
+                                : _buildSelectedImages(imagenesProvider),
                             const SizedBox(height: 20),
                             _buildObservacionInput(),
                             const SizedBox(height: 30),
@@ -131,28 +168,6 @@ class _RegistroDatosState extends State<RegistroDatos> {
                     );
                   },
                 ),
-                if (imagenesProvider
-                    .isLoading) // Mostrar el indicador de carga si isLoading es verdadero
-                  Container(
-                    color: Colors.white, // Fondo semitransparente
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(
-                            backgroundColor: Colors.blue,
-                            color: Colors.grey[100],
-                            strokeWidth: 6.0, // Grosor de la línea
-                          ),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Cargando, por favor espere...',
-                            style: TextStyle(color: Colors.black, fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
               ],
             ),
             floatingActionButtonLocation:
@@ -162,33 +177,36 @@ class _RegistroDatosState extends State<RegistroDatos> {
         : const NoInternetScreen();
   }
 
-   Widget _toogleButton(){
-    return widget.inicio  == '1' || widget.fin == '3'? const Text('') : Column(
-      children: [
-        const Text('Desactivado / Activo'),
-        const SizedBox(height: 15,),
-        Transform.scale(
-              scale: 1.2, // Escala el Switch
-              child: Switch(
-                value: isSwitched,
-                
-                onChanged: (value) {
-                  setState(() {
-                    isSwitched = value;
-                    condicion = isSwitched ? '1' : '0'; // Asignar 1 cuando esté activo, 0 cuando esté inactivo
-                  });
-                },
-                inactiveThumbColor: Colors.grey[100], // circulo centro
-                activeColor: Colors.green,
-                inactiveTrackColor: Colors.grey,
+  Widget _toogleButton() {
+    return widget.inicio == '1' || widget.fin == '3'
+        ? const Text('')
+        : Column(
+            children: [
+              const Text('Desactivado / Activo'),
+              const SizedBox(
+                height: 15,
               ),
-            ),
-      ],
-    );
-      
-  
-  }
+              Transform.scale(
+                scale: 1.2, // Escala el Switch
+                child: Switch(
+                  value: isSwitched,
 
+                  onChanged: (value) {
+                    setState(() {
+                      isSwitched = value;
+                      condicion = isSwitched
+                          ? '1'
+                          : '0'; // Asignar 1 cuando esté activo, 0 cuando esté inactivo
+                    });
+                  },
+                  inactiveThumbColor: Colors.grey[100], // circulo centro
+                  activeColor: Colors.green,
+                  inactiveTrackColor: Colors.grey,
+                ),
+              ),
+            ],
+          );
+  }
 
   Widget _comboBox(String title, List<String> items, String? value,
       ValueChanged<String?> onChanged) {
@@ -339,7 +357,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
               usuario: usuario,
               imagenes: imagen,
               comentario: _observacionController.text,
-              condicion: _selectedTipeDelivery, distribucion: condicion);
+              condicion: _selectedTipeDelivery,
+              distribucion: condicion);
 
           showDialog(
             // ignore: use_build_context_synchronously
@@ -353,26 +372,35 @@ class _RegistroDatosState extends State<RegistroDatos> {
                 actions: [
                   TextButton(
                     style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[350],
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide(color: Colors.black38, width: 1)
-                )
-              ),
+                        backgroundColor: Colors.grey[350],
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                                color: Colors.black38, width: 1))),
                     onPressed: () {
-                      condicion == '1' ? context.read<GuiasSalidasProvider>().eliminarGuias(widget.guia) : '';
-                      widget.fin == "3" ? context.read<GuiasSalidasProvider>().eliminarGuias(widget.guia) : '';
-                          Navigator.of(context).pop(); // Cierra el diálogo de éxito
+                      condicion == '1'
+                          ? context
+                              .read<GuiasSalidasProvider>()
+                              .eliminarGuias(widget.guia)
+                          : '';
+                      widget.fin == "3"
+                          ? context
+                              .read<GuiasSalidasProvider>()
+                              .eliminarGuias(widget.guia)
+                          : '';
+                      Navigator.of(context).pop(); // Cierra el diálogo de éxito
                       Navigator.of(context).pop();
-                      Navigator.of(context).pop(); 
+                      Navigator.of(context).pop();
                       // Retorna a la página anterior
                     },
-                    child: const Text('OK', style: TextStyle(color: Colors.black),),
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ],
               );
-              
             },
           );
         } catch (error) {
@@ -385,20 +413,25 @@ class _RegistroDatosState extends State<RegistroDatos> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title:  Icon(Icons.warning_amber_rounded, size: 100,color: Colors.yellow[700],),
+                title: Icon(
+                  Icons.warning_amber_rounded,
+                  size: 100,
+                  color: Colors.yellow[700],
+                ),
                 content: const Text(
-                    'FALTA EL ESTADO DE PEDIDO', style: TextStyle(fontSize: 14),),
-                    backgroundColor: Colors.red[100],
+                  'FALTA EL ESTADO DE PEDIDO',
+                  style: TextStyle(fontSize: 14),
+                ),
+                backgroundColor: Colors.red[100],
                 actions: [
                   TextButton(
                     style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[350],
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide(color: Colors.black38, width: 1)
-                )
-              ),
+                        backgroundColor: Colors.grey[350],
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                                color: Colors.black38, width: 1))),
                     onPressed: () {
                       Navigator.of(context).pop(); // Cierra el diálogo de error
                     },

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:push_notificaciones/app.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/env_img_provider.dart';
+import 'package:push_notificaciones/providers/env_lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/estados_valores_provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/asistencia_provider.dart';
@@ -42,8 +43,8 @@ void main() async {
     ChangeNotifierProvider(create: (_) => ConnectivityProvider()), 
     ChangeNotifierProvider(create: (_) => EnvioImagenesProvider()), 
     ChangeNotifierProvider(create: (_) => EstadosValoresProvider()), 
-    ChangeNotifierProvider(create: (_) => TransporteServiciosProvider()),
-    
+    ChangeNotifierProvider(create: (_) => TransporteServiciosProvider()), 
+    ChangeNotifierProvider(create: (_) => EnviarListaGuiasProvider()),
   ], child: const MyApp()));
 }
 
