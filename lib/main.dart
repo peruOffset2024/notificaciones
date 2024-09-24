@@ -14,6 +14,7 @@ import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/ingreso_salida_provider.dart';
 import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
+import 'package:push_notificaciones/providers/modal_switch_provider.dart';
 import 'package:push_notificaciones/providers/multiples_guias_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/reg_sal_switch_provider.dart';
@@ -48,7 +49,8 @@ void main() async {
     ChangeNotifierProvider(create: (_) => TransporteServiciosProvider()), 
     ChangeNotifierProvider(create: (_) => EnviarListaGuiasProvider()), 
     ChangeNotifierProvider(create: (_) => FotoAsistenciaProvider()), 
-    ChangeNotifierProvider(create: (_) => MultiplesGuiasProvider()),
+    ChangeNotifierProvider(create: (_) => MultiplesGuiasProvider()), 
+    ChangeNotifierProvider(create: (_) => ModalSwitchProvider())
   ], child: const MyApp()));
 }
 

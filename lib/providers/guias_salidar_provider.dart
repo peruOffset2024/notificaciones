@@ -23,7 +23,7 @@ class GuiasSalidasProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
-
+      print('respuestas desde la api: ---> : $jsonData'); 
       // Verificar si la respuesta contiene un mensaje de error en lugar de una lista
       if (jsonData is Map<String, dynamic> && jsonData.containsKey('error')) {
         // Manejar el caso de error
@@ -34,6 +34,8 @@ class GuiasSalidasProvider with ChangeNotifier {
         // Si es una lista, procesarla normalmente
         _productos = jsonData.map((item) => SalidaGuia.fromJson(item)).toList();
         _filteredProductos = _productos; // Al principio, ambas listas son iguales
+        print('Datos obtenidos desde la api: ---> : $_productos'); 
+        print('Datos obtenidos desde la api: ---> : $_productos'); 
         
       } else {
         throw Exception('Unexpected response format');

@@ -36,6 +36,18 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         actions: [
+          FloatingActionButton(
+            mini: true,
+        backgroundColor: Colors.black,
+        onPressed: () {
+          _botonSheetModal(context, fotoProvider);
+        },
+        child: const Icon(
+          Icons.camera_alt_outlined,
+          color: Colors.white,
+          size: 30,
+        ),
+      ),
           Builder(builder: (context) {
             return GestureDetector(
               child: CircleAvatar(
@@ -189,18 +201,7 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
         ),
       ),
       backgroundColor: Colors.white,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
-        onPressed: () {
-          _botonSheetModal(context, fotoProvider);
-        },
-        child: const Icon(
-          Icons.camera_alt_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-      ),
+      
     );
   }
 

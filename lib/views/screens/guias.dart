@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/env_lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
+import 'package:push_notificaciones/providers/modal_switch_provider.dart';
 import 'package:push_notificaciones/providers/multiples_guias_provider.dart';
 import 'package:push_notificaciones/services/scroll_behavior.dart';
 import 'package:push_notificaciones/views/screens/skltn_guia_emitidas.dart';
+import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class GuiasVentasSeleccionadas extends StatefulWidget {
@@ -20,8 +23,10 @@ class GuiasVentasSeleccionadas extends StatefulWidget {
 
 class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
   final TextEditingController _searchController = TextEditingController();
+  Location location = Location();
   bool isSwitched = false;
-  String condicional = '0';
+  String condicional = '';
+  //bool _isLoading = false; // Variable para controlar el estado de carga
 
   // Lista para almacenar las guías seleccionadas
 
@@ -40,6 +45,8 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
   @override
   Widget build(BuildContext context) {
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
+    final listadeLasGuias = context.watch<ListaGuiaProvider>();
+    final user = context.watch<Authprovider>().conductor;
 
     return isConnected
         ? ScrollConfiguration(
@@ -58,7 +65,31 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                 ),
                 centerTitle: true,
                 automaticallyImplyLeading: false,
+                actions: [
+                  
+          Builder(builder: (context) {
+            return GestureDetector(
+              child: CircleAvatar(
+                backgroundColor: Colors.red[100],
+                minRadius: 25,
+                child: Text(
+                  user[0].toUpperCase(),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          }),
+          const SizedBox(width: 10),
+        ],
+              ),
+              drawer: MyCustomDrawer(usuario: user),
               backgroundColor: Colors.white,
               body: Container(
                 padding: const EdgeInsets.all(10.0),
@@ -102,12 +133,12 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
 
                     // Tabla de resultados
                     Expanded(
-                      child: Consumer<ListaGuiaProvider>(
-                        builder: (context, provider, child) {
-                          if (provider.isLoading) {
+                      child: Consumer<LocationProvider>(
+                        builder: (context, locprovider, child) {
+                          if (locprovider.isLoading) {
                             return const ShimmerLoaderWidget();
                           }
-                          if (provider.guias.isEmpty) {
+                          if (listadeLasGuias.guias.isEmpty) {
                             return const Center(
                               child: Text(
                                 'No hay resultados',
@@ -117,9 +148,9 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                           }
 
                           return ListView.builder(
-                            itemCount: provider.guias.length,
+                            itemCount: listadeLasGuias.guias.length,
                             itemBuilder: (context, index) {
-                              final guia = provider.guias[index];
+                              final guia = listadeLasGuias.guias[index];
                               final isSelected = context
                                   .read<EnviarListaGuiasProvider>()
                                   .guiasSeleccionadas
@@ -144,6 +175,24 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
+                                          Checkbox(
+                                            value: isSelected,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                if (value == true) {
+                                                  context
+                                                      .read<
+                                                          EnviarListaGuiasProvider>()
+                                                      .agregarGuia(guia.guia);
+                                                } else {
+                                                  context
+                                                      .read<
+                                                          EnviarListaGuiasProvider>()
+                                                      .eliminarGuia(guia.guia);
+                                                }
+                                              });
+                                            },
+                                          ),
                                           Expanded(
                                             child: Padding(
                                               padding: const EdgeInsets.only(
@@ -219,24 +268,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                                             ),
                                           ),
                                           // Checkbox para seleccionar las guías
-                                          Checkbox(
-                                            value: isSelected,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                if (value == true) {
-                                                  context
-                                                      .read<
-                                                          EnviarListaGuiasProvider>()
-                                                      .agregarGuia(guia.guia);
-                                                } else {
-                                                  context
-                                                      .read<
-                                                          EnviarListaGuiasProvider>()
-                                                      .eliminarGuia(guia.guia);
-                                                }
-                                              });
-                                            },
-                                          ),
+                                          
                                         ],
                                       ),
                                     ),
@@ -253,90 +285,162 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                   ],
                 ),
               ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.endFloat,
-              floatingActionButton: FloatingActionButton(
+              floatingActionButton: FloatingActionButton. extended(
+               isExtended: true,
+                backgroundColor: Colors.lightBlueAccent[400],
                 onPressed: () {
-                  _showModalBoton(context, isSwitched, condicional);
+                  final guiasSeleccionadasOne = context
+                      .read<EnviarListaGuiasProvider>()
+                      .guiasSeleccionadas;
+                  // Validar si la lista tiene elementos
+                  if (guiasSeleccionadasOne.isNotEmpty) {
+                    _showModalBoton(context, isSwitched, condicional);
+                  } else {
+                    // Puedes mostrar un mensaje o un snackbar si lo deseas
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('No hay guías seleccionadas'),
+                      ),
+                    );
+                  }
                 },
-                child: const Icon(Icons.file_open_sharp),
+                label: const Icon(Icons.file_open_rounded, color: Colors.black, size: 28,),
+              
               ),
             ),
           )
         : const NoInternetScreen();
   }
 
-  Future<dynamic> _showModalBoton(
-      BuildContext context, bool isSwitched, String condicional) {
-    return showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        final sizeb = MediaQuery.of(context).size;
-        return Container(
-          height: sizeb.height * 0.6,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: SingleChildScrollView(
-            child: Consumer<EnviarListaGuiasProvider>(
-              builder: (context, seleccionadasProvider, child) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (seleccionadasProvider.guiasSeleccionadas.isNotEmpty)
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Guías seleccionadas:',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 20),
-                            Wrap(
-                              spacing: 8.0,
-                              children: seleccionadasProvider.guiasSeleccionadas
-                                  .map((guia) {
-                                return Chip(
-                                  label: Text(guia),
-                                  backgroundColor: Colors.grey[400],
-                                  onDeleted: () {
-                                    setState(() {
-                                      seleccionadasProvider.eliminarGuia(guia);
-                                    });
-                                  },
-                                );
-                              }).toList(),
-                            ),
-                          ],
-                        ),
-                      ),
-                    Transform.scale(
-                      scale: 1.2,
-                      child: Switch(
-                        value: isSwitched,
-                        onChanged: (value) {
-                          isSwitched = value;
-                          condicional = isSwitched ? '1' : '0';
-                        },
-                        inactiveThumbColor: Colors.grey[100], // circulo centro
-                        activeColor: Colors.green,
-                        inactiveTrackColor: Colors.grey,
+ Future<dynamic> _showModalBoton(
+    BuildContext context, bool isSwitched, String condicional) {
+  return showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.transparent,
+    builder: (BuildContext context) {
+      final sizeb = MediaQuery.of(context).size;
+      return Container(
+        height: sizeb.height * 0.6,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 15,
+              spreadRadius: 5,
+              offset: const Offset(0, -5), // sombreado superior
+            )
+          ],
+        ),
+        child: SingleChildScrollView(
+          child: Consumer<EnviarListaGuiasProvider>(
+            builder: (context, seleccionadasProvider, child) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 20),
+                  // Título principal
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: const Text(
+                      'Confirmar Registro de Salida',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF003366), // Azul oscuro estilo bancario
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    TextButton(
+                  ),
+                  const SizedBox(height: 20),
+                  if (seleccionadasProvider.guiasSeleccionadas.isNotEmpty)
+                    Container(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Guías seleccionadas:',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            spacing: 8.0,
+                            children: seleccionadasProvider.guiasSeleccionadas
+                                .map((guia) {
+                              return Chip(
+                                label: Text(
+                                  guia,
+                                  style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                backgroundColor: Colors.grey[300],
+                                deleteIconColor: Colors.red,
+                                onDeleted: () {
+                                  setState(() {
+                                    seleccionadasProvider.eliminarGuia(guia);
+                                  });
+                                },
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Distribución',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Transform.scale(
+                    scale: 1.2,
+                    child: Consumer<ModalSwitchProvider>(
+                      builder: (context, switchProvider, child) {
+                        return Switch(
+                          value: switchProvider.isSwitched,
+                          onChanged: (value) {
+                            switchProvider.toggleSwitch();
+                            print('La respuesta de value: $value');
+                          },
+                          inactiveThumbColor: Colors.grey[200],
+                          activeColor: const Color(0xFF007BFF), // Azul profesional
+                          inactiveTrackColor: Colors.grey[400],
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Botón de registrar salida
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: TextButton(
                       style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        side: const BorderSide(color: Colors.black, width: 1),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        backgroundColor: const Color(0xFF003366), // Azul oscuro bancario
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        side: const BorderSide(color: Colors.grey, width: 1),
                       ),
                       onPressed: () async {
-                       final guias = context
+                        try {
+                          final condicional = context
+                                  .read<ModalSwitchProvider>()
+                                  .isSwitched
+                              ? '1'
+                              : '0';
+                          final guias = context
                               .read<EnviarListaGuiasProvider>()
                               .guiasSeleccionadas;
                           final usuario =
@@ -349,33 +453,10 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                               .read<LocationProvider>()
                               .currentLocation
                               ?.latitude;
-
-                              print('guias --> :$guias');
-                          print('usuario --> :$usuario');
-                          print('latitud --> :$latitud');
-                          print('longitud --> :$longitud');
-                          print('condicional --> :$condicional');
-                        
-                       
-
-                        try {
-                          final guias = context
-                              .watch<EnviarListaGuiasProvider>()
-                              .guiasSeleccionadas;
-                          final usuario =
-                              context.watch<Authprovider>().username;
-                          final longitud = context
-                              .watch<LocationProvider>()
-                              .currentLocation
-                              ?.longitude;
-                          final latitud = context
-                              .watch<LocationProvider>()
-                              .currentLocation
-                              ?.latitude;
                           await context
                               .read<MultiplesGuiasProvider>()
-                              .EnviarMultiplesGuias(
-                                  guias, '', usuario, '$latitud', '$longitud', condicional);
+                              .enviarMultiplesGuias(guias, '', usuario,
+                                  '$latitud', '$longitud', condicional);
                           print('guias --> :$guias');
                           print('usuario --> :$usuario');
                           print('latitud --> :$latitud');
@@ -386,76 +467,118 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                               .eliminarVariasGuias(guias);
 
                           showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  backgroundColor: Colors.blue[50],
-                                  title: const Text(
-                                    'Excelente.',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.blue[50],
+                                title: const Text(
+                                  'Registro Exitoso',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  content: const Text(
-                                    'Tu registro de salida se realizó correctamente.',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
+                                ),
+                                content: const Text(
+                                  'Tu registro de salida se realizó correctamente.',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
                                   ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.grey[350],
-                                          elevation: 0,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              side: const BorderSide(
-                                                  color: Colors.black38,
-                                                  width: 1))),
-                                      child: const Text(
-                                        'Aceptar',
-                                        style: TextStyle(color: Colors.black),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, true);
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey[350],
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        side: const BorderSide(
+                                            color: Colors.black38, width: 1),
                                       ),
-                                    )
-                                  ],
-                                );
-                              });
+                                    ),
+                                    child: const Text(
+                                      'Aceptar',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  )
+                                ],
+                              );
+                            },
+                          );
                         } catch (error) {
-                          print('Error al Enviar datos al servidor $error');
-                        } 
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.red[50],
+                                content: const Text(
+                                  'Error: Las guías ya tienen salida.',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey[350],
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        side: const BorderSide(
+                                            color: Colors.black38, width: 1),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Aceptar',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } finally {
+                          context.read<EnviarListaGuiasProvider>().limpiar();
+                        }
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.blue,
-                        ),
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: 30,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.94,
+                        height: 40,
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.save, size: 25, color: Colors.white),
+                            Icon(Icons.save, size: 24, color: Colors.white),
                             SizedBox(width: 10),
-                            Text('Guardar',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white)),
+                            Text(
+                              'Registrar Salida',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    )
-                  ],
-                );
-              },
-            ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              );
+            },
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 }

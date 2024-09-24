@@ -18,6 +18,7 @@ class EnvioImagenesProvider with ChangeNotifier {
     required String comentario,
     required String? condicion,
     required String distribucion,
+    required String viaje,
     required List<File> imagenes, // Agregamos las imágenes como parámetro
   }) async {
     // Validar solo si condicion es requerida (cuando se pasa '2')
@@ -40,6 +41,7 @@ class EnvioImagenesProvider with ChangeNotifier {
       request.fields['comentario'] = comentario;
       request.fields['condicion'] = condicion ?? '';
       request.fields['distribucion'] = distribucion;
+      request.fields['viaje'] = viaje;
 
       // Mostrar los datos que se están enviando
       print('Datos que se están enviando:');
@@ -51,6 +53,7 @@ class EnvioImagenesProvider with ChangeNotifier {
       print('Comentario: $comentario');
       print('Condicion: $condicion');
       print('Dsitribucion: $distribucion');
+       print('viaje: $viaje');
 
       // Agregar imágenes y mostrar sus rutas
       for (var imagen in imagenes) {

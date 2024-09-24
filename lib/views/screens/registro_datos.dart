@@ -16,13 +16,15 @@ class RegistroDatos extends StatefulWidget {
     required this.guia,
     required this.inicio,
     required this.llegada,
-    required this.fin,
+    required this.fin, required this.viaje, required this.distribucion,
   });
 
   final String guia;
   final String inicio;
   final String llegada;
   final String fin;
+  final String viaje;
+  final String distribucion;
 
   @override
   State<RegistroDatos> createState() => _RegistroDatosState();
@@ -160,7 +162,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                               });
                             }),
                             const SizedBox(height: 20),
-                            _toogleButton()
+                            //_toogleButton()
                             // Espacio adicional para el FAB
                           ],
                         ),
@@ -177,7 +179,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
         : const NoInternetScreen();
   }
 
-  Widget _toogleButton() {
+ /* Widget _toogleButton() {
     return widget.inicio == '1' || widget.fin == '3'
         ? const Text('')
         : Column(
@@ -206,7 +208,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
               ),
             ],
           );
-  }
+  }*/
 
   Widget _comboBox(String title, List<String> items, String? value,
       ValueChanged<String?> onChanged) {
@@ -358,7 +360,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
               imagenes: imagen,
               comentario: _observacionController.text,
               condicion: _selectedTipeDelivery,
-              distribucion: condicion);
+              distribucion: condicion, viaje: widget.viaje);
+              
 
           showDialog(
             // ignore: use_build_context_synchronously

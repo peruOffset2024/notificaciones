@@ -1,27 +1,49 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class MultiplesGuiasProvider with ChangeNotifier{
-  Future<void> EnviarMultiplesGuias(List<String> guia, String lugarEntrega, String usuario, String latitud, String longitud, String distribucion) async{
-    try{
-      final response = await http.post(Uri.parse('http://190.107.181.163:81/aqnq/ajax/insert_guia.php?nro_guia=$guia&otro_lugarEntrega=$lugarEntrega&usuario=$usuario&latitud=$latitud&longitud=$longitud&distribucion=$distribucion'));
-      if(response.statusCode == 200){
-        final responseData = jsonDecode(response.body);
-        if(responseData['status'] == 'success'){
-          print('Datos insertados correctamente y estado actualizado en la base de datos.');
-        } else {
-          throw Exception('Error del servidor: ${responseData['message']}');
+class MultiplesGuiasProvider with ChangeNotifier {
+  Future<void> enviarMultiplesGuias(
+      List<String> guia,
+      String lugarEntrega,
+      String usuario,
+      String latitud,
+      String longitud,
+      String distribucion) async {
+    try {
+      // Convertir la lista de guías a una cadena JSON
+      String guiasFormateadas = jsonEncode(guia);
+      //String guiasFormateadas2 = guia.join(',');
+
+      final response = await http.post(
+        Uri.parse(
+          'http://190.107.181.163:81/aqnq/ajax/insert_guia.php?nro_guia=$guiasFormateadas&otro_lugarEntrega=$lugarEntrega&usuario=$usuario&latitud=$latitud&longitud=$longitud&distribucion=$distribucion',
+        ),
+      );
+
+      print(
+          'Respuesta del servidor: ${response.body}'); // Agrega esta línea para ver la respuesta
+      if (response.statusCode == 200) {
+        try {
+          final responseData = jsonDecode(response
+              .body); // Intentar decodificar el JSON solo si la respuesta es válida
+          if (responseData['status'] == 'success') {
+            print(
+                'Datos insertados correctamente y estado actualizado en la base de datos.');
+          } else {
+            throw Exception('Error del servidor: ${responseData['message']}');
+          }
+        } catch (e) {
+          print('Error de formato JSON: $e');
+          throw Exception('La respuesta del servidor no está en formato JSON.');
         }
       } else {
-        throw Exception('Error del de la solicitud estad: ${response.statusCode}');
+        throw Exception(
+            'Error de la solicitud, estado: ${response.statusCode}');
       }
-    } catch (error){
+    } catch (error) {
       print('Error al enviar datos: $error');
       throw Exception('Error al intentar insertar datos');
     }
-
   }
-
 }
