@@ -19,6 +19,7 @@ class ImagenesProvider with ChangeNotifier {
   Future<void> pickImagesFromGallery() async {
     setLoading(true);
     
+    // ignore: unnecessary_nullable_for_final_variable_declarations
     final List<XFile>? pickedFiles = await _picker.pickMultiImage();
 
     if (pickedFiles != null && pickedFiles.isNotEmpty) {

@@ -13,8 +13,10 @@ class FotoAsistenciaProvider with ChangeNotifier {
   List<File> get selectedImagesAsis => _selectedImagesAsis;
   bool get isLoading => _isLoading;
 
+  // ignore: non_constant_identifier_names
   Future<void> ImagesGallery() async {
     setLoading(true);
+    // ignore: unnecessary_nullable_for_final_variable_declarations
     final List<XFile>? pickFiles = await _pickerAsistencia.pickMultiImage();
 
     if (pickFiles != null && pickFiles.isNotEmpty) {

@@ -178,7 +178,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                                         .login(_usernameController.text);
                                     if (authprovider.authenticated) {
                                       // ignore: use_build_context_synchronously
-                                      Navigator.push(
+                                      Navigator.pushReplacement(
                                           // ignore: use_build_context_synchronously
                                           context,
                                           MaterialPageRoute(

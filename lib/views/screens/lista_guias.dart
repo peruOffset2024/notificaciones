@@ -10,7 +10,7 @@ import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class ListaGuiasReporte extends StatefulWidget {
   const ListaGuiasReporte({super.key});
-
+ 
   @override
   State<ListaGuiasReporte> createState() => _ListaGuiasReporteState();
 }
@@ -229,4 +229,4 @@ class _ListaGuiasReporteState extends State<ListaGuiasReporte> {
       ),
     ) : const NoInternetScreen();
   }
-}
+} 

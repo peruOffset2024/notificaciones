@@ -17,15 +17,33 @@ class ListaGuiaProvider with ChangeNotifier {
     try {
       final response = await http.get(Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_guias.php?ruc=$ruc'));
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        _guia = data.map((jsonItem) => ListaGuias.fromJson(jsonItem)).toList();
-        _filteredGuia = _guia; // Al principio, ambas listas son iguales
+        final  data = jsonDecode(response.body);
+        // Verificar si la respuesta contiene un mensaje de error en lugar de una lista
+        if(data is Map<String, dynamic> && data.containsKey('error')) {
+          // Manejar el caso de error
+         // ignore: avoid_print
+        print('Error: ${data['error']}');
+        _guia = [];
+        _filteredGuia = [];
+        } else if (data is List<dynamic>){
+          // Si es una lista, procesarla normalmente
+          _guia = data.map((jsonItem) => ListaGuias.fromJson(jsonItem)).toList();
+          _filteredGuia = _guia; // Al principio, ambas listas son iguales
+           // ignore: avoid_print
+        print('Datos obtenidos desde la api: ---> : $_guia'); 
+        
+        } else {
+          // Manejar el caso de que la respuesta no sea una lista ni un mapa
+          
+          throw Exception('NO es el formato esperado');
+        }
+
         
       } else {
-        throw Exception('Failed to load guias');
+        throw Exception('fallo al cargar las guías');
       }
     } catch (e) {
-      throw Exception('Failed to load guias: $e');
+      throw Exception('fallo al cargar las guías: $e');
     }
     finally{
       _isLoading = false;

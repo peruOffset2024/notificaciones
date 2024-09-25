@@ -10,6 +10,7 @@ import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/asistencia_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
+import 'package:push_notificaciones/providers/guias_serv_mult_provider.dart';
 import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/ingreso_salida_provider.dart';
 import 'package:push_notificaciones/providers/lista_guias_provider.dart';
@@ -50,7 +51,8 @@ void main() async {
     ChangeNotifierProvider(create: (_) => EnviarListaGuiasProvider()), 
     ChangeNotifierProvider(create: (_) => FotoAsistenciaProvider()), 
     ChangeNotifierProvider(create: (_) => MultiplesGuiasProvider()), 
-    ChangeNotifierProvider(create: (_) => ModalSwitchProvider())
+    ChangeNotifierProvider(create: (_) => ModalSwitchProvider()), 
+    ChangeNotifierProvider(create: (_) => GuiasServiciosMultiplesProvider()),
   ], child: const MyApp()));
 }
 

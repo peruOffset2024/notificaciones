@@ -8,10 +8,10 @@ import 'package:push_notificaciones/views/screens/registro_datos.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class SeguimientoPedidoScreen extends StatefulWidget {
-  const SeguimientoPedidoScreen({super.key, required this.guia, required this.viaje, required this.distribucion,});
+  const SeguimientoPedidoScreen({super.key, required this.guia, required this.viaje,});
   final String guia;
   final String viaje;
-  final String distribucion;
+
   
 
   @override
@@ -158,7 +158,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                                             guia: widget.guia,
                                             inicio: valor1,
                                             llegada: '',
-                                            fin: '', viaje: widget.viaje, distribucion: widget.distribucion,
+                                            fin: '', viaje: widget.viaje,
                                           ),
                                         ),
                                       );
@@ -221,7 +221,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                                             guia: widget.guia,
                                             llegada: valor2,
                                             inicio: '',
-                                            fin: '', viaje: widget.viaje, distribucion: widget.distribucion,
+                                            fin: '', viaje: widget.viaje,
                                           ),
                                         ),
                                       );
@@ -282,7 +282,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                                             guia: widget.guia,
                                             inicio: '',
                                             llegada: '',
-                                            fin: valor3, viaje: widget.viaje, distribucion: widget.distribucion,
+                                            fin: valor3, viaje: widget.viaje,
                                           ),
                                         ),
                                       );

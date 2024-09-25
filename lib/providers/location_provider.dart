@@ -29,10 +29,12 @@ class LocationProvider with ChangeNotifier {
     // ignore: no_leading_underscores_for_local_identifiers
     bool _serviceEnabled = await _location.serviceEnabled();
     _isLocationEnabled = _serviceEnabled; // Asigna si la ubicación está habilitada
+     // ignore: avoid_print
      print('Ubicación habilitada: $_isLocationEnabled'); // Agrega este print aquí
     if (!_serviceEnabled) {
       _serviceEnabled = await _location.requestService();
       _isLocationEnabled = _serviceEnabled; // Actualiza si se habilita el servicio de ubicación
+       // ignore: avoid_print
        print('Ubicación habilitada después de solicitar: $_isLocationEnabled'); // Y aquí también
       if (!_serviceEnabled) {
         _locationMessage = "Location services are disabled.";
@@ -81,6 +83,7 @@ class LocationProvider with ChangeNotifier {
       bool serviceEnabled = await _location.serviceEnabled();
       if (serviceEnabled != _isLocationEnabled) {
         _isLocationEnabled = serviceEnabled;
+         // ignore: avoid_print
         print('Estado del servicio de ubicación cambiado: $_isLocationEnabled'); // Agrega este print
         notifyListeners();
       }

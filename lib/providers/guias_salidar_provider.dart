@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:push_notificaciones/models/modelo_api_diferencias.dart';
-
+ 
 //Provider de la pantalla principal incluye consumo de api
 class GuiasSalidasProvider with ChangeNotifier {
   List<SalidaGuia> _productos = [];
@@ -14,6 +14,7 @@ class GuiasSalidasProvider with ChangeNotifier {
   bool get isLoading => _isLoading; // Getter para el estado de carga
 
   Future<void> fetchProductos(String dni, String ruc) async {
+    
   _isLoading = true;
   notifyListeners(); // Notificar que ha cambiado el estado de carga
 
@@ -23,18 +24,22 @@ class GuiasSalidasProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
+       // ignore: avoid_print
       print('respuestas desde la api: ---> : $jsonData'); 
       // Verificar si la respuesta contiene un mensaje de error en lugar de una lista
       if (jsonData is Map<String, dynamic> && jsonData.containsKey('error')) {
         // Manejar el caso de error
+         // ignore: avoid_print
         print('Error: ${jsonData['error']}');
         _productos = [];
         _filteredProductos = [];
-      } else if (jsonData is List) {
+      } else if (jsonData is List<dynamic>) {
         // Si es una lista, procesarla normalmente
         _productos = jsonData.map((item) => SalidaGuia.fromJson(item)).toList();
         _filteredProductos = _productos; // Al principio, ambas listas son iguales
+         // ignore: avoid_print
         print('Datos obtenidos desde la api: ---> : $_productos'); 
+         // ignore: avoid_print
         print('Datos obtenidos desde la api: ---> : $_productos'); 
         
       } else {
@@ -45,7 +50,9 @@ class GuiasSalidasProvider with ChangeNotifier {
       throw Exception('Failed to load products');
     }
   } catch (error) {
+     // ignore: avoid_print
     print('Error fetching products: $error');
+    
   } finally {
     _isLoading = false;
     notifyListeners(); // Notificar que ha terminado la carga

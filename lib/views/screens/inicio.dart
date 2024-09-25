@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
-import 'package:push_notificaciones/providers/modal_switch_provider.dart';
 import 'package:push_notificaciones/services/scroll_behavior.dart';
 import 'package:push_notificaciones/views/screens/seguimiento_pedido.dart';
 import 'package:push_notificaciones/views/screens/skltn_guia_emitidas.dart';
@@ -36,7 +35,7 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>  with Widgets
   Widget build(BuildContext context) {
     final productosProvider = Provider.of<GuiasSalidasProvider>(context);
     final user = context.watch<Authprovider>().conductor;
-    final distribucion = context.read<ModalSwitchProvider>().isSwitched? '1': '0';
+
   
     
 
@@ -154,7 +153,7 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>  with Widgets
                                       pageBuilder: (context, animation,
                                               secondaryAnimation) =>
                                           SeguimientoPedidoScreen(
-                                              guia: indice.nroGuia, viaje: indice.viaje, distribucion: distribucion,),
+                                              guia: indice.nroGuia, viaje: indice.viaje,),
                                               
                                       transitionDuration:
                                           const Duration(milliseconds: 350),

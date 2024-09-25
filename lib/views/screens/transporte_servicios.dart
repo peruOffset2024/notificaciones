@@ -10,7 +10,7 @@ import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class TransporteServicio extends StatefulWidget {
   const TransporteServicio({super.key});
-
+ 
   
   @override
   State<TransporteServicio> createState() => _TransporteServicioState();

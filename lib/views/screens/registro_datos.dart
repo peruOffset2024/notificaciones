@@ -7,6 +7,7 @@ import 'package:push_notificaciones/providers/env_img_provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
+import 'package:push_notificaciones/providers/modal_switch_provider.dart';
 import 'package:push_notificaciones/views/screens/skeleton_carga_images.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
@@ -16,7 +17,7 @@ class RegistroDatos extends StatefulWidget {
     required this.guia,
     required this.inicio,
     required this.llegada,
-    required this.fin, required this.viaje, required this.distribucion,
+    required this.fin, required this.viaje, 
   });
 
   final String guia;
@@ -24,7 +25,7 @@ class RegistroDatos extends StatefulWidget {
   final String llegada;
   final String fin;
   final String viaje;
-  final String distribucion;
+
 
   @override
   State<RegistroDatos> createState() => _RegistroDatosState();
@@ -328,6 +329,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
     final longitud = context.watch<LocationProvider>().currentLocation;
     final usuario = context.watch<Authprovider>().username;
     final imagen = context.watch<ImagenesProvider>().selectedImages;
+    final distribucion =
+        context.read<ModalSwitchProvider>().isSwitched ? '1' : '0';
 
     return TextButton(
       onPressed: () async {
@@ -382,7 +385,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                             side: const BorderSide(
                                 color: Colors.black38, width: 1))),
                     onPressed: () {
-                      condicion == '1'
+                      distribucion == '1'
                           ? context
                               .read<GuiasSalidasProvider>()
                               .eliminarGuias(widget.guia)

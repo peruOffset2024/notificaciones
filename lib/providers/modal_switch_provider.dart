@@ -9,4 +9,8 @@ class ModalSwitchProvider with ChangeNotifier {
     _isSwitched = !_isSwitched;
     notifyListeners(); // Notifica a los listeners
   }
+  void switchClear(){
+   _isSwitched = false; // Resetea el switch a false
+   notifyListeners(); // Notifica a los listeners
+  }
 }

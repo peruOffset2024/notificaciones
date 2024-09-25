@@ -20,7 +20,7 @@ class MultiplesGuiasProvider with ChangeNotifier {
           'http://190.107.181.163:81/aqnq/ajax/insert_guia.php?nro_guia=$guiasFormateadas&otro_lugarEntrega=$lugarEntrega&usuario=$usuario&latitud=$latitud&longitud=$longitud&distribucion=$distribucion',
         ),
       );
-
+       // ignore: avoid_print
       print(
           'Respuesta del servidor: ${response.body}'); // Agrega esta línea para ver la respuesta
       if (response.statusCode == 200) {
@@ -28,12 +28,14 @@ class MultiplesGuiasProvider with ChangeNotifier {
           final responseData = jsonDecode(response
               .body); // Intentar decodificar el JSON solo si la respuesta es válida
           if (responseData['status'] == 'success') {
+             // ignore: avoid_print
             print(
                 'Datos insertados correctamente y estado actualizado en la base de datos.');
           } else {
             throw Exception('Error del servidor: ${responseData['message']}');
           }
         } catch (e) {
+           // ignore: avoid_print
           print('Error de formato JSON: $e');
           throw Exception('La respuesta del servidor no está en formato JSON.');
         }
@@ -42,6 +44,7 @@ class MultiplesGuiasProvider with ChangeNotifier {
             'Error de la solicitud, estado: ${response.statusCode}');
       }
     } catch (error) {
+       // ignore: avoid_print
       print('Error al enviar datos: $error');
       throw Exception('Error al intentar insertar datos');
     }

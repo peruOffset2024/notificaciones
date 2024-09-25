@@ -4,32 +4,32 @@ import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/env_lista_guias_provider.dart';
-import 'package:push_notificaciones/providers/lista_guias_provider.dart';
+import 'package:push_notificaciones/providers/guias_serv_mult_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/modal_switch_provider.dart';
 import 'package:push_notificaciones/providers/multiples_guias_provider.dart';
 import 'package:push_notificaciones/services/scroll_behavior.dart';
 import 'package:push_notificaciones/views/screens/skltn_guia_emitidas.dart';
-import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
-class GuiasVentasSeleccionadas extends StatefulWidget {
-  const GuiasVentasSeleccionadas({super.key});
+class GuiasServiciosMultiples extends StatefulWidget {
+  const GuiasServiciosMultiples({super.key});
 
+ 
   @override
-  State<GuiasVentasSeleccionadas> createState() =>
-      _GuiasVentasSeleccionadasState();
+  State<GuiasServiciosMultiples> createState() => _GuiasServiciosMultiplesState();
 }
 
-class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
+class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
   final TextEditingController _searchController = TextEditingController();
+
   Location location = Location();
+
   bool isSwitched = false;
+
   String condicional = '';
+
   //bool _isLoading = false; // Variable para controlar el estado de carga
-
-  // Lista para almacenar las guías seleccionadas
-
   @override
   void initState() {
     super.initState();
@@ -37,7 +37,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
     // Fetch guias when the widget is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ruc = context.read<Authprovider>().ruc;
-      context.read<ListaGuiaProvider>().fetchGuias(ruc);
+      context.read<GuiasServiciosMultiplesProvider>().feachGuiasServicioMultiples(ruc);
       context.read<EnviarListaGuiasProvider>().limpiar();
     });
   }
@@ -45,8 +45,8 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
   @override
   Widget build(BuildContext context) {
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
-    final listadeLasGuias = context.watch<ListaGuiaProvider>();
-    final user = context.watch<Authprovider>().conductor;
+    final listadeLasGuias = context.watch<GuiasServiciosMultiplesProvider>();
+   
 
     return isConnected
         ? ScrollConfiguration(
@@ -56,7 +56,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
               appBar: AppBar(
                 backgroundColor: Colors.white,
                 title: const Text(
-                  'Guias de Ventas',
+                  'Guias de Servicios nueva version',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black,
@@ -64,32 +64,9 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                   ),
                 ),
                 centerTitle: true,
-                automaticallyImplyLeading: false,
-                actions: [
-                  
-          Builder(builder: (context) {
-            return GestureDetector(
-              child: CircleAvatar(
-                backgroundColor: Colors.red[100],
-                minRadius: 25,
-                child: Text(
-                  user[0].toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                
               ),
-              onTap: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          }),
-          const SizedBox(width: 10),
-        ],
-              ),
-              drawer: MyCustomDrawer(usuario: user),
+              
               backgroundColor: Colors.white,
               body: Container(
                 padding: const EdgeInsets.all(10.0),
@@ -104,7 +81,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                         suffixIcon: IconButton(
                           onPressed: () {
                             _searchController.clear();
-                            context.read<ListaGuiaProvider>().searchGuia('');
+                            context.read<GuiasServiciosMultiplesProvider>().feachGuiasServicioMultiples('');
                           },
                           icon: const Icon(Icons.cancel_outlined,
                               color: Colors.black),
@@ -126,7 +103,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                         fillColor: Colors.white,
                       ),
                       onChanged: (value) {
-                        context.read<ListaGuiaProvider>().searchGuia(value);
+                        context.read<GuiasServiciosMultiplesProvider>().searchMultiplesGuiasServicio(value);
                       },
                     ),
                     const SizedBox(height: 10),
@@ -138,19 +115,19 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                           if (locprovider.isLoading) {
                             return const ShimmerLoaderWidget();
                           }
-                          if (listadeLasGuias.guias.isEmpty) {
+                          if (listadeLasGuias.guiasServiciosMultiples.isEmpty) {
                             return const Center(
                               child: Text(
-                                'No hay resultados',
-                                style: TextStyle(color: Colors.black),
+                                'No hay Guias para Servicios',
+                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                               ),
                             );
                           }
 
                           return ListView.builder(
-                            itemCount: listadeLasGuias.guias.length,
+                            itemCount: listadeLasGuias.guiasServiciosMultiples.length,
                             itemBuilder: (context, index) {
-                              final guia = listadeLasGuias.guias[index];
+                              final guia = listadeLasGuias.guiasServiciosMultiples[index];
                               final isSelected = context
                                   .read<EnviarListaGuiasProvider>()
                                   .guiasSeleccionadas
@@ -163,7 +140,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                                 child: GestureDetector(
                                   onTap: () {},
                                   child: Card(
-                                    color: Colors.blue[100],
+                                    color: Colors.orange[100],
                                     elevation: 2,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -411,6 +388,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                           value: switchProvider.isSwitched,
                           onChanged: (value) {
                             switchProvider.toggleSwitch();
+                             // ignore: avoid_print
                             print('La respuesta de value: $value');
                           },
                           inactiveThumbColor: Colors.grey[200],
@@ -463,7 +441,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                           print('longitud --> :$longitud');
                           print('condicional --> :$condicional');
                           context
-                              .read<ListaGuiaProvider>()
+                              .read<GuiasServiciosMultiplesProvider>()
                               .eliminarVariasGuias(guias);
 
                           showDialog(
@@ -548,6 +526,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                           );
                         } finally {
                           context.read<EnviarListaGuiasProvider>().limpiar();
+                          context.read<ModalSwitchProvider>().switchClear();
                         }
                       },
                       child: SizedBox(

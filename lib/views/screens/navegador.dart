@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
-import 'package:push_notificaciones/views/screens/guias.dart';
+
 import 'package:push_notificaciones/views/screens/iniciar_sesion.dart';
 
 import 'package:push_notificaciones/views/screens/inicio.dart';
@@ -26,12 +26,12 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
     const ProductosGridScreen(),
     const GuiasServicios(),
     const RegistroAsistencia(),
-    const GuiasVentasSeleccionadas(),
+  
     
   ];
   
   void _selectVista(int index){
-    if(index == 4){
+    if(index == 3){
       _showExitDialog(context);
     } else {
       setState(() { 
@@ -71,11 +71,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
                   BottomNavigationBarItem(
                     icon: Icon(Icons.timer),
                     label: 'Asistencia',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.file_copy_rounded),
-                    label: 'Guias',
-                  ),
+                  ),  
                   BottomNavigationBarItem(
                     icon: Icon(Icons.exit_to_app_rounded),
                     label: 'Salir',

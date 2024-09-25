@@ -44,19 +44,30 @@ class EnvioImagenesProvider with ChangeNotifier {
       request.fields['viaje'] = viaje;
 
       // Mostrar los datos que se están enviando
+      // ignore: avoid_print
       print('Datos que se están enviando:');
+       // ignore: avoid_print
       print('nro_guia: $nroGuia');
+       // ignore: avoid_print
       print('track: $track');
+       // ignore: avoid_print
       print('latitud: $latitud');
+       // ignore: avoid_print
       print('longitud: $longitud');
+       // ignore: avoid_print
       print('usuario: $usuario');
+       // ignore: avoid_print
       print('Comentario: $comentario');
+       // ignore: avoid_print
       print('Condicion: $condicion');
+       // ignore: avoid_print
       print('Dsitribucion: $distribucion');
+       // ignore: avoid_print
        print('viaje: $viaje');
 
       // Agregar imágenes y mostrar sus rutas
       for (var imagen in imagenes) {
+         // ignore: avoid_print
         print('Agregando imagen: ${imagen.path}'); // Ver la ruta de cada imagen
         request.files.add(await http.MultipartFile.fromPath(
           'img[]', // Nombre del campo en el servidor
@@ -71,13 +82,17 @@ class EnvioImagenesProvider with ChangeNotifier {
       // Verificar el estado de la respuesta
       if (response.statusCode == 200) {
         final responseBody = await response.stream.bytesToString();
+         // ignore: avoid_print
         print('Respuesta del servidor: $responseBody');
         final responseData = json.decode(responseBody);
+         // ignore: avoid_print
         print('Datos enviados correctamente: $responseData');
       } else {
+         // ignore: avoid_print
         print('Error al enviar los datos: ${response.statusCode}');
       }
     } catch (e) {
+       // ignore: avoid_print
       print('Error: $e');
     }
     _setLoading(false);

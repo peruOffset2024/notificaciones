@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
-import 'package:push_notificaciones/views/screens/lista_guias.dart';
-import 'package:push_notificaciones/views/screens/transporte_servicios.dart';
+import 'package:push_notificaciones/views/screens/guias_servicios_multiples.dart';
+import 'package:push_notificaciones/views/screens/guias_ventas_multiples.dart';
 
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
@@ -69,7 +69,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                             PageRouteBuilder(
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
-                                        const ListaGuiasReporte(),
+                                        const GuiasVentasSeleccionadas(),
                                 transitionDuration:
                                     const Duration(milliseconds: 350),
                                 transitionsBuilder: (context, animation,
@@ -95,7 +95,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                             PageRouteBuilder(
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
-                                        const TransporteServicio(),
+                                        const GuiasServiciosMultiples(),
                                 transitionDuration:
                                     const Duration(milliseconds: 350),
                                 transitionsBuilder: (context, animation,
@@ -121,7 +121,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                           PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      const ListaGuiasReporte(),
+                                      const GuiasVentasSeleccionadas(),
                               transitionDuration:
                                   const Duration(milliseconds: 350),
                               transitionsBuilder: (context, animation,
