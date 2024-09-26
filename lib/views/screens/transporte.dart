@@ -110,7 +110,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                                 }));
                       }),
                   const SizedBox(height: 20.0),
-                  _ServiceButton(
+                  /*_ServiceButton(
                     context: context,
                     label: 'Otras Guias',
                     icon: Icons
@@ -135,7 +135,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                                 );
                               }));
                     },
-                  ),
+                  ),*/
                 ],
               ),
             ),

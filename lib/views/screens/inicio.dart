@@ -14,14 +14,14 @@ class ProductosGridScreen extends StatefulWidget {
   State<ProductosGridScreen> createState() => _ProductosGridScreenState();
 }
 
-class _ProductosGridScreenState extends State<ProductosGridScreen>  with WidgetsBindingObserver{
+class _ProductosGridScreenState extends State<ProductosGridScreen>
+    with WidgetsBindingObserver {
   final TextEditingController _cleanData = TextEditingController();
-
 
   @override
   void initState() {
     super.initState();
-    
+
     // Fetch guias when the widget is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ruc = context.read<Authprovider>().ruc;
@@ -30,14 +30,10 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>  with Widgets
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     final productosProvider = Provider.of<GuiasSalidasProvider>(context);
     final user = context.watch<Authprovider>().conductor;
-
-  
-    
 
     // ignore: deprecated_member_use
     return WillPopScope(
@@ -127,6 +123,60 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>  with Widgets
                       },
                     ),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          ClipOval(
+                            child: Container(
+                             height: 10,
+                              width: 10,
+                              color: Colors.green,
+                            ),
+                          ),
+                          const SizedBox(width: 2,),
+                          const Text(
+                            'SALIDA POD',
+                            style: TextStyle(fontSize: 8),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          ClipOval(
+                            child: Container(
+                             height: 10,
+                              width: 10,
+                              color: Colors.red,
+                            ),
+                          ),
+                          const SizedBox(width: 2,),
+                          const Text(
+                            'LLEGADA CLIENTE ',
+                            style: TextStyle(fontSize: 8),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          ClipOval(
+                            child: Container(
+                              height: 10,
+                              width: 10,
+                              color: Colors.amber,
+                            ),
+                          ),
+                          const SizedBox(width: 2,),
+                          const Text(
+                            'SALIDA CLIENTE',
+                            style: TextStyle(fontSize: 8),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5,),
                   Expanded(child: Consumer<GuiasSalidasProvider>(
                       builder: (context, provider, child) {
                     if (provider.isLoading) {
@@ -138,7 +188,7 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>  with Widgets
                         child: Text('No hay guias registradas.'),
                       );
                     }
-                  
+
                     return ListView.builder(
                       itemCount: provider.productos.length,
                       itemBuilder: (context, index) {
@@ -153,8 +203,10 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>  with Widgets
                                       pageBuilder: (context, animation,
                                               secondaryAnimation) =>
                                           SeguimientoPedidoScreen(
-                                              guia: indice.nroGuia, viaje: indice.viaje,),
-                                              
+                                            guia: indice.nroGuia,
+                                            viaje: indice.viaje,
+                                            distribucion: indice.distribucion,
+                                          ),
                                       transitionDuration:
                                           const Duration(milliseconds: 350),
                                       transitionsBuilder: (context, animation,
@@ -269,7 +321,7 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>  with Widgets
                                               mainAxisAlignment:
                                                   MainAxisAlignment.end,
                                               children: [
-                                                 Icon(
+                                                Icon(
                                                   Icons.local_shipping,
                                                   size: 15,
                                                   color: Colors.grey[400],
@@ -280,115 +332,121 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>  with Widgets
                                                 const SizedBox(
                                                   height: 5,
                                                 ),
-                                                  
-                                                  indice.ultimotrack == '0'
-                                                      ? Row(
-                                                          children: [
-                                                            const CircleAvatar(
+
+                                                indice.ultimotrack == '0'
+                                                    ? Row(
+                                                        children: [
+                                                          const CircleAvatar(
                                                               radius: 5,
                                                               backgroundColor:
-                                                                  Colors
-                                                                      .green,
-                                                            ),
-                                                            const SizedBox(width: 1,),
-                                                            CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .grey[300],
-                                                            ),
-                                                            CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .grey[300],
-                                                            ),
-                                                            
-                                                          ],
-                                                        )
-                                                      :  indice.ultimotrack == '1' ? Row(
-                                                          children: [
-                                                            const CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .green,
-                                                            ),
-                                                            const SizedBox(width: 1,),
-                                                            const CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .green,
-                                                            ),
-                                                            CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .grey[300],
-                                                            ),
-                                                            
-                                                          ],
-                                                        )
-                                                        
-                                                        
-                                                      : indice.ultimotrack == '2' ? const Row(
-                                                          children: [
-                                                            CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .green,
-                                                            ),
-                                                            SizedBox(width: 1,),
-                                                            CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .green,
-                                                            ),
-                                                            CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .green,
-                                                            ),
-                                                            
-                                                          ],
-                                                        ): indice.ultimotrack == '3' ? Row(
-                                                          children: [
-                                                            const CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .green,
-                                                            ),
-                                                            const SizedBox(width: 1,),
-                                                            const CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .green,
-                                                            ),
-                                                            CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .grey[300],
-                                                            ),
-                                                            
-                                                          ],
-                                                        ):
-                                                      
-                                                       CircleAvatar(
-                                                          radius: 5,
-                                                          backgroundColor:
-                                                              Colors.grey[300],
-                                                        ),
+                                                                  Colors.green),
+                                                          const SizedBox(
+                                                            width: 1,
+                                                          ),
+                                                          CircleAvatar(
+                                                            radius: 5,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .grey[300],
+                                                          ),
+                                                          CircleAvatar(
+                                                            radius: 5,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .grey[300],
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : indice.ultimotrack == '1'
+                                                        ? Row(
+                                                            children: [
+                                                              CircleAvatar(
+                                                                radius: 5,
+                                                                backgroundColor:
+                                                                    Colors.grey[
+                                                                        300],
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 1,
+                                                              ),
+                                                              const CircleAvatar(
+                                                                radius: 5,
+                                                                backgroundColor:
+                                                                    Colors.red,
+                                                              ),
+                                                              CircleAvatar(
+                                                                radius: 5,
+                                                                backgroundColor:
+                                                                    Colors.grey[
+                                                                        300],
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : indice.ultimotrack ==
+                                                                '2'
+                                                            ? Row(
+                                                                children: [
+                                                                  CircleAvatar(
+                                                                    radius: 5,
+                                                                    backgroundColor:
+                                                                        Colors.grey[
+                                                                            300],
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 1,
+                                                                  ),
+                                                                  CircleAvatar(
+                                                                    radius: 5,
+                                                                    backgroundColor:
+                                                                        Colors.grey[
+                                                                            300],
+                                                                  ),
+                                                                  const CircleAvatar(
+                                                                    radius: 5,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .amber,
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            : indice.ultimotrack ==
+                                                                    '3'
+                                                                ? Row(
+                                                                    children: [
+                                                                      const CircleAvatar(
+                                                                        radius:
+                                                                            5,
+                                                                        backgroundColor:
+                                                                            Colors.green,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            1,
+                                                                      ),
+                                                                      const CircleAvatar(
+                                                                        radius:
+                                                                            5,
+                                                                        backgroundColor:
+                                                                            Colors.green,
+                                                                      ),
+                                                                      CircleAvatar(
+                                                                        radius:
+                                                                            5,
+                                                                        backgroundColor:
+                                                                            Colors.grey[300],
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                : CircleAvatar(
+                                                                    radius: 5,
+                                                                    backgroundColor:
+                                                                        Colors.grey[
+                                                                            300],
+                                                                  ),
                                                 // Text('${indice.ultimotrack}', style: TextStyle(color: Colors.black),)
                                               ],
                                             )
-                  
+
                                             // Fila 2: Cantidad
                                           ],
                                         ),
@@ -398,7 +456,8 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>  with Widgets
                                       width: 8,
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         Icon(
                                           Icons.arrow_forward_ios,

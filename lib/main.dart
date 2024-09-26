@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/app.dart';
+import 'package:push_notificaciones/providers/asistencia_provider_v.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/env_img_provider.dart';
 import 'package:push_notificaciones/providers/env_lista_guias_provider.dart';
@@ -20,6 +21,7 @@ import 'package:push_notificaciones/providers/multiples_guias_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/reg_sal_switch_provider.dart';
 import 'package:push_notificaciones/providers/envios_al_servidor.dart';
+import 'package:push_notificaciones/providers/tipo_asistencia_provider.dart';
 import 'package:push_notificaciones/providers/track_provider.dart';
 import 'package:push_notificaciones/providers/trasnporte_servicios_provider.dart';
 import 'package:push_notificaciones/services/models/push_notification_service.dart';
@@ -52,7 +54,9 @@ void main() async {
     ChangeNotifierProvider(create: (_) => FotoAsistenciaProvider()), 
     ChangeNotifierProvider(create: (_) => MultiplesGuiasProvider()), 
     ChangeNotifierProvider(create: (_) => ModalSwitchProvider()), 
-    ChangeNotifierProvider(create: (_) => GuiasServiciosMultiplesProvider()),
+    ChangeNotifierProvider(create: (_) => GuiasServiciosMultiplesProvider()), 
+    ChangeNotifierProvider(create: (_) => EnvirAsistencia()), 
+    ChangeNotifierProvider(create: (_) => TipoAsistenciaProvider()),
   ], child: const MyApp()));
 }
 

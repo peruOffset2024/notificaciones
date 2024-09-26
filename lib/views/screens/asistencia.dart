@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
-import 'package:push_notificaciones/providers/ingreso_salida_provider.dart';
 import 'package:push_notificaciones/providers/foto_asistencia_provider.dart';
+import 'package:push_notificaciones/providers/tipo_asistencia_provider.dart';
+import 'package:push_notificaciones/views/screens/confirmacion_asistencia.dart';
 import 'package:push_notificaciones/views/screens/skeleton_carga_images.dart';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
@@ -14,12 +15,16 @@ class RegistroAsistencia extends StatefulWidget {
 }
 
 class _RegistroAsistenciaState extends State<RegistroAsistencia> {
+  String tipo1 = '';
+
   @override
   void initState() {
     super.initState();
     // Limpiar las imágenes cuando se inicializa la vista
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<FotoAsistenciaProvider>().clearImages();
+      final dni = context.read<Authprovider>().username;
+      context.read<TipoAsistenciaProvider>().fechtTipo(dni);
     });
   }
 
@@ -28,26 +33,24 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
     final sizeW = MediaQuery.of(context).size.width;
     final sizeH = MediaQuery.of(context).size.height;
     final user = context.watch<Authprovider>().conductor;
-    final asistenciaProvider = context.watch<IngresoSalidaAsistencia>();
     final fotoProvider = context.watch<FotoAsistenciaProvider>();
+
+    final tipoAsistenciaProvider = Provider.of<TipoAsistenciaProvider>(context);
+
+    // Verifica que la lista tenga al menos dos elementos
+    if (tipoAsistenciaProvider.tipoLista.length < 2) {
+      return const Center(
+          child: Text('No hay suficientes datos para mostrar.'));
+    }
+    // Obtén los valores de "tipo" del primer y segundo elemento de la lista
+    final variable1 = tipoAsistenciaProvider.tipoLista[0]['tipo'];
+    final variable2 = tipoAsistenciaProvider.tipoLista[1]['tipo'];
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         actions: [
-          FloatingActionButton(
-            mini: true,
-        backgroundColor: Colors.black,
-        onPressed: () {
-          _botonSheetModal(context, fotoProvider);
-        },
-        child: const Icon(
-          Icons.camera_alt_outlined,
-          color: Colors.white,
-          size: 30,
-        ),
-      ),
           Builder(builder: (context) {
             return GestureDetector(
               child: CircleAvatar(
@@ -78,21 +81,15 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
         child: Center(
           child: SingleChildScrollView(
             child: Column(
-             
               children: [
-                const SizedBox(height: 10),
+                // const SizedBox(height: 10),
+
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
-                    
                     children: [
                       // Mostrar imágenes seleccionadas o tomadas
-                      
-                      const Text(
-                        'Foto Registro',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 20),
+
                       fotoProvider.isLoading
                           ? GridView.builder(
                               shrinkWrap: true,
@@ -105,24 +102,33 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
                               ),
                               itemCount: 2,
                               itemBuilder: (context, index) {
-                                return const Center(child:  ShimmerCargaImages());
+                                return const Center(
+                                    child: ShimmerCargaImages());
                               })
                           : _selectImages(fotoProvider),
 
                       const SizedBox(height: 20),
+
                       // Botón de Ingreso
+                      variable1 < 1 ?
                       GestureDetector(
-                        onTap: asistenciaProvider.ingresoHabilitado
+                        onTap: () {
+                          /* asistenciaProvider.ingresoHabilitado
                             ? asistenciaProvider.registrarIngreso
-                            : null,
+                            : '';*/
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ConfirmacionAsistencia(
+                                        tipo1: '1',
+                                      )));
+                        },
                         child: ClipOval(
                           child: Container(
                             width: 100,
                             height: 100,
-                            color: asistenciaProvider.ingresoHabilitado
-                                ? Colors.green
-                                : Colors.green.withOpacity(0.5),
-                            child: const Center(
+                            color: Colors.green,
+                            child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -145,22 +151,62 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
                             ),
                           ),
                         ),
-                      ),
+                      ) :  ClipOval(
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.grey,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.login,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'INGRESO',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),   
+                      
+
+
+
+
+
                       const SizedBox(height: 50),
 
                       // Botón de Salida
+                      variable2 < 2  ? 
                       GestureDetector(
-                        onTap: asistenciaProvider.salidaHabilitada
+                        onTap: () {
+                          /* asistenciaProvider.salidaHabilitada
                             ? asistenciaProvider.registrarSalida
-                            : null,
+                            : '';*/
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ConfirmacionAsistencia(
+                                        tipo1: '2',
+                                      )));
+                        },
                         child: ClipOval(
                           child: Container(
                             width: 100,
                             height: 100,
-                            color: asistenciaProvider.salidaHabilitada
-                                ? Colors.red
-                                : Colors.red.withOpacity(0.5),
-                            child: const Center(
+                            color: Colors.red,
+                            child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -183,7 +229,34 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
                             ),
                           ),
                         ),
-                      ),
+                      ) : ClipOval(
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.grey,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.logout,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'SALIDA',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -201,7 +274,6 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
         ),
       ),
       backgroundColor: Colors.white,
-      
     );
   }
 

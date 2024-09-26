@@ -7,7 +7,6 @@ import 'package:push_notificaciones/providers/env_img_provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
-import 'package:push_notificaciones/providers/modal_switch_provider.dart';
 import 'package:push_notificaciones/views/screens/skeleton_carga_images.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
@@ -17,7 +16,7 @@ class RegistroDatos extends StatefulWidget {
     required this.guia,
     required this.inicio,
     required this.llegada,
-    required this.fin, required this.viaje, 
+    required this.fin, required this.viaje, required this.distribucion, 
   });
 
   final String guia;
@@ -25,6 +24,7 @@ class RegistroDatos extends StatefulWidget {
   final String llegada;
   final String fin;
   final String viaje;
+  final String distribucion;
 
 
   @override
@@ -35,7 +35,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
   final TextEditingController _observacionController = TextEditingController();
   List<String> _tipeDelivery = ['ENTREGADO', 'RECHAZADO', 'OTRO..'];
   bool isSwitched = false;
-  String condicion = '0';
+
   String? _selectedTipeDelivery;
 
   @override
@@ -69,7 +69,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
     final imagenesProvider = context.watch<ImagenesProvider>();
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
     // ignore: unused_local_variable
-    final resultado = _calculo(); // Aquí debes llamar a la función
+    final resultado = _calculo(); //llamar a la función
 
     return isConnected
         ? Scaffold(
@@ -111,7 +111,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 10),
-                            const Text(
+                             Text(
                               'Imagenes',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -329,8 +329,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
     final longitud = context.watch<LocationProvider>().currentLocation;
     final usuario = context.watch<Authprovider>().username;
     final imagen = context.watch<ImagenesProvider>().selectedImages;
-    final distribucion =
-        context.read<ModalSwitchProvider>().isSwitched ? '1' : '0';
+    
 
     return TextButton(
       onPressed: () async {
@@ -363,7 +362,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
               imagenes: imagen,
               comentario: _observacionController.text,
               condicion: _selectedTipeDelivery,
-              distribucion: condicion, viaje: widget.viaje);
+              distribucion: widget.distribucion, viaje: widget.viaje);
               
 
           showDialog(
@@ -385,7 +384,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                             side: const BorderSide(
                                 color: Colors.black38, width: 1))),
                     onPressed: () {
-                      distribucion == '1'
+                      widget.distribucion == '1'
                           ? context
                               .read<GuiasSalidasProvider>()
                               .eliminarGuias(widget.guia)
@@ -446,7 +445,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                 ],
               );
             },
-          );
+          ); 
         }
       },
       child: Container(
