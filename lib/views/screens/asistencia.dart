@@ -4,7 +4,6 @@ import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/foto_asistencia_provider.dart';
 import 'package:push_notificaciones/providers/tipo_asistencia_provider.dart';
 import 'package:push_notificaciones/views/screens/confirmacion_asistencia.dart';
-import 'package:push_notificaciones/views/screens/skeleton_carga_images.dart';
 import 'package:push_notificaciones/views/screens/usuario_drawer.dart';
 
 class RegistroAsistencia extends StatefulWidget {
@@ -14,7 +13,7 @@ class RegistroAsistencia extends StatefulWidget {
   State<RegistroAsistencia> createState() => _RegistroAsistenciaState();
 }
 
-class _RegistroAsistenciaState extends State<RegistroAsistencia> {
+class _RegistroAsistenciaState extends State<RegistroAsistencia> with WidgetsBindingObserver {
   String tipo1 = '';
 
   @override
@@ -33,8 +32,6 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
     final sizeW = MediaQuery.of(context).size.width;
     final sizeH = MediaQuery.of(context).size.height;
     final user = context.watch<Authprovider>().conductor;
-    final fotoProvider = context.watch<FotoAsistenciaProvider>();
-
     final tipoAsistenciaProvider = Provider.of<TipoAsistenciaProvider>(context);
 
     // Verifica que la lista tenga al menos dos elementos
@@ -81,33 +78,18 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
         child: Center(
           child: SingleChildScrollView(
             child: Column(
+              
               children: [
                 // const SizedBox(height: 10),
-
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Mostrar imágenes seleccionadas o tomadas
-
-                      fotoProvider.isLoading
-                          ? GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 8,
-                              ),
-                              itemCount: 2,
-                              itemBuilder: (context, index) {
-                                return const Center(
-                                    child: ShimmerCargaImages());
-                              })
-                          : _selectImages(fotoProvider),
-
                       const SizedBox(height: 20),
+                      Text('$variable1'),
+                      Text('$variable2'),
+                      
 
                       // Botón de Ingreso
                       variable1 < 1 ?
@@ -119,7 +101,7 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ConfirmacionAsistencia(
+                                  builder: (context) => const ConfirmacionAsistencia(
                                         tipo1: '1',
                                       )));
                         },
@@ -128,7 +110,7 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
                             width: 100,
                             height: 100,
                             color: Colors.green,
-                            child: Center(
+                            child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -156,7 +138,7 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
                             width: 100,
                             height: 100,
                             color: Colors.grey,
-                            child: Center(
+                            child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -179,25 +161,16 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
                             ),
                           ),
                         ),   
-                      
-
-
-
-
-
                       const SizedBox(height: 50),
 
                       // Botón de Salida
                       variable2 < 2  ? 
                       GestureDetector(
                         onTap: () {
-                          /* asistenciaProvider.salidaHabilitada
-                            ? asistenciaProvider.registrarSalida
-                            : '';*/
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ConfirmacionAsistencia(
+                                  builder: (context) => const ConfirmacionAsistencia(
                                         tipo1: '2',
                                       )));
                         },
@@ -206,7 +179,7 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
                             width: 100,
                             height: 100,
                             color: Colors.red,
-                            child: Center(
+                            child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -234,7 +207,7 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
                             width: 100,
                             height: 100,
                             color: Colors.grey,
-                            child: Center(
+                            child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -277,94 +250,5 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> {
     );
   }
 
-  Widget _selectImages(FotoAsistenciaProvider fotoProvider) {
-    return Wrap(
-      spacing: 10,
-      runSpacing: 10,
-      children: fotoProvider.selectedImagesAsis
-          .map((image) => Stack(
-                children: [
-                  Image.file(
-                    image,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        fotoProvider.removeImagen(image);
-                      },
-                      child: const Icon(
-                        Icons.close,
-                        color: Colors.red,
-                      ),
-                    ),
-                  )
-                ],
-              ))
-          .toList(),
-    );
-  }
 
-  Future<dynamic> _botonSheetModal(
-      BuildContext context, FotoAsistenciaProvider fotoProvider) {
-    return showModalBottomSheet(
-        context: context,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-        ),
-        builder: (BuildContext context) {
-          return Container(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 60,
-                  height: 5,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  'Seleccione un opción',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87),
-                ),
-                Divider(color: Colors.grey[300]),
-                ListTile(
-                  leading: Icon(Icons.photo_library, color: Colors.blue[100]),
-                  title: const Text(
-                    'Galería',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    fotoProvider.ImagesGallery();
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.photo_camera, color: Colors.blue[100]),
-                  title: const Text(
-                    'Cámara',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    fotoProvider.takePhotoAsist();
-                  },
-                ),
-              ],
-            ),
-          );
-        });
-  }
 }

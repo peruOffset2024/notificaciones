@@ -14,8 +14,7 @@ class ProductosGridScreen extends StatefulWidget {
   State<ProductosGridScreen> createState() => _ProductosGridScreenState();
 }
 
-class _ProductosGridScreenState extends State<ProductosGridScreen>
-    with WidgetsBindingObserver {
+class _ProductosGridScreenState extends State<ProductosGridScreen> with WidgetsBindingObserver {
   final TextEditingController _cleanData = TextEditingController();
 
   @override
@@ -130,12 +129,14 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>
                         children: [
                           ClipOval(
                             child: Container(
-                             height: 10,
+                              height: 10,
                               width: 10,
                               color: Colors.green,
                             ),
                           ),
-                          const SizedBox(width: 2,),
+                          const SizedBox(
+                            width: 2,
+                          ),
                           const Text(
                             'SALIDA POD',
                             style: TextStyle(fontSize: 8),
@@ -146,12 +147,14 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>
                         children: [
                           ClipOval(
                             child: Container(
-                             height: 10,
+                              height: 10,
                               width: 10,
                               color: Colors.red,
                             ),
                           ),
-                          const SizedBox(width: 2,),
+                          const SizedBox(
+                            width: 2,
+                          ),
                           const Text(
                             'LLEGADA CLIENTE ',
                             style: TextStyle(fontSize: 8),
@@ -167,7 +170,9 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>
                               color: Colors.amber,
                             ),
                           ),
-                          const SizedBox(width: 2,),
+                          const SizedBox(
+                            width: 2,
+                          ),
                           const Text(
                             'SALIDA CLIENTE',
                             style: TextStyle(fontSize: 8),
@@ -176,7 +181,9 @@ class _ProductosGridScreenState extends State<ProductosGridScreen>
                       ),
                     ],
                   ),
-                  SizedBox(height: 5,),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   Expanded(child: Consumer<GuiasSalidasProvider>(
                       builder: (context, provider, child) {
                     if (provider.isLoading) {

@@ -35,7 +35,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
   final TextEditingController _observacionController = TextEditingController();
   List<String> _tipeDelivery = ['ENTREGADO', 'RECHAZADO', 'OTRO..'];
   bool isSwitched = false;
-
+  String condicion = '0';
   String? _selectedTipeDelivery;
 
   @override
@@ -61,6 +61,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
     }
     return '';
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +165,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                               });
                             }),
                             const SizedBox(height: 20),
-                            //_toogleButton()
+                            _toogleButton()
                             // Espacio adicional para el FAB
                           ],
                         ),
@@ -180,7 +182,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
         : const NoInternetScreen();
   }
 
- /* Widget _toogleButton() {
+  Widget _toogleButton() {
     return widget.inicio == '1' || widget.fin == '3'
         ? const Text('')
         : Column(
@@ -209,7 +211,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
               ),
             ],
           );
-  }*/
+  }
 
   Widget _comboBox(String title, List<String> items, String? value,
       ValueChanged<String?> onChanged) {

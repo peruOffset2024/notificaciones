@@ -20,7 +20,7 @@ class SeguimientoPedidoScreen extends StatefulWidget {
       _SeguimientoPedidoScreenState();
 }
 
-class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
+class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -71,7 +71,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
       } else if (item.paso == '3') {
         fecha3 = item.fecha;
         fin = true;
-      }
+      } 
     }
 
     void onReturn() {
@@ -222,7 +222,9 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> {
                                             guia: widget.guia,
                                             llegada: valor2,
                                             inicio: '',
-                                            fin: '', viaje: widget.viaje,distribucion: widget.distribucion
+                                            fin: '', 
+                                            viaje: widget.viaje,
+                                            distribucion: widget.distribucion
                                           ),
                                         ),
                                       );

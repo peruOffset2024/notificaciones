@@ -5,7 +5,7 @@ import 'package:push_notificaciones/providers/asistencia_provider_v.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/foto_asistencia_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
-import 'package:push_notificaciones/views/screens/skeleton_carga_images.dart';
+import 'package:push_notificaciones/providers/tipo_asistencia_provider.dart';
 
 class ConfirmacionAsistencia extends StatefulWidget {
   const ConfirmacionAsistencia({
@@ -19,31 +19,36 @@ class ConfirmacionAsistencia extends StatefulWidget {
 }
 
 class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
- 
+  final TextEditingController _comentariosController = TextEditingController();
 
-  final TextEditingController _observacionController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    // Limpiar las imágenes cuando se inicializa la vista
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<FotoAsistenciaProvider>().clearImages();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final fotoProvider = context.watch<FotoAsistenciaProvider>();
     final sizeW = MediaQuery.of(context).size.width;
+    final usuario = context.watch<Authprovider>().username;
+    final latitud = context.read<LocationProvider>().currentLocation;
+    final longitud = context.read<LocationProvider>().currentLocation;
 
+    void returnActua() {
+      print('Regresando a ASISTENCIA y actualizando los datos --->');
+      context.read<TipoAsistenciaProvider>().fechtTipo(usuario);
+    }
+
+    // ignore: deprecated_member_use
     return Scaffold(
         appBar: AppBar(
-          
-          actions: [
-            FloatingActionButton(
-              backgroundColor: Colors.black,
-              onPressed: () {
-                _botonSheetModal(context, fotoProvider);
-              },
-              child: const Icon(
-                Icons.camera_alt_outlined,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-          ],
+          backgroundColor: Colors.white,
         ),
+        backgroundColor: Colors.white,
         body: Stack(
           children: [
             KeyboardVisibilityBuilder(
@@ -54,84 +59,32 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Foto Registro',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Imagenes',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 20),
-                        // Aquí se muestra el shimmer mientras las imágenes están cargando
-                        fotoProvider.isLoading
-                            ? GridView.builder(
-                                // `shrinkWrap: true` indica que el GridView solo ocupará el espacio necesario para sus elementos.
-                                // No expandirá su tamaño más allá del contenido visible.
-                                shrinkWrap: true,
-
-                                // `physics: NeverScrollableScrollPhysics()` desactiva el desplazamiento del GridView,
-                                // ya que será contenido dentro de otro scroll (como un ScrollView o ListView).
-                                physics: const NeverScrollableScrollPhysics(),
-
-                                // `gridDelegate` define el diseño de la cuadrícula. En este caso, `SliverGridDelegateWithFixedCrossAxisCount`
-                                // crea una cuadrícula con un número fijo de columnas. Aquí hay 3 columnas en total.
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount:
-                                      3, // Número de columnas en la cuadrícula, en este caso 3.
-                                  crossAxisSpacing:
-                                      8, // Espaciado horizontal entre los elementos de la cuadrícula.
-                                  mainAxisSpacing:
-                                      8, // Espaciado vertical entre los elementos de la cuadrícula.
-                                ),
-
-                                // `itemCount` especifica cuántos elementos o widgets mostrará el GridView.
-                                // En este caso, se muestran 6 placeholders.
-                                itemCount:
-                                    6, // Número de placeholders que quieres mostrar
-
-                                // `itemBuilder` es la función que genera cada uno de los widgets que se mostrarán en el GridView.
-                                // Recibe el contexto y el índice de cada widget y construye el widget correspondiente.
-                                itemBuilder: (context, index) {
-                                  // Aquí estamos mostrando el widget `ShimmerCargaImages` como un placeholder en cada celda de la cuadrícula.
-                                  return const ShimmerCargaImages();
-                                },
-                              )
-                            : _selectImages(fotoProvider),
-                        const SizedBox(height: 20),
-                        Text('tipo ${widget.tipo1}'),
-
-                        const SizedBox(height: 30),
-
-                        const SizedBox(height: 20),
-                        //_toogleButton()
+                        //--------------------------------------------------------------
+                        _photoPreviewSection(context, fotoProvider),
+                        //--------------------------------------------------------------
+                        const SizedBox(height: 40),
                         // Espacio adicional para el FAB
                         Container(
-                          height: 100,
+                          height: 150,
                           padding: const EdgeInsets.only(left: 5, right: 5),
                           decoration: BoxDecoration(
-                            color: Colors.blueGrey,
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Column(
                             children: [
-                              const Text(
-                                'Observaciones',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 10),
                               TextField(
                                 autocorrect: false,
                                 autofocus: false,
-                                controller: _observacionController,
+                                controller: _comentariosController,
                                 style: const TextStyle(
                                     color: Colors.black, fontSize: 14),
                                 decoration: InputDecoration(
+                                  labelText: 'Comentarios (Opcional)',
+                                  labelStyle:
+                                      const TextStyle(color: Colors.black),
                                   prefixIcon: const Icon(
                                     Icons.comment,
                                     color: Colors.black,
@@ -141,20 +94,18 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                                   filled: true,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 161, 188, 211)),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 161, 188, 211)),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black),
                                   ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 10.0),
+                                  //contentPadding: const EdgeInsets.symmetric(
+                                  //    vertical: 10.0),
                                 ),
-                                maxLines: null,
+                                maxLines: 2,
                               ),
                             ],
                           ),
@@ -171,10 +122,6 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
         floatingActionButton: TextButton(
           onPressed: () async {
             // parametros por usar
-            final usuario = context.read<Authprovider>().username;
-            final latitud = context.read<LocationProvider>().currentLocation;
-            final longitud = context.read<LocationProvider>().currentLocation;
-
             showDialog(
                 context: context,
                 barrierDismissible:
@@ -198,15 +145,16 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                   usuario: usuario,
                   latitud: '${latitud?.latitude}',
                   longitud: '${longitud?.longitude}',
-                  comentario: _observacionController.text,
+                  comentario: _comentariosController.text,
                   tipo: widget.tipo1,
                   imagens: fotoProvider.selectedImagesAsis);
               print('usuario : --> $usuario');
               print('latitude : --> ${latitud?.latitude}');
               print('longitude : --> ${latitud?.longitude}');
               print(
-                  '_observacionController : --> ${_observacionController.text}');
+                  '_observacionController : --> ${_comentariosController.text}');
               print('Images : --> ${fotoProvider.selectedImagesAsis}');
+              _comentariosController.clear();
 
               showDialog(
                 // ignore: use_build_context_synchronously
@@ -228,6 +176,7 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                                 side: const BorderSide(
                                     color: Colors.black38, width: 1))),
                         onPressed: () {
+                          returnActua();
                           Navigator.of(context)
                               .pop(); // Cierra el diálogo de éxito
                           Navigator.of(context).pop();
@@ -251,10 +200,10 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     content: const Text(
-                      'error al enviar datos al servidor',
+                      'La imagen es requerida para confirmar su asistencia. ', // $e AQUI ME MUESTRA EL ERROR
                       style: TextStyle(fontSize: 14),
                     ),
-                    backgroundColor: Colors.red[100],
+                    backgroundColor: Colors.white,
                     actions: [
                       TextButton(
                         style: ElevatedButton.styleFrom(
@@ -265,8 +214,11 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                                 side: const BorderSide(
                                     color: Colors.black38, width: 1))),
                         onPressed: () {
+                          returnActua();
                           Navigator.of(context)
-                              .pop(); // Cierra el diálogo de error
+                              .pop(); // Cierra el diálogo de éxito
+                          Navigator.of(context).pop();
+                          // Cierra el diálogo de error
                         },
                         child: const Text('OK'),
                       ),
@@ -286,9 +238,9 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.save, size: 25, color: Colors.white),
+                Icon(Icons.check_circle, size: 25, color: Colors.white),
                 SizedBox(width: 10),
-                Text('Guardar',
+                Text('Confirmar',
                     style: TextStyle(fontSize: 16, color: Colors.white)),
               ],
             ),
@@ -296,94 +248,69 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
         ));
   }
 
-  Widget _selectImages(FotoAsistenciaProvider fotoProvider) {
-    return Wrap(
-      spacing: 10,
-      runSpacing: 10,
-      children: fotoProvider.selectedImagesAsis
-          .map((image) => Stack(
-                children: [
-                  Image.file(
-                    image,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        fotoProvider.removeImagen(image);
-                      },
-                      child: const Icon(
-                        Icons.close,
-                        color: Colors.red,
-                      ),
-                    ),
-                  )
-                ],
-              ))
-          .toList(),
-    );
-  }
-
-  Future<dynamic> _botonSheetModal(
+  Widget _photoPreviewSection(
       BuildContext context, FotoAsistenciaProvider fotoProvider) {
-    return showModalBottomSheet(
-        context: context,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-        ),
-        builder: (BuildContext context) {
-          return Container(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 60,
-                  height: 5,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  'Seleccione un opción',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87),
-                ),
-                Divider(color: Colors.grey[300]),
-                ListTile(
-                  leading: Icon(Icons.photo_library, color: Colors.blue[100]),
-                  title: const Text(
-                    'Galería',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    fotoProvider.ImagesGallery();
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.photo_camera, color: Colors.blue[100]),
-                  title: const Text(
-                    'Cámara',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    fotoProvider.takePhotoAsist();
-                  },
-                ),
-              ],
+    final image = fotoProvider.selectedImagesAsis.isNotEmpty
+        ? fotoProvider.selectedImagesAsis[0]
+        : null;
+
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            fotoProvider.takePhotoAsist();
+          },
+          child: Container(
+            height: 240,
+            width: 240,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(40),
+              border: Border.all(color: Colors.grey),
             ),
-          );
-        });
+            child: image != null
+                ? Wrap(
+                    children: fotoProvider.selectedImagesAsis.map((imagen) {
+                    return Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(39),
+                          child: Image.file(
+                            height: 240,
+                            width: 240,
+                            image,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          top: 5,
+                          right: 0,
+                          left: 0,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.cancel_rounded,
+                              color: Colors.red,
+                              size: 50,
+                            ),
+                            onPressed: () => fotoProvider.removeImagen(image),
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList())
+                : const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.camera_alt_outlined,
+                          size: 50, color: Colors.white),
+                      SizedBox(height: 10),
+                      Text('Tomar foto', style: TextStyle(color: Colors.white)),
+                    ],
+                  ),
+          ),
+        ),
+      ],
+    );
   }
 }

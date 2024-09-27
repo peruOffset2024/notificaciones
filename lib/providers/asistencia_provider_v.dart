@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as  http;
+// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 
 class EnvirAsistencia with ChangeNotifier{
@@ -18,6 +19,9 @@ class EnvirAsistencia with ChangeNotifier{
     required String tipo,
     required List<File> imagens}
   ) async {
+    if (imagens.isEmpty){
+      throw ArgumentError('La imagen es requerida para el registro');
+    }
     final url = Uri.parse('http://190.107.181.163:81/aqnq/ajax/insert_asistencia.php');
     _setLoading(true);
 
