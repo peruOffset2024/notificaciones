@@ -283,13 +283,13 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                           ),
                         ),
                         Positioned(
-                          bottom: 0,
-                          top: 5,
+                          bottom: 200,
+                          top: 0,
                           right: 0,
-                          left: 0,
+                          left: 170,
                           child: IconButton(
                             icon: const Icon(
-                              Icons.cancel_rounded,
+                              Icons.delete_forever,
                               color: Colors.red,
                               size: 50,
                             ),

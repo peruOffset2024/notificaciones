@@ -302,141 +302,132 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
     return showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
+      isScrollControlled:
+          true, // Para que el modal ocupe más espacio si es necesario
       builder: (BuildContext context) {
         final sizeb = MediaQuery.of(context).size;
-        return Container(
-          height: sizeb.height * 0.5,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 15,
-                spreadRadius: 5,
-                offset: const Offset(0, -5), // sombreado superior
-              )
-            ],
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 15),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: const Text(
-                    'Guias Seleccionadas:',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        
+        return Stack(
+          children: [
+            Container(
+              height: sizeb.height * 0.5,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 15,
+                    spreadRadius: 5,
+                    offset: const Offset(0, -5), // sombreado superior
+                  )
+                ],
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      '¿Es distribución?',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                    const SizedBox(height: 15),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Text(
+                        'Guias Seleccionadas:',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                    Transform.scale(
-                      scale: 0.8,
-                      child: Consumer<ModalSwitchProvider>(
-                        builder: (context, switchProvider, child) {
-                          return Switch(
-                            value: switchProvider.isSwitched,
-                            onChanged: (value) {
-                              switchProvider.toggleSwitch();
-                              // ignore: avoid_print
-                              print('La respuesta de value: $value');
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          '¿Es distribución?',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Transform.scale(
+                          scale: 0.8,
+                          child: Consumer<ModalSwitchProvider>(
+                            builder: (context, switchProvider, child) {
+                              return Switch(
+                                value: switchProvider.isSwitched,
+                                onChanged: (value) {
+                                  switchProvider.toggleSwitch();
+                                  // ignore: avoid_print
+                                  print('La respuesta de value: $value');
+                                },
+                                inactiveThumbColor: Colors.grey[200],
+                                activeColor: const Color(0xFF007BFF),
+                                inactiveTrackColor: Colors.grey[400],
+                              );
                             },
-                            inactiveThumbColor: Colors.grey[200],
-                            activeColor: const Color(0xFF007BFF),
-                            inactiveTrackColor: Colors.grey[400],
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
+                    Consumer<EnviarListaGuiasProvider>(
+                      builder: (context, seleccionadasProvider, child) {
+                        return seleccionadasProvider
+                                .guiasSeleccionadas.isNotEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Wrap(
+                                  spacing: 8.0,
+                                  children: seleccionadasProvider
+                                      .guiasSeleccionadas
+                                      .map((guia) {
+                                    return Chip(
+                                      labelPadding: const EdgeInsets.symmetric(
+                                          horizontal: 2),
+                                      label: Text(
+                                        guia,
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      backgroundColor: Colors.grey[300],
+                                      deleteIconColor: Colors.red,
+                                      onDeleted: () {
+                                        setState(() {
+                                          seleccionadasProvider
+                                              .eliminarGuia(guia);
+                                          if (seleccionadasProvider
+                                              .guiasSeleccionadas.isEmpty) {
+                                            Navigator.of(context).pop();
+                                          }
+                                        });
+                                      },
+                                    );
+                                  }).toList(),
+                                ),
+                              )
+                            : const SizedBox.shrink();
+                      },
+                    ),
+                    const SizedBox(
+                        height: 50), // Espacio extra para el botón flotante
                   ],
                 ),
-                //el expanded
-                Consumer<EnviarListaGuiasProvider>(
-                  builder: (context, seleccionadasProvider, child) {
-                    return SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          if (seleccionadasProvider
-                              .guiasSeleccionadas.isNotEmpty)
-                            Container(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.center,
-                                children: [
-                                  Wrap(
-                                    spacing: 8.0,
-                                    // runSpacing: 1,
-                                    children: seleccionadasProvider
-                                        .guiasSeleccionadas
-                                        .map((guia) {
-                                      return Chip(
-                                        labelPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 2),
-                                        label: Text(
-                                          guia,
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        backgroundColor: Colors.grey[300],
-                                        deleteIconColor: Colors.red,
-                                        onDeleted: () {
-                                          setState(() {
-                                            seleccionadasProvider
-                                                .eliminarGuia(guia);
-                                            // Si todas las guías se eliminaron, cerramos el modal
-                                            if (seleccionadasProvider
-                                                .guiasSeleccionadas
-                                                .isEmpty) {
-                                              Navigator.of(context).pop();
-                                            }
-                                          });
-                                        },
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 10,),
-                // Botón de registrar salida
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      backgroundColor:
-                          Colors.blue, 
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                     
-                    ),
+              ),
+            ),
+            // Botón flotante dentro del modal
+            Positioned(
+              bottom: 20, // Margen desde la parte inferior del modal
+              left: 0,
+              right: 0,
+              child: Center(
+                child: SizedBox(
+                  width: sizeb.width * 0.9, // Tamaño del botón
+                  child: FloatingActionButton.extended(
                     onPressed: () async {
                       try {
                         final distribucion =
@@ -446,8 +437,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                         final guias = context
                             .read<EnviarListaGuiasProvider>()
                             .guiasSeleccionadas;
-                        final usuario =
-                            context.read<Authprovider>().username;
+                        final usuario = context.read<Authprovider>().username;
                         final longitud = context
                             .read<LocationProvider>()
                             .currentLocation
@@ -465,12 +455,12 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                         print('latitud --> :$latitud');
                         print('longitud --> :$longitud');
                         print('condicional --> :$distribucion');
+
                         context
                             .read<GuiasServiciosMultiplesProvider>()
                             .eliminarVariasGuias(guias);
-          
+
                         showDialog(
-                          // ignore: use_build_context_synchronously
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
@@ -500,8 +490,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                                     backgroundColor: Colors.grey[350],
                                     elevation: 0,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(20),
                                       side: const BorderSide(
                                           color: Colors.black38, width: 1),
                                     ),
@@ -517,7 +506,6 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                         );
                       } catch (error) {
                         showDialog(
-                          // ignore: use_build_context_synchronously
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
@@ -538,8 +526,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                                     backgroundColor: Colors.grey[350],
                                     elevation: 0,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(20),
                                       side: const BorderSide(
                                           color: Colors.black38, width: 1),
                                     ),
@@ -554,37 +541,18 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                           },
                         );
                       } finally {
-                        // ignore: use_build_context_synchronously
                         context.read<EnviarListaGuiasProvider>().limpiar();
-                        // ignore: use_build_context_synchronously
                         context.read<ModalSwitchProvider>().switchClear();
                       }
                     },
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.94,
-                     
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.save, size: 24, color: Colors.white),
-                          SizedBox(width: 10),
-                          Text(
-                            'Registrar Salida',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    label: const Text('Registrar Salida'),
+                    icon: const Icon(Icons.save),
+                    backgroundColor: Colors.blue,
                   ),
                 ),
-                const SizedBox(height: 20),
-              ],
+              ),
             ),
-          ),
+          ],
         );
       },
     );
