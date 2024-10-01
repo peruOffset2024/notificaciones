@@ -19,7 +19,7 @@ class GuiasVentasSeleccionadas extends StatefulWidget {
   @override
   State<GuiasVentasSeleccionadas> createState() =>
       _GuiasVentasSeleccionadasState();
-}
+} 
 
 class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
   final TextEditingController _searchController = TextEditingController();
@@ -342,7 +342,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Row(
+                    /*Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
@@ -372,7 +372,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                           ),
                         ),
                       ],
-                    ),
+                    ),*/
                     Consumer<EnviarListaGuiasProvider>(
                       builder: (context, seleccionadasProvider, child) {
                         return seleccionadasProvider
@@ -430,10 +430,10 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                   child: FloatingActionButton.extended(
                     onPressed: () async {
                       try {
-                        final distribucion =
+                       /* final distribucion =
                             context.read<ModalSwitchProvider>().isSwitched
                                 ? '1'
-                                : '0';
+                                : '0';*/
                         final guias = context
                             .read<EnviarListaGuiasProvider>()
                             .guiasSeleccionadas;
@@ -449,12 +449,8 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                         await context
                             .read<MultiplesGuiasProvider>()
                             .enviarMultiplesGuias(guias, '', usuario,
-                                '$latitud', '$longitud', distribucion);
-                        print('guias --> :$guias');
-                        print('usuario --> :$usuario');
-                        print('latitud --> :$latitud');
-                        print('longitud --> :$longitud');
-                        print('condicional --> :$distribucion');
+                                '$latitud', '$longitud', '0');
+                        
 
                         context
                             .read<GuiasServiciosMultiplesProvider>()
@@ -546,7 +542,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                       }
                     },
                     label: const Text('Registrar Salida'),
-                    icon: const Icon(Icons.save),
+                    icon: const Icon(Icons.check_circle_outline),
                     backgroundColor: Colors.blue,
                   ),
                 ),

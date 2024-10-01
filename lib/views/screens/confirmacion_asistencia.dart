@@ -7,6 +7,7 @@ import 'package:push_notificaciones/providers/foto_asistencia_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/tipo_asistencia_provider.dart';
 
+
 class ConfirmacionAsistencia extends StatefulWidget {
   const ConfirmacionAsistencia({
     super.key,
@@ -62,7 +63,8 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         //--------------------------------------------------------------
-                        _photoPreviewSection(context, fotoProvider),
+                        
+                       _photoPreviewSection(context, fotoProvider),
                         //--------------------------------------------------------------
                         const SizedBox(height: 40),
                         // Espacio adicional para el FAB

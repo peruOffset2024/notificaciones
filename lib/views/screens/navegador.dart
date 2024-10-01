@@ -4,7 +4,6 @@ import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 
 import 'package:push_notificaciones/views/screens/iniciar_sesion.dart';
-
 import 'package:push_notificaciones/views/screens/inicio.dart';
 import 'package:push_notificaciones/views/screens/asistencia.dart';
 import 'package:push_notificaciones/views/screens/transporte.dart';
@@ -20,69 +19,74 @@ class NavegadorIndex extends StatefulWidget {
 }
 
 class _NavegadorIndexState extends State<NavegadorIndex> {
-  int indice = 0;
+  int indice = 0; 
+  final PageController _pageController = PageController(); // Controlador del PageView
 
   List<Widget> navegador = [
     const ProductosGridScreen(),
     const GuiasServicios(),
     const RegistroAsistencia(),
-  
-    
   ];
-  
-  void _selectVista(int index){
-    if(index == 3){
-      _showExitDialog(context);
+
+  // Actualiza el índice del PageView y el BottomNavigationBar
+  void _selectVista(int index) {
+    if (index == 3) {
+      _showExitDialog(context); // Manejo para salir de la aplicación
     } else {
-      setState(() { 
-        indice = index;
-    });
+      _pageController.jumpToPage(index); // Cambia a la página correspondiente
     }
-    
   }
 
   @override
   Widget build(BuildContext context) {
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
 
-    return  Scaffold(
-            drawer: MyCustomDrawer(usuario: widget.usuario),
-            body: isConnected
-        ? navegador[indice] : const NoInternetScreen(),
-            bottomNavigationBar: Container(
-              color: Colors.black,
-              child: BottomNavigationBar(
-                onTap: _selectVista,
-                currentIndex: indice,
-                backgroundColor: Colors.blue, // Fondo negro
-                selectedItemColor: Colors.white, // Ícono seleccionado blanco
-                unselectedItemColor: Colors.black.withOpacity(
-                    0.7), // Íconos no seleccionados blanco con opacidad
-                type: BottomNavigationBarType.fixed,
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Inicio',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.local_shipping,),
-                    label: 'Transporte',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.timer),
-                    label: 'Asistencia',
-                  ),  
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.exit_to_app_rounded),
-                    label: 'Salir',
-                  ),
-                ],
-              ),
+    return Scaffold(
+      drawer: MyCustomDrawer(usuario: widget.usuario),
+      body: isConnected
+          ? PageView(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  indice = index; // Actualiza el índice del BottomNavigationBar cuando se desliza
+                });
+              },
+              children: navegador, // Las diferentes vistas del navegador
+            )
+          : const NoInternetScreen(),
+      bottomNavigationBar: Container(
+        color: Colors.black,
+        child: BottomNavigationBar(
+          onTap: _selectVista, // Cambia la vista al hacer clic en un ítem
+          currentIndex: indice, // El índice actual del BottomNavigationBar
+          backgroundColor: Colors.blue, 
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.black.withOpacity(0.7),
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Inicio',
             ),
-          ); 
-       
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_shipping),
+              label: 'Transporte',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.timer),
+              label: 'Asistencia',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.exit_to_app_rounded),
+              label: 'Salir',
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
+  // Método para mostrar el diálogo de confirmación de salida
   void _showExitDialog(BuildContext context) async {
     bool? salir = await showDialog(
       context: context,
@@ -93,47 +97,46 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
           ),
           backgroundColor: Colors.blue[50],
           elevation: 0,
-          title:
-              const Text('¿Estás seguro de que deseas salir de la aplicación?',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center),
-          actions: <Widget>[
-            const SizedBox(
-              height: 100,
+          title: const Text(
+            '¿Estás seguro de que deseas salir de la aplicación?',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget>[
+            const SizedBox(height: 100),
             TextButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.grey[350],
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide(color: Colors.black38, width: 1)
-                )
+                  side: const BorderSide(color: Colors.black38, width: 1),
+                ),
               ),
               onPressed: () {
                 Navigator.of(context).pop(false); // Cierra el diálogo sin salir
               },
-              child: const Text('Cancelar',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  )),
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-            const SizedBox(
-              width: 20,
-            ),
+            const SizedBox(width: 20),
             TextButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.grey[350],
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide(color: Colors.black38, width: 1)
-                )
+                  side: const BorderSide(color: Colors.black38, width: 1),
+                ),
               ),
               onPressed: () {
                 Navigator.of(context).pop(true); // Cierra la aplicación
@@ -150,11 +153,14 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
         );
       },
     );
-    if(salir == true){
-      // ignore: use_build_context_synchronously
+
+    if (salir == true) {
       context.read<Authprovider>().logout();
-      // ignore: use_build_context_synchronously
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const IniciarSesion()), (Route<dynamic> route) => false);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const IniciarSesion()),
+        (Route<dynamic> route) => false,
+      );
     }
   }
 }

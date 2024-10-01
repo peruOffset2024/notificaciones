@@ -421,15 +421,15 @@ class _RegistroDatosState extends State<RegistroDatos> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Icon(
-                  Icons.warning_amber_rounded,
+                  Icons.warning_amber_sharp,
                   size: 100,
                   color: Colors.yellow[700],
                 ),
                 content: const Text(
-                  'FALTA EL ESTADO DE PEDIDO',
+                  'Se requiere el estado del pedido',
                   style: TextStyle(fontSize: 14),
                 ),
-                backgroundColor: Colors.red[100],
+                backgroundColor: Colors.blue[50],
                 actions: [
                   TextButton(
                     style: ElevatedButton.styleFrom(

@@ -4,6 +4,8 @@ import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/views/screens/configuraciones_privacidad.dart';
 import 'package:push_notificaciones/views/screens/drawer_control_asistencia.dart';
 import 'package:push_notificaciones/views/screens/drawer_guias.dart';
+import 'package:push_notificaciones/views/screens/iniciar_sesion.dart';
+
 
 
 class MyCustomDrawer extends StatelessWidget {
@@ -14,6 +16,7 @@ class MyCustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final nombUsuario = context.watch<Authprovider>().conductor;
     final ruc = context.watch<Authprovider>().ruc;
+    
   
     List<String> nombCompleto = nombUsuario.split(' ');
     String nombUserComplete = nombCompleto.sublist(0, nombCompleto.length >= 2 ? 2 : nombCompleto.length).join(' ');
@@ -27,7 +30,8 @@ class MyCustomDrawer extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: Colors.blue, // Fondo negro
+             
+              color: Colors.blue, // Fondo azul
             ),
             child: Row(
               children: [
@@ -66,12 +70,14 @@ class MyCustomDrawer extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(ruc, style: TextStyle(fontSize: 10, color: Colors.grey[400]),)
+                    Text(ruc, style: TextStyle(fontSize: 10, color: Colors.grey[400]),),
                   ],
                 ),
               ],
             ),
           ),
+          
+          
           
           ListTile(
             leading: const Icon(Icons.flash_on, color: Colors.white),
@@ -94,13 +100,98 @@ class MyCustomDrawer extends StatelessWidget {
             leading: const Icon(Icons.settings, color: Colors.white),
             title: const Text('Configuración y privacidad', style: TextStyle(color: Colors.white)),
             onTap: () {
-              // Acción al hacer clic en "Configuración y privacidad"
+              // Accion al hacer clic en "Configuracion y privacidad"
                Navigator.push(context, MaterialPageRoute(builder: (context)=> const ConfiguracionesPrivacidadScreen() ));
               
+            },
+          ),
+           
+          ListTile(
+            leading: const Icon(Icons.exit_to_app, color: Colors.white),
+            title: const Text('Cerrar Sesión', style: TextStyle(color: Colors.white)),
+            onTap: () {
+              // Acción al hacer clic en "Salir de la aplicacion"
+              _salirDeLaAplicacion(context);
             },
           ),
         ],
       ), // Fondo del Drawer
     );
+  }
+
+
+  void _salirDeLaAplicacion(BuildContext context) async {
+    bool? salir = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          backgroundColor: Colors.blue[50],
+          elevation: 0,
+          title:
+              const Text('¿Estás seguro de que deseas salir de la aplicación?',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center),
+          actions: <Widget>[
+            const SizedBox(
+              height: 100,
+            ),
+            TextButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[350],
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Colors.black38, width: 1)
+                )
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(false); // Cierra el diálogo sin salir
+              },
+              child: const Text('Cancelar',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            TextButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[350],
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Colors.black38, width: 1)
+                )
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(true); // Cierra la aplicación
+              },
+              child: const Text(
+                'Sí',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    if(salir == true){
+      // ignore: use_build_context_synchronously
+      context.read<Authprovider>().logout();
+      // ignore: use_build_context_synchronously
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const IniciarSesion()), (Route<dynamic> route) => false);
+    }
   }
 }

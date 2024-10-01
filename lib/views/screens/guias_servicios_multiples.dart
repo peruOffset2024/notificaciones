@@ -345,7 +345,7 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Row(
+                    /*Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
@@ -374,7 +374,7 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                           ),
                         ),
                       ],
-                    ),
+                    ),*/
 
                     Consumer<EnviarListaGuiasProvider>(
                       builder: (context, seleccionadasProvider, child) {
@@ -434,10 +434,10 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                   child: FloatingActionButton.extended(
                     onPressed: () async {
                       try {
-                        final condicional =
+                       /* final condicional =
                             context.read<ModalSwitchProvider>().isSwitched
                                 ? '1'
-                                : '0';
+                                : '0';*/
                         final guias = context
                             .read<EnviarListaGuiasProvider>()
                             .guiasSeleccionadas;
@@ -453,12 +453,8 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                         await context
                             .read<MultiplesGuiasProvider>()
                             .enviarMultiplesGuias(guias, '', usuario,
-                                '$latitud', '$longitud', condicional);
-                        print('guias --> :$guias');
-                        print('usuario --> :$usuario');
-                        print('latitud --> :$latitud');
-                        print('longitud --> :$longitud');
-                        print('condicional --> :$condicional');
+                                '$latitud', '$longitud', '0');
+                       
                         context
                             .read<GuiasServiciosMultiplesProvider>()
                             .eliminarVariasGuias(guias);

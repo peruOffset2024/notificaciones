@@ -117,7 +117,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                     key: _formkey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: SizedBox(
-                      height: 55,
+                      height: 58,
                       child: TextFormField(
                         maxLength: 15,
                         inputFormatters: [
@@ -201,12 +201,14 @@ class _IniciarSesionState extends State<IniciarSesion> {
                               },
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.02),
+                              vertical: size.height * 0.012),
                           backgroundColor: Colors.lightBlueAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
                           elevation: 0,
+                          
+                          
                         ),
                         child: Text(
                           'Ingresar',
