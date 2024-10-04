@@ -14,7 +14,7 @@ import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
 import 'package:push_notificaciones/providers/guias_serv_mult_provider.dart';
 import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/ingreso_salida_provider.dart';
-import 'package:push_notificaciones/providers/lista_guias_provider.dart';
+import 'package:push_notificaciones/providers/guias_ventas_mult_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/modal_switch_provider.dart';
 import 'package:push_notificaciones/providers/multiples_guias_provider.dart';

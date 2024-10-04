@@ -185,13 +185,28 @@ class _RegistroDatosState extends State<RegistroDatos> {
   Widget _toogleButton() {
     return widget.inicio == '1' || widget.fin == '3'
         ? const Text('')
-        : Column(
+        : Row(
+          mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Desactivado / Activo'),
+              const Text(
+                          '¿Es distribución?',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
               const SizedBox(
-                height: 15,
+                width: 30,
               ),
-              Transform.scale(
+              Column(children: [
+                const Text('( No   /  Si ) ',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),),
+                Transform.scale(
                 scale: 1.2, // Escala el Switch
                 child: Switch(
                   value: isSwitched,
@@ -209,6 +224,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
                   inactiveTrackColor: Colors.grey,
                 ),
               ),
+              ],),
+              
             ],
           );
   }
@@ -364,7 +381,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
               imagenes: imagen,
               comentario: _observacionController.text,
               condicion: _selectedTipeDelivery,
-              distribucion: widget.distribucion, viaje: widget.viaje);
+              distribucion: condicion, viaje: widget.viaje);
               
 
           showDialog(

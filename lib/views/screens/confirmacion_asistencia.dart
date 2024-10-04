@@ -43,7 +43,7 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
       print('Regresando a ASISTENCIA y actualizando los datos --->');
       context.read<TipoAsistenciaProvider>().fechtTipo(usuario);
     }
-
+    
     // ignore: deprecated_member_use
     return Scaffold(
         appBar: AppBar(

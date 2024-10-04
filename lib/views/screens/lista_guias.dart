@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
-import 'package:push_notificaciones/providers/lista_guias_provider.dart';
+import 'package:push_notificaciones/providers/guias_ventas_mult_provider.dart';
 import 'package:push_notificaciones/services/scroll_behavior.dart';
 import 'package:push_notificaciones/views/screens/registro_salida.dart';
 import 'package:push_notificaciones/views/screens/skltn_guia_emitidas.dart';

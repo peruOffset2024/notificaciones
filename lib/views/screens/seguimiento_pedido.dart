@@ -151,7 +151,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> with 
                                   )
                                 else
                                   GestureDetector(
-                                    onTap: () async {
+                                    onTap: () async { 
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(

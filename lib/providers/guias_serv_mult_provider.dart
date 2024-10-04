@@ -76,6 +76,7 @@ class GuiasServiciosMultiplesProvider with ChangeNotifier {
         .removeWhere((item) => eliminarGuias.contains(item.guia));
     _filtroGuiaMultiples
         .removeWhere((item) => eliminarGuias.contains(item.guia));
+        print('guias eliminadas: $eliminarGuias');
     notifyListeners();
   }
 }

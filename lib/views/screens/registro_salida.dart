@@ -6,7 +6,7 @@ import 'package:push_notificaciones/models/modelo_pedido_evento.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
-import 'package:push_notificaciones/providers/lista_guias_provider.dart';
+import 'package:push_notificaciones/providers/guias_ventas_mult_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/envios_al_servidor.dart';

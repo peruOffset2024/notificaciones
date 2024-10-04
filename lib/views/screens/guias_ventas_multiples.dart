@@ -4,8 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/env_lista_guias_provider.dart';
-import 'package:push_notificaciones/providers/guias_serv_mult_provider.dart';
-import 'package:push_notificaciones/providers/lista_guias_provider.dart';
+import 'package:push_notificaciones/providers/guias_ventas_mult_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/modal_switch_provider.dart';
 import 'package:push_notificaciones/providers/multiples_guias_provider.dart';
@@ -453,7 +452,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                         
 
                         context
-                            .read<GuiasServiciosMultiplesProvider>()
+                            .read<ListaGuiaProvider>()
                             .eliminarVariasGuias(guias);
 
                         showDialog(

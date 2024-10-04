@@ -12,7 +12,7 @@ class ListaGuiaProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<void> fetchGuias(String ruc) async {
-    _isLoading = true;
+    _isLoading = true; 
     notifyListeners();
     try {
       final response = await http.get(Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_guias.php?ruc=$ruc'));
