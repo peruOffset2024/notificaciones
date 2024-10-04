@@ -33,6 +33,7 @@ class RegistroDatos extends StatefulWidget {
 
 class _RegistroDatosState extends State<RegistroDatos> {
   final TextEditingController _observacionController = TextEditingController();
+  // ignore: prefer_final_fields
   List<String> _tipeDelivery = ['ENTREGADO', 'RECHAZADO', 'OTRO..'];
   bool isSwitched = false;
   String condicion = '0';
@@ -113,7 +114,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 10),
-                             Text(
+                             const Text(
                               'Imagenes',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),

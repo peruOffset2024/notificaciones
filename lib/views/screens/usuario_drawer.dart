@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
-import 'package:push_notificaciones/views/screens/configuraciones_privacidad.dart';
-import 'package:push_notificaciones/views/screens/drawer_control_asistencia.dart';
-import 'package:push_notificaciones/views/screens/drawer_guias.dart';
 import 'package:push_notificaciones/views/screens/iniciar_sesion.dart';
 
 
@@ -79,7 +76,7 @@ class MyCustomDrawer extends StatelessWidget {
           
           
           
-          ListTile(
+          /*ListTile(
             leading: const Icon(Icons.flash_on, color: Colors.white),
             title: const Text('Guias', style: TextStyle(color: Colors.white)),
             onTap: () {
@@ -95,17 +92,7 @@ class MyCustomDrawer extends StatelessWidget {
                Navigator.push(context, MaterialPageRoute(builder: (context)=> const DrawerHistorialAsistencia() ));
                 
             },
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings, color: Colors.white),
-            title: const Text('Configuración y privacidad', style: TextStyle(color: Colors.white)),
-            onTap: () {
-              // Accion al hacer clic en "Configuracion y privacidad"
-               Navigator.push(context, MaterialPageRoute(builder: (context)=> const ConfiguracionesPrivacidadScreen() ));
-              
-            },
-          ),
-           
+          ),*/
           ListTile(
             leading: const Icon(Icons.exit_to_app, color: Colors.white),
             title: const Text('Cerrar Sesión', style: TextStyle(color: Colors.white)),

@@ -49,6 +49,7 @@ class TransporteServiciosProvider with ChangeNotifier {
 
   void eliminarGuiaServicio(String guia) {
     _guiasServicio.removeWhere((item) => item.guia == guia);
+    // ignore: unrelated_type_equality_checks
     _filteredGuiaServicio.removeWhere((guia) => guia.guia == guia);
     notifyListeners();
   }

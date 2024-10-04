@@ -75,6 +75,7 @@ class EnvioImagenesProvider with ChangeNotifier {
           contentType: MediaType('image', 'jpeg'), // Definir tipo de archivo
         ));
       }
+      // ignore: avoid_print
        print('Lo que voyu a enviar antes de la respuesta del servidor : $request');
       // Enviar la solicitud
       final response = await request.send();

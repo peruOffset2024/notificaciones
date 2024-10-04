@@ -24,13 +24,13 @@ import 'package:push_notificaciones/providers/envios_al_servidor.dart';
 import 'package:push_notificaciones/providers/tipo_asistencia_provider.dart';
 import 'package:push_notificaciones/providers/track_provider.dart';
 import 'package:push_notificaciones/providers/trasnporte_servicios_provider.dart';
-import 'package:push_notificaciones/services/models/push_notification_service.dart';
+
 
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsFlutterBinding.ensureInitialized();
   // los plugins usan widgets - crear unos widgets
-  await PushNotificationService.initApp();
+  //await PushNotificationService.initApp();
   //await PushNotificationsService.cargarFirebaseApp();
   runApp(MultiProvider(providers: [
     

@@ -195,7 +195,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
   }
 
   // ignore: non_constant_identifier_names
-  Widget _ServiceButton({
+  /*Widget _ServiceButton({
     required BuildContext context,
     required String label,
     required IconData icon,
@@ -242,7 +242,7 @@ class _GuiasServiciosState extends State<GuiasServicios> {
         ),
       ),
     );
-  }
+  }*/
 
   Widget _buildServiceButton({
     required BuildContext context,

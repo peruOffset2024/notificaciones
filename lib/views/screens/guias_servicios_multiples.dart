@@ -455,6 +455,7 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                             .enviarMultiplesGuias(guias, '', usuario,
                                 '$latitud', '$longitud', '0');
                        
+                        // ignore: use_build_context_synchronously
                         context
                             .read<GuiasServiciosMultiplesProvider>()
                             .eliminarVariasGuias(guias);
@@ -506,6 +507,7 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                         );
                       } catch (error) {
                         showDialog(
+                          // ignore: use_build_context_synchronously
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
@@ -541,7 +543,9 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                           },
                         );
                       } finally {
+                        // ignore: use_build_context_synchronously
                         context.read<EnviarListaGuiasProvider>().limpiar();
+                        // ignore: use_build_context_synchronously
                         context.read<ModalSwitchProvider>().switchClear();
                       }
                     },

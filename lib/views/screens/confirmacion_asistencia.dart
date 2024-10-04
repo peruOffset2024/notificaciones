@@ -3,9 +3,12 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/asistencia_provider_v.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
+import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/foto_asistencia_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/tipo_asistencia_provider.dart';
+import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
+
 
 
 class ConfirmacionAsistencia extends StatefulWidget {
@@ -36,16 +39,20 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
     final fotoProvider = context.watch<FotoAsistenciaProvider>();
     final sizeW = MediaQuery.of(context).size.width;
     final usuario = context.watch<Authprovider>().username;
+    final nombUsuario = context.watch<Authprovider>().conductor;
     final latitud = context.read<LocationProvider>().currentLocation;
     final longitud = context.read<LocationProvider>().currentLocation;
+    final isConnected = context.watch<ConnectivityProvider>().isConnected;
+    
 
     void returnActua() {
+      // ignore: avoid_print
       print('Regresando a ASISTENCIA y actualizando los datos --->');
       context.read<TipoAsistenciaProvider>().fechtTipo(usuario);
     }
-    
+
     // ignore: deprecated_member_use
-    return Scaffold(
+    return isConnected ? Scaffold( 
         appBar: AppBar(
           backgroundColor: Colors.white,
         ),
@@ -62,9 +69,11 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Text(nombUsuario, style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.normal),),
+                        const SizedBox(height: 40),
                         //--------------------------------------------------------------
                         
-                       _photoPreviewSection(context, fotoProvider),
+                        _photoPreviewSection(context, fotoProvider),
                         //--------------------------------------------------------------
                         const SizedBox(height: 40),
                         // Espacio adicional para el FAB
@@ -82,32 +91,31 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                                 autofocus: false,
                                 controller: _comentariosController,
                                 style: const TextStyle(
-                                    color: Colors.black, fontSize: 14),
+                                    color: Colors.black, fontSize: 11),
                                 decoration: InputDecoration(
                                   labelText: 'Comentarios (Opcional)',
                                   labelStyle:
-                                      const TextStyle(color: Colors.black),
+                                      const TextStyle(color: Colors.black, fontSize: 11),
                                   prefixIcon: const Icon(
                                     Icons.comment,
                                     color: Colors.black,
-                                    size: 22,
+                                    size: 18,
                                   ),
                                   fillColor: Colors.white,
                                   filled: true,
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(8),
                                     borderSide:
                                         const BorderSide(color: Colors.black),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide:
-                                        const BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: const BorderSide(color: Colors.grey, width: 2.0),
                                   ),
-                                  //contentPadding: const EdgeInsets.symmetric(
-                                  //    vertical: 10.0),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
                                 ),
-                                maxLines: 2,
+                                //maxLines: 1,
                               ),
                             ],
                           ),
@@ -150,11 +158,16 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                   comentario: _comentariosController.text,
                   tipo: widget.tipo1,
                   imagens: fotoProvider.selectedImagesAsis);
+                  // ignore: avoid_print
               print('usuario : --> $usuario');
+              // ignore: avoid_print
               print('latitude : --> ${latitud?.latitude}');
+              // ignore: avoid_print
               print('longitude : --> ${latitud?.longitude}');
+              // ignore: avoid_print
               print(
                   '_observacionController : --> ${_comentariosController.text}');
+                  // ignore: avoid_print
               print('Images : --> ${fotoProvider.selectedImagesAsis}');
               _comentariosController.clear();
 
@@ -247,11 +260,12 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
               ],
             ),
           ),
-        ));
+        )) : const NoInternetScreen();
   }
 
   Widget _photoPreviewSection(
       BuildContext context, FotoAsistenciaProvider fotoProvider) {
+       
     final image = fotoProvider.selectedImagesAsis.isNotEmpty
         ? fotoProvider.selectedImagesAsis[0]
         : null;
@@ -288,7 +302,7 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                           bottom: 200,
                           top: 0,
                           right: 0,
-                          left: 170,
+                          left: 0,
                           child: IconButton(
                             icon: const Icon(
                               Icons.delete_forever,

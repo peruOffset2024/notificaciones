@@ -79,30 +79,30 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       text: const TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'A',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: 'Q',
+                            text: 'C',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
-                            text: 'N',
+                            text: 'O',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
-                            text: 'Q',
+                            text: 'G',
                             style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.orange,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: 'U',
+                            style: TextStyle(
+                                color: Colors.orange,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -210,10 +210,10 @@ class _IniciarSesionState extends State<IniciarSesion> {
                           
                           
                         ),
-                        child: Text(
+                        child: const Text(
                           'Ingresar',
                           style: TextStyle(
-                            fontSize: size.width * 0.05,
+                            fontSize: 20,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),

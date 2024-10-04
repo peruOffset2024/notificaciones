@@ -76,6 +76,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen> with 
 
     void onReturn() {
     //Actualización de datos o refrescar la pantalla anterior
+    // ignore: avoid_print
     print('Regresando a ProductosGridScreen y actualizando los datos...');
     // Puedes llamar a alguna función específica, como:
      context.read<GuiasSalidasProvider>().fetchProductos(dni, ruc);

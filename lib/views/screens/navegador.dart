@@ -155,8 +155,10 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
     );
 
     if (salir == true) {
+      // ignore: use_build_context_synchronously
       context.read<Authprovider>().logout();
       Navigator.pushAndRemoveUntil(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const IniciarSesion()),
         (Route<dynamic> route) => false,

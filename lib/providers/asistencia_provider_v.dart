@@ -33,6 +33,7 @@ class EnvirAsistencia with ChangeNotifier{
       request.fields['comentario'] = comentario;
       request.fields['tipo'] = tipo;
       for (var image in imagens) {
+         // ignore: avoid_print
          print('Agregando imagen: ${image.path}'); // Ver la ruta de cada imagen
         request.files.add(await http.MultipartFile.fromPath(
           'img[]', // Nombre del campo en el servidor
@@ -45,8 +46,10 @@ class EnvirAsistencia with ChangeNotifier{
 
     if(response.statusCode == 200){
       final responseBody = await response.stream.bytesToString();
+      // ignore: avoid_print
       print('Respuesta del servidor: $responseBody');
       final responseData = jsonDecode(responseBody);
+      // ignore: avoid_print
        print('Datos enviados correctamente: $responseData');
     }else {
          // ignore: avoid_print

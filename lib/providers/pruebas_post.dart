@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 
 class EnviarProvider with ChangeNotifier {
   bool _cargando = false;
   bool get cargando => _cargando;
 
-  Future<void> SendData(
+  Future<void> sendData(
       {required String nroGuia,
       required String track,
       required String latitud,
@@ -30,6 +31,7 @@ class EnviarProvider with ChangeNotifier {
       request.fields['distribucion'] = distribucion;
       request.fields['viaje'] = viaje;
       for (var imagen in imagenes) {
+        // ignore: avoid_print
         print('Imagenes para enviar: $imagen');
         request.files.add(await http.MultipartFile.fromPath(
             'img[]', imagen.path,
@@ -39,14 +41,18 @@ class EnviarProvider with ChangeNotifier {
       final response = await request.send();
       if (response.statusCode == 200) {
         final responseBody = await response.stream.bytesToString();
+        // ignore: avoid_print
         print('Respuesta del servidor: $responseBody');
         final responseData = jsonDecode(responseBody);
+        // ignore: avoid_print
         print('Datos enviados correctamente: $responseData');
       } else {
+        // ignore: avoid_print
         print('Respuesta del servidor: ${response.statusCode}');
         throw Exception('Error al enviar datos al servidor');
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error: $e');
     }
     _cargando = false;

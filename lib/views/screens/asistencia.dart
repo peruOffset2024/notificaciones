@@ -33,11 +33,13 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> with WidgetsBin
     final sizeH = MediaQuery.of(context).size.height;
     final user = context.watch<Authprovider>().conductor;
     final tipoAsistenciaProvider = Provider.of<TipoAsistenciaProvider>(context);
+  
+    
 
     // Verifica que la lista tenga al menos dos elementos
     if (tipoAsistenciaProvider.tipoLista.length < 2) {
-      return const Center(
-          child: Text('No hay suficientes datos para mostrar.'));
+      return const Center( 
+          child: Text(''));
     }
     // Obtén los valores de "tipo" del primer y segundo elemento de la lista
     final variable1 = tipoAsistenciaProvider.tipoLista[0]['tipo'];
@@ -87,10 +89,7 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> with WidgetsBin
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(height: 20),
-                      Text('$variable1'),
-                      Text('$variable2'),
-                      
-
+            
                       // Botón de Ingreso
                       variable1 < 1 ?
                       GestureDetector(
@@ -98,12 +97,16 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> with WidgetsBin
                           /* asistenciaProvider.ingresoHabilitado
                             ? asistenciaProvider.registrarIngreso
                             : '';*/
-                          Navigator.push(
+                            Navigator.of(context).push(PageRouteBuilder(pageBuilder: (pageBuilder, animamation1, animation2){
+                              return FadeTransition(opacity: animamation1,
+                              child: const ConfirmacionAsistencia(tipo1: '1',),);
+                            }));
+                          /*Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const ConfirmacionAsistencia(
                                         tipo1: '1',
-                                      )));
+                                      )));*/
                         },
                         child: ClipOval(
                           child: Container(
@@ -162,17 +165,21 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> with WidgetsBin
                           ),
                         ),   
                       const SizedBox(height: 50),
-
+            
                       // Botón de Salida
                       variable2 < 2  ? 
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.of(context).push(PageRouteBuilder(pageBuilder: (pageBuilder, animamation1, animation2){
+                              return FadeTransition(opacity: animamation1,
+                              child:  const ConfirmacionAsistencia(tipo1: '2',),);
+                            }));
+                         /* Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const ConfirmacionAsistencia(
                                         tipo1: '2',
-                                      )));
+                                      )));*/
                         },
                         child: ClipOval(
                           child: Container(
@@ -233,14 +240,7 @@ class _RegistroAsistenciaState extends State<RegistroAsistencia> with WidgetsBin
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Es importante registrar tu ingreso y salida',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
+                
               ],
             ),
           ),

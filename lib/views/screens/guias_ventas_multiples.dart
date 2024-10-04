@@ -451,11 +451,13 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                                 '$latitud', '$longitud', '0');
                         
 
+                        // ignore: use_build_context_synchronously
                         context
                             .read<ListaGuiaProvider>()
                             .eliminarVariasGuias(guias);
 
                         showDialog(
+                          // ignore: use_build_context_synchronously
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
@@ -501,6 +503,7 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                         );
                       } catch (error) {
                         showDialog(
+                          // ignore: use_build_context_synchronously
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
@@ -536,7 +539,9 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                           },
                         );
                       } finally {
+                        // ignore: use_build_context_synchronously
                         context.read<EnviarListaGuiasProvider>().limpiar();
+                        // ignore: use_build_context_synchronously
                         context.read<ModalSwitchProvider>().switchClear();
                       }
                     },
