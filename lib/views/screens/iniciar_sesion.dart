@@ -81,14 +81,14 @@ class _IniciarSesionState extends State<IniciarSesion> {
                           TextSpan(
                             text: 'C',
                             style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
                             text: 'O',
                             style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -144,7 +144,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                                 const BorderSide(color: Colors.lightBlueAccent),
                           ),
                           labelText: 'DNI',
-                          labelStyle: const TextStyle(color: Colors.white),
+                          labelStyle: const TextStyle(color: Colors.white, fontSize: 13),
                           hintStyle:
                               TextStyle(color: Colors.white.withOpacity(0.6)),
                           filled: true,

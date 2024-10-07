@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Notificaciones push',
+        title: 'CoGu',
         initialRoute: '/home',
         //theme: ThemeData.dark(),
         scaffoldMessengerKey: scaffoldKey,

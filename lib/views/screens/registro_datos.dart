@@ -115,8 +115,12 @@ class _RegistroDatosState extends State<RegistroDatos> {
                           children: [
                             const SizedBox(height: 10),
                              const Text(
-                              'Imagenes',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              'Subir Imagenes' ,
+                              style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
                             ),
                             const SizedBox(height: 20),
                             // Aquí se muestra el shimmer mientras las imágenes están cargando
