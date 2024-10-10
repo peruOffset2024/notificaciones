@@ -7,7 +7,7 @@ import 'package:push_notificaciones/providers/env_img_provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
-import 'package:push_notificaciones/views/screens/skeleton_carga_images.dart';
+
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class RegistroDatos extends StatefulWidget {
@@ -16,7 +16,9 @@ class RegistroDatos extends StatefulWidget {
     required this.guia,
     required this.inicio,
     required this.llegada,
-    required this.fin, required this.viaje, required this.distribucion, 
+    required this.fin,
+    required this.viaje,
+    required this.distribucion,
   });
 
   final String guia;
@@ -25,7 +27,6 @@ class RegistroDatos extends StatefulWidget {
   final String fin;
   final String viaje;
   final String distribucion;
-
 
   @override
   State<RegistroDatos> createState() => _RegistroDatosState();
@@ -62,8 +63,6 @@ class _RegistroDatosState extends State<RegistroDatos> {
     }
     return '';
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -111,54 +110,24 @@ class _RegistroDatosState extends State<RegistroDatos> {
                       child: SingleChildScrollView(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const SizedBox(height: 10),
-                             const Text(
-                              'Subir Imagenes' ,
+                            const Text(
+                              'Subir Fotos',
                               style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
                             ),
                             const SizedBox(height: 20),
                             // Aquí se muestra el shimmer mientras las imágenes están cargando
                             imagenesProvider.isLoading
-                                ? GridView.builder(
-                                    // `shrinkWrap: true` indica que el GridView solo ocupará el espacio necesario para sus elementos.
-                                    // No expandirá su tamaño más allá del contenido visible.
-                                    shrinkWrap: true,
-
-                                    // `physics: NeverScrollableScrollPhysics()` desactiva el desplazamiento del GridView,
-                                    // ya que será contenido dentro de otro scroll (como un ScrollView o ListView).
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-
-                                    // `gridDelegate` define el diseño de la cuadrícula. En este caso, `SliverGridDelegateWithFixedCrossAxisCount`
-                                    // crea una cuadrícula con un número fijo de columnas. Aquí hay 3 columnas en total.
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount:
-                                          3, // Número de columnas en la cuadrícula, en este caso 3.
-                                      crossAxisSpacing:
-                                          8, // Espaciado horizontal entre los elementos de la cuadrícula.
-                                      mainAxisSpacing:
-                                          8, // Espaciado vertical entre los elementos de la cuadrícula.
-                                    ),
-
-                                    // `itemCount` especifica cuántos elementos o widgets mostrará el GridView.
-                                    // En este caso, se muestran 6 placeholders.
-                                    itemCount:
-                                        6, // Número de placeholders que quieres mostrar
-
-                                    // `itemBuilder` es la función que genera cada uno de los widgets que se mostrarán en el GridView.
-                                    // Recibe el contexto y el índice de cada widget y construye el widget correspondiente.
-                                    itemBuilder: (context, index) {
-                                      // Aquí estamos mostrando el widget `ShimmerCargaImages` como un placeholder en cada celda de la cuadrícula.
-                                      return const ShimmerCargaImages();
-                                    },
-                                  )
+                                ? const Image(
+                                    height: 25,
+                                    width: 25,
+                                    image: AssetImage('assets/loading.gif'))
                                 : _buildSelectedImages(imagenesProvider),
                             const SizedBox(height: 20),
                             _buildObservacionInput(),
@@ -182,7 +151,12 @@ class _RegistroDatosState extends State<RegistroDatos> {
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: _buildGuardarFotos(),
+            floatingActionButton: imagenesProvider.isLoading
+                ? Image(
+                    height: 20,
+                    width: 20,
+                    image: AssetImage('assets/loading.gif'))
+                : _buildGuardarFotos(),
           )
         : const NoInternetScreen();
   }
@@ -191,46 +165,49 @@ class _RegistroDatosState extends State<RegistroDatos> {
     return widget.inicio == '1' || widget.fin == '3'
         ? const Text('')
         : Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                          '¿Es distribución?',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
+                '¿Es distribución?',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+              ),
               const SizedBox(
                 width: 30,
               ),
-              Column(children: [
-                const Text('( No   /  Si ) ',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),),
-                Transform.scale(
-                scale: 1.2, // Escala el Switch
-                child: Switch(
-                  value: isSwitched,
+              Column(
+                children: [
+                  const Text(
+                    '( No   /  Si ) ',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Transform.scale(
+                    scale: 1.2, // Escala el Switch
+                    child: Switch(
+                      value: isSwitched,
 
-                  onChanged: (value) {
-                    setState(() {
-                      isSwitched = value;
-                      condicion = isSwitched
-                          ? '1'
-                          : '0'; // Asignar 1 cuando esté activo, 0 cuando esté inactivo
-                    });
-                  },
-                  inactiveThumbColor: Colors.grey[100], // circulo centro
-                  activeColor: Colors.green,
-                  inactiveTrackColor: Colors.grey,
-                ),
+                      onChanged: (value) {
+                        setState(() {
+                          isSwitched = value;
+                          condicion = isSwitched
+                              ? '1'
+                              : '0'; // Asignar 1 cuando esté activo, 0 cuando esté inactivo
+                        });
+                      },
+                      inactiveThumbColor: Colors.grey[100], // circulo centro
+                      activeColor: Colors.green,
+                      inactiveTrackColor: Colors.grey,
+                    ),
+                  ),
+                ],
               ),
-              ],),
-              
             ],
           );
   }
@@ -353,7 +330,6 @@ class _RegistroDatosState extends State<RegistroDatos> {
     final longitud = context.watch<LocationProvider>().currentLocation;
     final usuario = context.watch<Authprovider>().username;
     final imagen = context.watch<ImagenesProvider>().selectedImages;
-    
 
     return TextButton(
       onPressed: () async {
@@ -386,8 +362,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
               imagenes: imagen,
               comentario: _observacionController.text,
               condicion: _selectedTipeDelivery,
-              distribucion: condicion, viaje: widget.viaje);
-              
+              distribucion: condicion,
+              viaje: widget.viaje);
 
           showDialog(
             // ignore: use_build_context_synchronously
@@ -469,7 +445,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
                 ],
               );
             },
-          ); 
+          );
         }
       },
       child: Container(
@@ -482,9 +458,9 @@ class _RegistroDatosState extends State<RegistroDatos> {
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.save, size: 25, color: Colors.white),
+            Icon(Icons.check_circle, size: 25, color: Colors.white),
             SizedBox(width: 10),
-            Text('Guardar',
+            Text('Registrar',
                 style: TextStyle(fontSize: 16, color: Colors.white)),
           ],
         ),
@@ -526,7 +502,6 @@ class _RegistroDatosState extends State<RegistroDatos> {
       ),
     );
   }
-
 
   void _showImagePickerOptions(ImagenesProvider imagenesProvider) {
     showModalBottomSheet(

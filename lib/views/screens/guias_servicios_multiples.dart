@@ -6,9 +6,8 @@ import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/env_lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/guias_serv_mult_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
-import 'package:push_notificaciones/providers/modal_switch_provider.dart';
-import 'package:push_notificaciones/providers/multiples_guias_provider.dart';
 import 'package:push_notificaciones/services/scroll_behavior.dart';
+import 'package:push_notificaciones/views/screens/guia_servicios_modal_animation.dart';
 import 'package:push_notificaciones/views/screens/skltn_guia_emitidas.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
@@ -160,6 +159,7 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Checkbox(
+                                            
                                             activeColor: Colors.green,
                                             checkColor: Colors.white,
                                             value: isSelected,
@@ -281,12 +281,16 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                       .guiasSeleccionadas;
                   // Validar si la lista tiene elementos
                   if (guiasSeleccionadasOne.isNotEmpty) {
-                    _showModalBoton(context, isSwitched, condicional);
+                     showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const ModalGuiasServiciosAnimadas();
+                        });
                   } else {
                     // Puedes mostrar un mensaje o un snackbar si lo deseas
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('No hay guías seleccionadas'),
+                        content: Text('NO TIENE SELECCIONADO NIGUNA GUIA', style: TextStyle(fontSize: 13,),),
                       ),
                     );
                   }
@@ -302,264 +306,5 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
         : const NoInternetScreen();
   }
 
-  Future<dynamic> _showModalBoton(
-      BuildContext context, bool isSwitched, String condicional) {
-    return showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        final sizeb = MediaQuery.of(context).size;
-
-        return Stack(
-          children: [
-            Container(
-              height: sizeb.height * 0.5,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(20)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 15,
-                    spreadRadius: 5,
-                    offset: const Offset(0, -5), // sombreado superior
-                  )
-                ],
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 15),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: const Text(
-                        'Guias Seleccionadas:',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black, // Azul oscuro estilo bancario
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    /*Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          '¿Es distribución?',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Transform.scale(
-                          scale: 0.8,
-                          child: Consumer<ModalSwitchProvider>(
-                            builder: (context, switchProvider, child) {
-                              return Switch(
-                                value: switchProvider.isSwitched,
-                                onChanged: (value) {
-                                  switchProvider.toggleSwitch();
-                                  print('La respuesta de value: $value');
-                                },
-                                inactiveThumbColor: Colors.grey[200],
-                                activeColor: const Color(0xFF007BFF),
-                                inactiveTrackColor: Colors.grey[400],
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),*/
-
-                    Consumer<EnviarListaGuiasProvider>(
-                      builder: (context, seleccionadasProvider, child) {
-                        return seleccionadasProvider
-                                .guiasSeleccionadas.isNotEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Wrap(
-                                  spacing: 8.0,
-                                  children: seleccionadasProvider
-                                      .guiasSeleccionadas
-                                      .map((guia) {
-                                    return Chip(
-                                      labelPadding: const EdgeInsets.symmetric(
-                                          horizontal: 2),
-                                      label: Text(
-                                        guia,
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      backgroundColor: Colors.grey[300],
-                                      deleteIconColor: Colors.red,
-                                      onDeleted: () {
-                                        setState(() {
-                                          seleccionadasProvider
-                                              .eliminarGuia(guia);
-                                          if (seleccionadasProvider
-                                              .guiasSeleccionadas.isEmpty) {
-                                            Navigator.of(context).pop();
-                                          }
-                                        });
-                                      },
-                                    );
-                                  }).toList(),
-                                ),
-                              )
-                            : const SizedBox.shrink();
-                      },
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    // Botón de registrar salida
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 20,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: SizedBox(
-                  width: sizeb.width * 0.9,
-                  child: FloatingActionButton.extended(
-                    onPressed: () async {
-                      try {
-                       /* final condicional =
-                            context.read<ModalSwitchProvider>().isSwitched
-                                ? '1'
-                                : '0';*/
-                        final guias = context
-                            .read<EnviarListaGuiasProvider>()
-                            .guiasSeleccionadas;
-                        final usuario = context.read<Authprovider>().username;
-                        final longitud = context
-                            .read<LocationProvider>()
-                            .currentLocation
-                            ?.longitude;
-                        final latitud = context
-                            .read<LocationProvider>()
-                            .currentLocation
-                            ?.latitude;
-                        await context
-                            .read<MultiplesGuiasProvider>()
-                            .enviarMultiplesGuias(guias, '', usuario,
-                                '$latitud', '$longitud', '0');
-                       
-                        // ignore: use_build_context_synchronously
-                        context
-                            .read<GuiasServiciosMultiplesProvider>()
-                            .eliminarVariasGuias(guias);
-
-                        showDialog(
-                          // ignore: use_build_context_synchronously
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              backgroundColor: Colors.blue[50],
-                              title: const Text(
-                                'Registro Exitoso',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              content: const Text(
-                                'Tu registro de salida se realizó correctamente.',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context, true);
-                                    Navigator.of(context).pop();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.grey[350],
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      side: const BorderSide(
-                                          color: Colors.black38, width: 1),
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'Aceptar',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                )
-                              ],
-                            );
-                          },
-                        );
-                      } catch (error) {
-                        showDialog(
-                          // ignore: use_build_context_synchronously
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              backgroundColor: Colors.red[50],
-                              content: const Text(
-                                'Error: Las guías ya tienen salida.',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.grey[350],
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      side: const BorderSide(
-                                          color: Colors.black38, width: 1),
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'Aceptar',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      } finally {
-                        // ignore: use_build_context_synchronously
-                        context.read<EnviarListaGuiasProvider>().limpiar();
-                        // ignore: use_build_context_synchronously
-                        context.read<ModalSwitchProvider>().switchClear();
-                      }
-                    },
-                    label: const Text('Registrar Salida'),
-                    icon: const Icon(Icons.check_circle_outline),
-                    backgroundColor: Colors.blue,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
-        );
-      },
-    );
-  }
+  
 }

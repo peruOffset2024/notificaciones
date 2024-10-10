@@ -21,25 +21,25 @@ class MyCustomDrawer extends StatelessWidget {
     
 
     return Drawer(
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color.fromARGB(255, 248, 144, 144),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
             decoration: const BoxDecoration(
              
-              color: Colors.blue, // Fondo azul
+              color:  Color.fromARGB(255, 248, 144, 144), // Fondo rojo
             ),
             child: Row(
               children: [
                  CircleAvatar(
-                  backgroundColor: Colors.black,
+                  backgroundColor: Colors.white,
                   radius: 30,
                   child:  Text(
                       nombUsuario[0],
                       style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
+                        color: Colors.black,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                       overflow: TextOverflow.visible,
@@ -54,7 +54,7 @@ class MyCustomDrawer extends StatelessWidget {
                      const Text(
                       'Bienvenido',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.blue,
                         fontSize: 20,
                         fontWeight: FontWeight.bold
                       ),
@@ -67,7 +67,7 @@ class MyCustomDrawer extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(ruc, style: TextStyle(fontSize: 10, color: Colors.grey[400]),),
+                    Text(ruc, style: TextStyle(fontSize: 10, color: Colors.black54),),
                   ],
                 ),
               ],
@@ -94,8 +94,8 @@ class MyCustomDrawer extends StatelessWidget {
             },
           ),*/
           ListTile(
-            leading: const Icon(Icons.exit_to_app, color: Colors.white),
-            title: const Text('Cerrar Sesión', style: TextStyle(color: Colors.white)),
+            leading: const Icon(Icons.exit_to_app, color: Colors.red),
+            title: const Text('Cerrar Sesión', style: TextStyle(color: Colors.red)),
             onTap: () {
               // Acción al hacer clic en "Salir de la aplicacion"
               _salirDeLaAplicacion(context);

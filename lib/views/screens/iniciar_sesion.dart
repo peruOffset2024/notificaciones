@@ -74,6 +74,11 @@ class _IniciarSesionState extends State<IniciarSesion> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Logo y Título
+                  const Image(
+                    height: 100,
+                    width: 100,
+                    image: AssetImage('assets/launcher/cogu_logo.png')),
+                   const  SizedBox(height: 10,),
                   Center(
                     child: RichText(
                       text: const TextSpan(
@@ -116,40 +121,39 @@ class _IniciarSesionState extends State<IniciarSesion> {
                   Form(
                     key: _formkey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: SizedBox(
-                      height: 58,
-                      child: TextFormField(
-                        maxLength: 15,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-                        ],
-                        keyboardType: TextInputType.number,
-                        controller: _usernameController,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.person,
-                              color: Colors.lightBlueAccent),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide:
-                                const BorderSide(color: Colors.lightBlueAccent),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
-                                  color: Colors.lightBlueAccent)),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide:
-                                const BorderSide(color: Colors.lightBlueAccent),
-                          ),
-                          labelText: 'DNI',
-                          labelStyle: const TextStyle(color: Colors.white, fontSize: 13),
-                          hintStyle:
-                              TextStyle(color: Colors.white.withOpacity(0.6)),
-                          filled: true,
-                          fillColor: Colors.black.withOpacity(0.7),
+                    child: TextFormField(
+                      maxLength: 15,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                      ],
+                      keyboardType: TextInputType.number,
+                      controller: _usernameController,
+                      style: const TextStyle(color: Colors.white),
+                      cursorColor: Colors.lightBlueAccent,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.person,
+                            color: Colors.lightBlueAccent, size: 22,),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide:
+                              const BorderSide(color: Colors.lightBlueAccent),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                                color: Colors.lightBlueAccent)),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide:
+                              const BorderSide(color: Colors.lightBlueAccent),
+                        ),
+                        labelText: 'DNI / C.I',
+                        labelStyle: const TextStyle(color: Colors.white, fontSize: 13),
+                        hintStyle:
+                            TextStyle(color: Colors.white.withOpacity(0.6)),
+                        filled: true,
+                        fillColor: Colors.black.withOpacity(0.7),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 10)
                       ),
                     ),
                   ),
@@ -201,7 +205,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                               },
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.012),
+                              vertical: size.height * 0.010),
                           backgroundColor: Colors.lightBlueAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -211,9 +215,9 @@ class _IniciarSesionState extends State<IniciarSesion> {
                           
                         ),
                         child: const Text(
-                          'Ingresar',
+                          'INGRESAR',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 15,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),

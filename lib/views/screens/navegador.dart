@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
-import 'package:push_notificaciones/views/Tests/new_inicio.dart';
-
 import 'package:push_notificaciones/views/screens/iniciar_sesion.dart';
 import 'package:push_notificaciones/views/screens/inicio.dart';
 import 'package:push_notificaciones/views/screens/asistencia.dart';
@@ -28,12 +26,11 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
     const ProductosGridScreen(),
     const GuiasServicios(),
     const RegistroAsistencia(),
-    const NewInicio()
   ];
 
   // Actualiza el índice del PageView y el BottomNavigationBar
   void _selectVista(int index) {
-    if (index == 4) {
+    if (index == 3) {
       _showExitDialog(context); // Manejo para salir de la aplicación
     } else {
       _pageController.jumpToPage(index); // Cambia a la página correspondiente
@@ -79,10 +76,6 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
             BottomNavigationBarItem(
               icon: Icon(Icons.timer),
               label: 'Asistencia',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              label: 'Nuevo',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.exit_to_app_rounded),

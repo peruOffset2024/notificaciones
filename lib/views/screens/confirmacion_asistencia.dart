@@ -73,7 +73,7 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                         const SizedBox(height: 40),
                         //--------------------------------------------------------------
                         
-                        _photoPreviewSection(context, fotoProvider),
+                         _photoPreviewSection(context, fotoProvider),
                         //--------------------------------------------------------------
                         const SizedBox(height: 40),
                         // Espacio adicional para el FAB
@@ -129,7 +129,10 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: TextButton(
+        floatingActionButton: fotoProvider.isLoading ?  const Image(
+                                    height: 25,
+                                    width: 25,
+                                    image: AssetImage('assets/loading.gif')) : TextButton(
           onPressed: () async {
             // parametros por usar
             showDialog(
@@ -264,69 +267,69 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
   }
 
   Widget _photoPreviewSection(
-      BuildContext context, FotoAsistenciaProvider fotoProvider) {
-       
-    final image = fotoProvider.selectedImagesAsis.isNotEmpty
-        ? fotoProvider.selectedImagesAsis[0]
-        : null;
+  BuildContext context, FotoAsistenciaProvider fotoProvider) {
+  
+  final image = fotoProvider.selectedImagesAsis.isNotEmpty
+      ? fotoProvider.selectedImagesAsis[0]  // Obtener solo la primera imagen
+      : null;
 
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            fotoProvider.takePhotoAsist();
-          },
-          child: Container(
-            height: 240,
-            width: 240,
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(40),
-              border: Border.all(color: Colors.grey),
-            ),
-            child: image != null
-                ? Wrap(
-                    children: fotoProvider.selectedImagesAsis.map((imagen) {
-                    return Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(39),
-                          child: Image.file(
-                            height: 240,
-                            width: 240,
-                            image,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 200,
-                          top: 0,
-                          right: 0,
-                          left: 0,
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.delete_forever,
-                              color: Colors.red,
-                              size: 50,
-                            ),
-                            onPressed: () => fotoProvider.removeImagen(image),
-                          ),
-                        ),
-                      ],
-                    );
-                  }).toList())
-                : const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.camera_alt_outlined,
-                          size: 50, color: Colors.white),
-                      SizedBox(height: 10),
-                      Text('Tomar foto', style: TextStyle(color: Colors.white)),
-                    ],
-                  ),
+  return Column(
+    children: [
+      GestureDetector(
+        onTap: () {
+          image != null ? fotoProvider.removeImagen(image) : 
+          fotoProvider.takePhotoAsist();  // Función para tomar una nueva foto
+        },
+        child: Container(
+          height: 240,
+          width: 240,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(40),
+            border: Border.all(color: Colors.grey),
           ),
+          child: image != null
+              ? Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(39),
+                      child: Image.file(
+                        image,
+                        height: 240,
+                        width: 240,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                          size: 50,
+                        ),
+                        onPressed: () => fotoProvider.removeImagen(image),
+                      ),
+                    ),
+                  ],
+                )
+              : fotoProvider.isLoading ?  const Image(
+                                    height: 25,
+                                    width: 25,
+                                    image: AssetImage('assets/loading.gif')) : const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.camera_alt_outlined,
+                        size: 50, color: Colors.black),
+                    SizedBox(height: 10),
+                    Text('Tomar foto', style: TextStyle(color: Colors.blue)),
+                  ],
+                ),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
+
 }
