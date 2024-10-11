@@ -20,9 +20,9 @@ class GuiaxCliente {
     });
 
     factory GuiaxCliente.fromJson(Map<String, dynamic> json) => GuiaxCliente(
-        op: json["op"] ,
-        und: json["und"],
-        cant: json["cant"],
+        op: json["op"] ?? '' ,
+        und: json["und"] ?? '',
+        cant: json["cant"] ?? '',
     );
 
     Map<String, dynamic> toJson() => {

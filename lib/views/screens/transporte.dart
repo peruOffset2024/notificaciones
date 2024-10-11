@@ -16,10 +16,9 @@ class GuiasServicios extends StatefulWidget {
 class _GuiasServiciosState extends State<GuiasServicios> {
   @override
   Widget build(BuildContext context) {
-    
     final user = context.watch<Authprovider>().conductor;
     return Scaffold(
-      appBar:  AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         actions: [
@@ -65,49 +64,58 @@ class _GuiasServiciosState extends State<GuiasServicios> {
                           Icons.file_copy_outlined, // Material icon for guides
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) =>
-                                        const GuiasVentasSeleccionadas(),
-                                transitionDuration:
-                                    const Duration(milliseconds: 350),
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
-                                  return SlideTransition(
-                                    position: Tween<Offset>(
-                                      end: Offset.zero,
-                                      begin: const Offset(1.0, 0.0),
-                                    ).animate(animation),
-                                    child: child,
-                                  );
-                                }));
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const GuiasVentasSeleccionadas(),
+                            transitionDuration:
+                                const Duration(milliseconds: 350),
+                            transitionsBuilder: (context, animation,
+                                animationSecondary, child) {
+                              return SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(1.0, 0.0),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                ),
+                              );
+                            },
+                          ),
+                        );
                       }),
                   const SizedBox(height: 20.0),
                   _buildService(
                       context: context,
                       label: 'Guias de Servicio',
-                      icon: Icons
-                          .local_shipping, // Material de Servicios
+                      icon: Icons.local_shipping, // Material de Servicios
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) =>
-                                        const GuiasServiciosMultiples(),
-                                transitionDuration:
-                                    const Duration(milliseconds: 350),
-                                transitionsBuilder: (context, animation,
-                                    animationSecondary, child) {
-                                  return SlideTransition(
-                                    position: Tween<Offset>(
-                                      end: Offset.zero,
-                                      begin: const Offset(1.0, 0.0),
-                                    ).animate(animation),
-                                    child: child,
-                                  );
-                                }));
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const GuiasServiciosMultiples(),
+                            transitionDuration:
+                                const Duration(milliseconds: 350),
+                            transitionsBuilder: (context, animation,
+                                animationSecondary, child) {
+                              return SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(1.0, 0.0),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                ),
+                              );
+                            },
+                          ),
+                        );
                       }),
                   const SizedBox(height: 20.0),
                   /*_ServiceButton(
@@ -194,55 +202,6 @@ class _GuiasServiciosState extends State<GuiasServicios> {
     );
   }
 
-  // ignore: non_constant_identifier_names
-  /*Widget _ServiceButton({
-    required BuildContext context,
-    required String label,
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
-    return Container(
-      height: 100,
-      width: 250,
-      decoration: BoxDecoration(
-        color: Colors.grey[400],
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: MaterialButton(
-        onPressed: onPressed,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-        highlightColor: Colors.green.withOpacity(0.7),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  icon,
-                  color: Colors.white,
-                  size: 24.0,
-                ),
-                const SizedBox(width: 10.0),
-                Text(
-                  label,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const Icon(
-              Icons.chevron_right_rounded,
-              color: Colors.white,
-              size: 18.0,
-            ),
-          ],
-        ),
-      ),
-    );
-  }*/
 
   Widget _buildServiceButton({
     required BuildContext context,

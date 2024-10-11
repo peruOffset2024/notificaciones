@@ -26,12 +26,12 @@ class Servicios {
     });
 
     factory Servicios.fromJson(Map<String, dynamic> json) => Servicios(
-        item: json["item"],
+        item: json["item"] ?? '',
         fechaEmision: DateTime.parse(json["Fecha_emision"]),
-        guia: json["Guia"],
-        cliente: json["Cliente"],
-        cant: json["cant"],
-        llegada: json["llegada"],
+        guia: json["Guia"] ?? '',
+        cliente: json["Cliente"] ?? '',
+        cant: json["cant"] ?? '',
+        llegada: json["llegada"] ?? '',
     );
 
     Map<String, dynamic> toJson() => {

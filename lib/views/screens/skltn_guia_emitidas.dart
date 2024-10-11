@@ -7,7 +7,7 @@ class ShimmerLoaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 6, // Número de placeholders que quieres mostrar
+      itemCount: 8, // Número de placeholders que quieres mostrar
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 10.0),

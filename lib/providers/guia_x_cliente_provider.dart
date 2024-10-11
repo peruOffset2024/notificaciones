@@ -5,10 +5,14 @@ import 'package:http/http.dart' as http;
 
 class GuiaxClienteProvider with ChangeNotifier {
   List<GuiaxCliente> _guiaxCliente = [];
+  bool _isLoading = false;
 
   List<GuiaxCliente> get guiaxCliente => _guiaxCliente;
+  bool get isLoading => _isLoading;
  
   Future<void> obtenerGuiasDetalle(String guia) async {
+    _isLoading = true;
+    notifyListeners();
     try {
       final response = await http.get(Uri.parse('http://190.107.181.163:81/aqnq/ajax/lista_guia.php?guia=$guia'));
       
@@ -25,18 +29,23 @@ class GuiaxClienteProvider with ChangeNotifier {
           // Procesar la lista de datos normalmente
           _guiaxCliente = jsonData.map((jsonGuia) => GuiaxCliente.fromJson(jsonGuia)).toList();
            // ignore: avoid_print
-          print('Datos de guías obtenidos correctamente: $jsonData');
+          print('Datos DETALLE CLIENTE obtenidos correctamente: $jsonData');
         } else {
-          throw Exception('Unexpected response format');
+          throw Exception('DETALLE CLIENTE  response format');
         }
 
         notifyListeners();
       } else {
-        throw Exception('Error al consumir el API');
+        throw Exception('DETALLE CLIENTE  Error al consumir el API');
       }
     } catch (e) {
        // ignore: avoid_print
-      print('Error fetching la guia : $e');
+      print('DETALLE CLIENTE  Error fetching la guia : $e');
+    } finally {
+    _isLoading= false;
+    notifyListeners(); // Notificar que ha terminado la carga
     }
+
+    
   }
 }

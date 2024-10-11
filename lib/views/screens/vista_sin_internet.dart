@@ -7,7 +7,7 @@ class NoInternetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -25,12 +25,11 @@ class NoInternetScreen extends StatelessWidget {
                   color: Colors.black87,
                 ),
               ),
-           
-              /*Image(
+              Image(
                 height: size.height * 0.4,
                   image: const AssetImage(
                 'assets/movil.jfif',
-              )),*/
+              )),
               // Ícono de advertencia
           
               // Mensaje de "No Conexión"

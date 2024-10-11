@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
+import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/views/screens/navegador.dart';
 
 class IniciarSesion extends StatefulWidget {
@@ -55,6 +58,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final conectInternet = context.watch<ConnectivityProvider>().isConnected;
 
     return Scaffold(
       body: Container(
@@ -75,10 +79,12 @@ class _IniciarSesionState extends State<IniciarSesion> {
                 children: [
                   // Logo y Título
                   const Image(
-                    height: 100,
-                    width: 100,
-                    image: AssetImage('assets/launcher/cogu_logo.png')),
-                   const  SizedBox(height: 10,),
+                      height: 100,
+                      width: 100,
+                      image: AssetImage('assets/launcher/cogu_logo.png')),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Center(
                     child: RichText(
                       text: const TextSpan(
@@ -131,30 +137,34 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       style: const TextStyle(color: Colors.white),
                       cursorColor: Colors.lightBlueAccent,
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.person,
-                            color: Colors.lightBlueAccent, size: 22,),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide:
-                              const BorderSide(color: Colors.lightBlueAccent),
-                        ),
-                        focusedBorder: OutlineInputBorder(
+                          prefixIcon: const Icon(
+                            Icons.person,
+                            color: Colors.lightBlueAccent,
+                            size: 22,
+                          ),
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                                color: Colors.lightBlueAccent)),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide:
-                              const BorderSide(color: Colors.lightBlueAccent),
-                        ),
-                        labelText: 'DNI / C.I',
-                        labelStyle: const TextStyle(color: Colors.white, fontSize: 13),
-                        hintStyle:
-                            TextStyle(color: Colors.white.withOpacity(0.6)),
-                        filled: true,
-                        fillColor: Colors.black.withOpacity(0.7),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 10)
-                      ),
+                            borderSide:
+                                const BorderSide(color: Colors.lightBlueAccent),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                  color: Colors.lightBlueAccent)),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide:
+                                const BorderSide(color: Colors.lightBlueAccent),
+                          ),
+                          labelText: 'DNI / C.I',
+                          labelStyle: const TextStyle(
+                              color: Colors.white, fontSize: 13),
+                          hintStyle:
+                              TextStyle(color: Colors.white.withOpacity(0.6)),
+                          filled: true,
+                          fillColor: Colors.black.withOpacity(0.7),
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 10)),
                     ),
                   ),
 
@@ -192,14 +202,24 @@ class _IniciarSesionState extends State<IniciarSesion> {
                                                           _usernameController
                                                               .text)));
                                     } else {
-                                      // ignore: use_build_context_synchronously
-                                      _alertUser();
-                                      //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Datos Invalidos')));
+                                      conectInternet
+                                          ? _alertUser()
+                                          :
+                                          // ignore: use_build_context_synchronously
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                                  content: Text(
+                                                      'No tienes Conexión a internet')));
                                     }
                                   } catch (e) {
-                                    // ignore: use_build_context_synchronously
-                                    _alertUser();
-                                    //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error al Autentificarse')));
+                                    conectInternet
+                                        ? _alertUser()
+                                        :
+                                        // ignore: use_build_context_synchronously
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    'No tienes Conexión a internet')));
                                   }
                                 }
                               },
@@ -211,8 +231,6 @@ class _IniciarSesionState extends State<IniciarSesion> {
                             borderRadius: BorderRadius.circular(30),
                           ),
                           elevation: 0,
-                          
-                          
                         ),
                         child: const Text(
                           'INGRESAR',

@@ -24,11 +24,11 @@ class EstadoSeguimiento {
     });
 
     factory EstadoSeguimiento.fromJson(Map<String, dynamic> json) => EstadoSeguimiento(
-        nroGuia: json["nro_guia"],
-        otroLugarEntrega: json["otro_lugarEntrega"],
-        usuario: json["usuario"],
-        longitud: json["longitud"],
-        latitud: json["latitud"],
+        nroGuia: json["nro_guia"] ?? '',
+        otroLugarEntrega: json["otro_lugarEntrega"] ?? '',
+        usuario: json["usuario"] ?? '',
+        longitud: json["longitud"] ?? '',
+        latitud: json["latitud"] ?? '',
     );
 
     Map<String, dynamic> toJson() => {

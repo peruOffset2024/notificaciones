@@ -22,10 +22,10 @@ class Track {
     });
 
     factory Track.fromJson(Map<String, dynamic> json) => Track(
-        nroGuia: json["nro_guia"],
-        paso: json["paso"],
-        fecha: json["fecha"],
-        track: json["track"],
+        nroGuia: json["nro_guia"] ?? '',
+        paso: json["paso"] ?? '',
+        fecha: json["fecha"] ?? '',
+        track: json["track"] ?? '',
     );
 
     Map<String, dynamic> toJson() => {

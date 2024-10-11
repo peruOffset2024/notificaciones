@@ -123,7 +123,6 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                             itemCount: listadeLasGuias.guias.length,
                             itemBuilder: (context, index) {
                               final guia = listadeLasGuias.guias[index];
-                              final isSelected = context.read<EnviarListaGuiasProvider>().guiasSeleccionadas.contains(guia.guia);
 
                               return Padding(
                                 padding: const EdgeInsets.only(
@@ -147,25 +146,25 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                                           Checkbox(
                                             activeColor: Colors.green,
                                             checkColor: Colors.white,
-                                            value: isSelected,
+                                            value: context
+                                                .watch<
+                                                    EnviarListaGuiasProvider>()
+                                                .guiasSeleccionadas
+                                                .contains(guia.guia),
                                             side: const BorderSide(
                                                 color: Colors.black),
-                                            onChanged: ( value) {
-                                              setState(() {
-                                                if (value == true) {
-                                                  context
-                                                      .read<
-                                                          EnviarListaGuiasProvider>()
-                                                      .agregarGuia(guia.guia);
-                                                } else {
-                                                  context
-                                                      .read<
-                                                          EnviarListaGuiasProvider>()
-                                                      .eliminarGuia(guia.guia);
-                                                }
-                                              });
-                                                
-                                           
+                                            onChanged: (value) {
+                                              if (value == true) {
+                                                context
+                                                    .read<
+                                                        EnviarListaGuiasProvider>()
+                                                    .agregarGuia(guia.guia);
+                                              } else {
+                                                context
+                                                    .read<
+                                                        EnviarListaGuiasProvider>()
+                                                    .eliminarGuia(guia.guia);
+                                              }
                                             },
                                           ),
                                           Expanded(
@@ -263,11 +262,11 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                 elevation: 5,
                 isExtended: true,
                 backgroundColor: Colors.green,
-                onPressed: ()  {
+                onPressed: () {
                   final guiasSeleccionadasOne = context
                       .read<EnviarListaGuiasProvider>()
                       .guiasSeleccionadas;
-                 
+
                   if (guiasSeleccionadasOne.isNotEmpty) {
                     // Muestra la animación de las guías seleccionadas
                     showDialog(
@@ -280,19 +279,24 @@ class _GuiasVentasSeleccionadasState extends State<GuiasVentasSeleccionadas> {
                     // Puedes mostrar un mensaje o un snackbar si lo deseas
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('NO TIENE SELECCIONADO NIGUNA GUIA', style: TextStyle(fontSize: 13,),),
+                        content: Text(
+                          'NO TIENE SELECCIONADO NINGUNA GUIA',
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                     );
                   }
                 },
-                label: const Icon(Icons.add, color: Colors.white,
-                  size: 28,),
-                
+                label: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 28,
+                ),
               ),
             ),
           )
         : const NoInternetScreen();
   }
-
-  
 }

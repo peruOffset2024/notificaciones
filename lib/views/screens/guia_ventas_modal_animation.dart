@@ -28,11 +28,8 @@ class ModalGuiasVentasAnimadas extends StatefulWidget {
 class _ModalGuiasVentasAnimadasState extends State<ModalGuiasVentasAnimadas>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-
   late Animation _animationResize;
-
   late Animation _animationMovementIn;
-
   late Animation _animationMovementOut;
 
   @override
@@ -67,8 +64,8 @@ class _ModalGuiasVentasAnimadasState extends State<ModalGuiasVentasAnimadas>
     final size = MediaQuery.of(context).size;
 
     return Container(
-      height: (size.height * 0.6 * _animationResize.value)
-          .clamp(_buttonCircularSize, size.height * 0.6),
+      height: (size.height * 0.8 * _animationResize.value)
+          .clamp(_buttonCircularSize, size.height * 0.8),
       width: (size.width * _animationResize.value)
           .clamp(_buttonCircularSize, size.width),
       decoration: BoxDecoration(
@@ -143,38 +140,50 @@ class _ModalGuiasVentasAnimadasState extends State<ModalGuiasVentasAnimadas>
   }
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+Widget build(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final orientation = MediaQuery.of(context).orientation; // Detectar orientación
 
-    return Material(
-      color: Colors.transparent,
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          final buttonSizeWidth = (_buttonSizeWidth * _animationResize.value)
-              .clamp(_buttonCircularSize, _buttonSizeWidth);
-          final panelSizeWidth = (size.width * _animationResize.value)
-              .clamp(_buttonCircularSize, size.width);
+  return Material(
+    color: Colors.transparent,
+    child: AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        final buttonSizeWidth = (_buttonSizeWidth * _animationResize.value)
+            .clamp(_buttonCircularSize, _buttonSizeWidth);
+        final panelSizeWidth = (size.width * _animationResize.value)
+            .clamp(_buttonCircularSize, size.width);
 
-          return Stack(
-            children: [
-              Positioned.fill(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    color: Colors.transparent,
-                  ),
+        // Ajustar la posición según la orientación
+        double topPosition;
+        if (orientation == Orientation.portrait) {
+          // Modo vertical
+          topPosition = size.height * 0.4 +
+              (_animationMovementIn.value * size.height * 0.4309);
+        } else {
+          // Modo horizontal (landscape), ajustamos el valor de "top"
+          topPosition = size.height * 0.2 +
+              (_animationMovementIn.value * size.height * 0.452);
+        }
+
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  color: Colors.transparent,
                 ),
               ),
-              Positioned.fill(
-                  child: Stack(
+            ),
+            Positioned.fill(
+              child: Stack(
                 children: [
                   if (_animationMovementIn.value != 1)
                     Positioned(
-                      top: size.height * 0.4 +
-                          (_animationMovementIn.value * size.height * 0.4309),
+                      top: topPosition, // Posición ajustada según la orientación
                       left: size.width / 2 - panelSizeWidth / 2,
                       child: _buildPanel(),
                     ),
@@ -202,51 +211,59 @@ class _ModalGuiasVentasAnimadasState extends State<ModalGuiasVentasAnimadas>
                               .read<MultiplesGuiasProvider>()
                               .enviarMultiplesGuias(guias, '', usuario,
                                   '$latitud', '$longitud', '0');
-
-                          // ignore: use_build_context_synchronously
+                          
                           context
                               .read<ListaGuiaProvider>()
                               .eliminarVariasGuias(guias);
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
-                                  'TU REGISTRO DE SALIDA SE REALIZÓ CORRECTAMENTE.', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),),
+                                'TU REGISTRO DE SALIDA SE REALIZÓ CORRECTAMENTE.',
+                                style: TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
                             ),
                           );
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                  'ERROR: LAS GUIAS YA TIENE SALIDA. \n$error', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold), ),
+                                'ERROR: LAS GUIAS YA TIENE SALIDA. \n$error',
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
                             ),
                           );
                         }
-                        // ignore: use_build_context_synchronously
+
                         context.read<EnviarListaGuiasProvider>().limpiar();
-                        // ignore: use_build_context_synchronously
                         context.read<ModalSwitchProvider>().switchClear();
-                        // Navigator.of(context).pop();
                       },
                       child: Container(
-                          width: buttonSizeWidth,
-                          height: _buttonCircularSize,
-                          decoration: const BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          ),
-                          child: const Center(
-                              child: Text(
+                        width: buttonSizeWidth,
+                        height: _buttonCircularSize,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                        ),
+                        child: const Center(
+                          child: Text(
                             'Registrar\n  Salida',
                             style: TextStyle(color: Colors.white, fontSize: 13),
-                          ))),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
-              )),
-            ],
-          );
-        },
-      ),
-    );
-  }
+              ),
+            ),
+          ],
+        );
+      },
+    ),
+  );
+}
+
 }

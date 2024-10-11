@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "606116472083",
-    "project_id": "servicio-de-notificacion-fe23b",
-    "storage_bucket": "servicio-de-notificacion-fe23b.appspot.com"
+    "project_number": "796569571430",
+    "project_id": "notificaciones-aqnq",
+    "storage_bucket": "notificaciones-aqnq.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:606116472083:android:ec953915afff768b0a66e6",
+        "mobilesdk_app_id": "1:796569571430:android:78c57f6d14446630a49da7",
         "android_client_info": {
           "package_name": "com.ricardodev.push_notificaciones"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAeSZAN7qIknIZCAgteBES8YaXRDxYRvNM"
+          "current_key": "AIzaSyBZxzivKxng2NoPP-_BozmqC4XNqZsPmM4"
         }
       ],
       "services": {

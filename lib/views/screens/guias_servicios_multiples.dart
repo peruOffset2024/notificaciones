@@ -134,10 +134,6 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                             itemBuilder: (context, index) {
                               final guia = listadeLasGuias
                                   .guiasServiciosMultiples[index];
-                              final isSelected = context
-                                  .read<EnviarListaGuiasProvider>()
-                                  .guiasSeleccionadas
-                                  .contains(guia.guia);
 
                               return Padding(
                                 padding: const EdgeInsets.only(
@@ -159,26 +155,27 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Checkbox(
-                                            
                                             activeColor: Colors.green,
                                             checkColor: Colors.white,
-                                            value: isSelected,
+                                            value: context
+                                                .watch<
+                                                    EnviarListaGuiasProvider>()
+                                                .guiasSeleccionadas
+                                                .contains(guia.guia),
                                             side: const BorderSide(
                                                 color: Colors.black),
                                             onChanged: (value) {
-                                              setState(() {
-                                                if (value == true) {
-                                                  context
-                                                      .read<
-                                                          EnviarListaGuiasProvider>()
-                                                      .agregarGuia(guia.guia);
-                                                } else {
-                                                  context
-                                                      .read<
-                                                          EnviarListaGuiasProvider>()
-                                                      .eliminarGuia(guia.guia);
-                                                }
-                                              });
+                                              if (value == true) {
+                                                context
+                                                    .read<
+                                                        EnviarListaGuiasProvider>()
+                                                    .agregarGuia(guia.guia);
+                                              } else {
+                                                context
+                                                    .read<
+                                                        EnviarListaGuiasProvider>()
+                                                    .eliminarGuia(guia.guia);
+                                              }
                                             },
                                           ),
                                           Expanded(
@@ -281,7 +278,7 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                       .guiasSeleccionadas;
                   // Validar si la lista tiene elementos
                   if (guiasSeleccionadasOne.isNotEmpty) {
-                     showDialog(
+                    showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return const ModalGuiasServiciosAnimadas();
@@ -290,7 +287,12 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
                     // Puedes mostrar un mensaje o un snackbar si lo deseas
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('NO TIENE SELECCIONADO NIGUNA GUIA', style: TextStyle(fontSize: 13,),),
+                        content: Text(
+                          'NO TIENE SELECCIONADO NINGUNA GUIA',
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                     );
                   }
@@ -305,6 +307,4 @@ class _GuiasServiciosMultiplesState extends State<GuiasServiciosMultiples> {
           )
         : const NoInternetScreen();
   }
-
-  
 }

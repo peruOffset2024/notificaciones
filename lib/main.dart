@@ -8,7 +8,6 @@ import 'package:push_notificaciones/providers/env_lista_guias_provider.dart';
 import 'package:push_notificaciones/providers/estados_valores_provider.dart';
 import 'package:push_notificaciones/providers/foto_asistencia_provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
-import 'package:push_notificaciones/providers/asistencia_provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
 import 'package:push_notificaciones/providers/guias_serv_mult_provider.dart';
@@ -18,7 +17,6 @@ import 'package:push_notificaciones/providers/guias_ventas_mult_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/modal_switch_provider.dart';
 import 'package:push_notificaciones/providers/multiples_guias_provider.dart';
-import 'package:push_notificaciones/providers/pedido_provider.dart';
 import 'package:push_notificaciones/providers/reg_sal_switch_provider.dart';
 import 'package:push_notificaciones/providers/envios_al_servidor.dart';
 import 'package:push_notificaciones/providers/tipo_asistencia_provider.dart';
@@ -39,8 +37,6 @@ void main() async {
     ChangeNotifierProvider(create: (_) => LocationProvider()), 
     ChangeNotifierProvider(create: (_) => GuiasSalidasProvider()), 
     ChangeNotifierProvider(create: (_) => SwitchStateProvider()),
-    ChangeNotifierProvider(create: (_) => PedidoProvider()), 
-    ChangeNotifierProvider(create: (_) => AsistenciaProvider()), 
     ChangeNotifierProvider(create: (_) => ListaGuiaProvider()), 
     ChangeNotifierProvider(create: (_) => GuiaxClienteProvider()), 
     ChangeNotifierProvider(create: (_) => SeguimientoEstadoProvider()), 

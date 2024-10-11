@@ -43,6 +43,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
 
     return Scaffold(
       drawer: MyCustomDrawer(usuario: widget.usuario),
+      backgroundColor: Colors.white,
       body: isConnected
           ? PageView(
               controller: _pageController,
@@ -54,7 +55,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
               children: navegador, // Las diferentes vistas del navegador
             )
           : const NoInternetScreen(),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: isConnected ? Container(
         color: Colors.black,
         child: BottomNavigationBar(
           onTap: _selectVista, // Cambia la vista al hacer clic en un ítem
@@ -83,7 +84,7 @@ class _NavegadorIndexState extends State<NavegadorIndex> {
             ),
           ],
         ),
-      ),
+      ) : const Text(''),
     );
   }
 

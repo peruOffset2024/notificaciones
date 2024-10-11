@@ -192,7 +192,7 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> with WidgetsB
                     }
                     if (provider.productos.isEmpty) {
                       return const Center(
-                        child: Text('No hay guias registradas.'),
+                        child: Text('No tienes guias registradas.', style: TextStyle(fontSize: 13,),),
                       );
                     }
 
@@ -212,7 +212,7 @@ class _ProductosGridScreenState extends State<ProductosGridScreen> with WidgetsB
                                           SeguimientoPedidoScreen(
                                             guia: indice.nroGuia,
                                             viaje: indice.viaje,
-                                            distribucion: indice.distribucion,
+                                            distribucion: indice.distribucion, cliente: indice.cliente, cant: indice.cant, llegada: indice.entrega,
                                           ),
                                       transitionDuration:
                                           const Duration(milliseconds: 350),
