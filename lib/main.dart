@@ -17,7 +17,6 @@ import 'package:push_notificaciones/providers/guias_ventas_mult_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/modal_switch_provider.dart';
 import 'package:push_notificaciones/providers/multiples_guias_provider.dart';
-import 'package:push_notificaciones/providers/reg_sal_switch_provider.dart';
 import 'package:push_notificaciones/providers/envios_al_servidor.dart';
 import 'package:push_notificaciones/providers/tipo_asistencia_provider.dart';
 import 'package:push_notificaciones/providers/track_provider.dart';
@@ -36,7 +35,6 @@ void main() async {
     ChangeNotifierProvider(create: (_) => Authprovider()),
     ChangeNotifierProvider(create: (_) => LocationProvider()), 
     ChangeNotifierProvider(create: (_) => GuiasSalidasProvider()), 
-    ChangeNotifierProvider(create: (_) => SwitchStateProvider()),
     ChangeNotifierProvider(create: (_) => ListaGuiaProvider()), 
     ChangeNotifierProvider(create: (_) => GuiaxClienteProvider()), 
     ChangeNotifierProvider(create: (_) => SeguimientoEstadoProvider()), 

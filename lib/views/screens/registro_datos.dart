@@ -152,7 +152,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButton: imagenesProvider.isLoading
-                ? Image(
+                ? const Image(
                     height: 20,
                     width: 20,
                     image: AssetImage('assets/loading.gif'))

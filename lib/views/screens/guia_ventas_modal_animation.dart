@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/env_lista_guias_provider.dart';
-
 import 'package:push_notificaciones/providers/guias_ventas_mult_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/modal_switch_provider.dart';
@@ -86,7 +85,7 @@ class _ModalGuiasVentasAnimadasState extends State<ModalGuiasVentasAnimadas>
         children: [
           if (_animationResize.value == 1)
             const Text(
-              'Guias Seleccionadas',
+              'Guias\n Seleccionadas:',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               textAlign: TextAlign.center,
             ),
@@ -212,10 +211,12 @@ Widget build(BuildContext context) {
                               .enviarMultiplesGuias(guias, '', usuario,
                                   '$latitud', '$longitud', '0');
                           
+                          // ignore: use_build_context_synchronously
                           context
                               .read<ListaGuiaProvider>()
                               .eliminarVariasGuias(guias);
 
+                          // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
@@ -226,6 +227,7 @@ Widget build(BuildContext context) {
                             ),
                           );
                         } catch (error) {
+                          // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
@@ -237,7 +239,9 @@ Widget build(BuildContext context) {
                           );
                         }
 
+                        // ignore: use_build_context_synchronously
                         context.read<EnviarListaGuiasProvider>().limpiar();
+                        // ignore: use_build_context_synchronously
                         context.read<ModalSwitchProvider>().switchClear();
                       },
                       child: Container(
@@ -250,7 +254,7 @@ Widget build(BuildContext context) {
                         child: const Center(
                           child: Text(
                             'Registrar\n  Salida',
-                            style: TextStyle(color: Colors.white, fontSize: 13),
+                            style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),

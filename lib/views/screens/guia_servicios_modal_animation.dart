@@ -15,7 +15,7 @@ const _buttonCircularSize = 60.0;
 const _finalImageSize = 30.0;
 // ignore: unused_element
 const _iamgenSize = 120.0;
- 
+
 class ModalGuiasServiciosAnimadas extends StatefulWidget {
   const ModalGuiasServiciosAnimadas({super.key});
 
@@ -89,14 +89,14 @@ class _ModalGuiasServiciosAnimadasState
         children: [
           if (_animationResize.value == 1)
             const Text(
-              'Guias\n Seleccionadas',
+              'Guias\n Seleccionadas:',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               textAlign: TextAlign.center,
             ),
           Expanded(
             child: Consumer<EnviarListaGuiasProvider>(
                 builder: (context, guiasSeleccionadasPro, child) {
-              if (_animationResize.value > 0.6) {
+              if (_animationResize.value > 0.7) {
                 return guiasSeleccionadasPro.guiasSeleccionadas.isNotEmpty
                     ? Padding(
                         padding: const EdgeInsets.all(12.0),
@@ -142,7 +142,8 @@ class _ModalGuiasServiciosAnimadasState
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-     final orientation = MediaQuery.of(context).orientation; // Detectar orientación
+    final orientation =
+        MediaQuery.of(context).orientation; // Detectar orientación
     return Material(
       color: Colors.transparent,
       child: AnimatedBuilder(
@@ -152,17 +153,17 @@ class _ModalGuiasServiciosAnimadasState
               .clamp(_buttonCircularSize, _buttonSizeWidth);
           final panelSizeWidth = (size.width * _animationResize.value)
               .clamp(_buttonCircularSize, size.width);
-              // Ajustar la posición según la orientación
-        double topPosition;
-        if (orientation == Orientation.portrait) {
-          // Modo vertical
-          topPosition = size.height * 0.4 +
-              (_animationMovementIn.value * size.height * 0.4309);
-        } else {
-          // Modo horizontal (landscape), ajustamos el valor de "top"
-          topPosition = size.height * 0.2 +
-              (_animationMovementIn.value * size.height * 0.452);
-        }
+          // Ajustar la posición según la orientación
+          double topPosition;
+          if (orientation == Orientation.portrait) {
+            // Modo vertical
+            topPosition = size.height * 0.4 +
+                (_animationMovementIn.value * size.height * 0.4309);
+          } else {
+            // Modo horizontal (landscape), ajustamos el valor de "top"
+            topPosition = size.height * 0.2 +
+                (_animationMovementIn.value * size.height * 0.452);
+          }
 
           return Stack(
             children: [
@@ -181,7 +182,8 @@ class _ModalGuiasServiciosAnimadasState
                 children: [
                   if (_animationMovementIn.value != 1)
                     Positioned(
-                      top: topPosition, // Posición ajustada según la orientación
+                      top:
+                          topPosition, // Posición ajustada según la orientación
                       left: size.width / 2 - panelSizeWidth / 2,
                       child: _buildPanel(),
                     ),
@@ -213,17 +215,25 @@ class _ModalGuiasServiciosAnimadasState
                           context
                               .read<GuiasServiciosMultiplesProvider>()
                               .eliminarVariasGuias(guias);
+                          // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
-                                  'TU REGISTRO DE SALIDA SE REALIZÓ CORRECTAMENTE.', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),),
+                                'TU REGISTRO DE SALIDA SE REALIZÓ CORRECTAMENTE.',
+                                style: TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
                             ),
                           );
                         } catch (error) {
+                          // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                  'ERROR: LAS GUIAS YA TIENE SALIDA. \n$error', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),),
+                                'ERROR: LAS GUIAS YA TIENE SALIDA. \n$error',
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
                             ),
                           );
                         }
@@ -238,13 +248,13 @@ class _ModalGuiasServiciosAnimadasState
                           width: buttonSizeWidth,
                           height: _buttonCircularSize,
                           decoration: const BoxDecoration(
-                            color: Colors.black,
+                            color: Colors.blue,
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
                           child: const Center(
                               child: Text(
                             'Registrar\n  Salida',
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),
                           ))),
                     ),
                   ),

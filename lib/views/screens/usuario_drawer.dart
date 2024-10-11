@@ -21,14 +21,14 @@ class MyCustomDrawer extends StatelessWidget {
     
 
     return Drawer(
-      backgroundColor: const Color.fromARGB(255, 248, 144, 144),
+      backgroundColor: const Color.fromARGB(255, 247, 169, 169),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
             decoration: const BoxDecoration(
              
-              color:  Color.fromARGB(255, 248, 144, 144), // Fondo rojo
+              color:   Color.fromARGB(255, 247, 169, 169), // Fondo rojo
             ),
             child: Row(
               children: [
@@ -67,7 +67,7 @@ class MyCustomDrawer extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(ruc, style: TextStyle(fontSize: 10, color: Colors.black54),),
+                    Text(ruc, style: const TextStyle(fontSize: 10, color: Colors.black54),),
                   ],
                 ),
               ],

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +62,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color.fromARGB(255, 30, 137, 236), Color(0xFF121212)],
+            colors: [Color.fromARGB(255, 255, 255, 255), Color.fromARGB(255, 255, 255, 255)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -92,14 +90,14 @@ class _IniciarSesionState extends State<IniciarSesion> {
                           TextSpan(
                             text: 'C',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
                             text: 'O',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -134,35 +132,35 @@ class _IniciarSesionState extends State<IniciarSesion> {
                       ],
                       keyboardType: TextInputType.number,
                       controller: _usernameController,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.black),
                       cursorColor: Colors.lightBlueAccent,
                       decoration: InputDecoration(
                           prefixIcon: const Icon(
                             Icons.person,
-                            color: Colors.lightBlueAccent,
+                            color: Colors.grey,
                             size: 22,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide:
-                                const BorderSide(color: Colors.lightBlueAccent),
+                                const BorderSide(color: Colors.orange),
                           ),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: const BorderSide(
-                                  color: Colors.lightBlueAccent)),
+                                  color: Colors.orange)),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide:
-                                const BorderSide(color: Colors.lightBlueAccent),
+                                const BorderSide(color: Colors.orange),
                           ),
                           labelText: 'DNI / C.I',
                           labelStyle: const TextStyle(
-                              color: Colors.white, fontSize: 13),
+                              color: Colors.grey, fontSize: 13),
                           hintStyle:
                               TextStyle(color: Colors.white.withOpacity(0.6)),
                           filled: true,
-                          fillColor: Colors.black.withOpacity(0.7),
+                          fillColor: Colors.white,
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 10)),
                     ),
@@ -226,7 +224,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
                               vertical: size.height * 0.010),
-                          backgroundColor: Colors.lightBlueAccent,
+                          backgroundColor: Colors.orange,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -236,7 +234,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                           'INGRESAR',
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
