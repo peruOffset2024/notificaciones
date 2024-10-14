@@ -7,7 +7,7 @@ import 'package:push_notificaciones/providers/env_img_provider.dart';
 import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/providers/image_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
-
+import 'package:push_notificaciones/views/screens/indicador_carga.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 class RegistroDatos extends StatefulWidget {
@@ -48,7 +48,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
       context.read<ImagenesProvider>().clearImages();
     });
   }
-
+  
   String _calculo() {
     if (widget.inicio == '' && widget.llegada == '' && widget.fin != '') {
       return widget.fin;
@@ -117,17 +117,14 @@ class _RegistroDatosState extends State<RegistroDatos> {
                               'Subir Fotos',
                               style: TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
                             ),
                             const SizedBox(height: 20),
                             // Aquí se muestra el shimmer mientras las imágenes están cargando
                             imagenesProvider.isLoading
-                                ? const Image(
-                                    height: 25,
-                                    width: 25,
-                                    image: AssetImage('assets/loading.gif'))
+                                ? const  IndicadorDeCarga()
                                 : _buildSelectedImages(imagenesProvider),
                             const SizedBox(height: 20),
                             _buildObservacionInput(),
@@ -152,10 +149,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButton: imagenesProvider.isLoading
-                ? const Image(
-                    height: 20,
-                    width: 20,
-                    image: AssetImage('assets/loading.gif'))
+                ? const SizedBox.shrink()
                 : _buildGuardarFotos(),
           )
         : const NoInternetScreen();
@@ -338,18 +332,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
             barrierDismissible:
                 false, // para no cerrar el dialogo al tocar fuera el dialog
             builder: (BuildContext context) {
-              return const Dialog(
-                child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(width: 20),
-                      Text('Cargando...'),
-                    ],
-                  ),
-                ),
-              );
+              return const IndicadorDeCarga();
             });
 
         try {

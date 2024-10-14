@@ -7,27 +7,32 @@ class Authprovider with ChangeNotifier {
   String _username = '';
   String _conductor = '';
   String _ruc = '';
-
   bool _authenticated = false;
+  bool _isLoading  = false;
 
   String get username => _username;
   String get conductor => _conductor;
   String get ruc => _ruc;
-
+  
 
   bool get authenticated => _authenticated;
+  bool get isLoading => _isLoading;
 
   void authentication(String usuario) async {
+    
+    
     try {
       await login(usuario);
     } catch (e) {
       // ignore: avoid_print
       print('Error ; $e');
       // Mostrar un mensaje de error al usuario
-    }
+    } 
   }
   
   Future<void> login(String dni) async {
+    _isLoading = true;
+    notifyListeners();
   try {
     final url = Uri.parse('http://190.107.181.163:81/aqnq/ajax/login.php?dni=$dni');
     final response = await http.get(url);
@@ -62,6 +67,8 @@ class Authprovider with ChangeNotifier {
   print('Error ---->: $e');
   notifyListeners();
   }
+  _isLoading = false;
+      notifyListeners();
 }
 
 

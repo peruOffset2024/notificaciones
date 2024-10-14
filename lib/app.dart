@@ -30,8 +30,8 @@ class _MyAppState extends State<MyApp> {
       // ignore: avoid_print
       print('----- > DESDE MYAPP mensaje: $mensaje');
     navigatorKey.currentState?.pushNamed('/mensaje', arguments: mensaje);
-      final snackBar = SnackBar(content: Text('Esto es snackbar msj: $mensaje'));
-        scaffoldKey.currentState?.showSnackBar(snackBar);
+     // final snackBar = SnackBar(content: Text('Esto es snackbar msj: $mensaje'));
+      //  scaffoldKey.currentState?.showSnackBar(snackBar);
     }
    );
   }

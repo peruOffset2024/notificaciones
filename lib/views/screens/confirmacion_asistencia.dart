@@ -7,6 +7,7 @@ import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/foto_asistencia_provider.dart';
 import 'package:push_notificaciones/providers/location_provider.dart';
 import 'package:push_notificaciones/providers/tipo_asistencia_provider.dart';
+import 'package:push_notificaciones/views/screens/indicador_carga.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
 
@@ -129,10 +130,7 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: fotoProvider.isLoading ?  const Image(
-                                    height: 25,
-                                    width: 25,
-                                    image: AssetImage('assets/loading.gif')) : TextButton(
+        floatingActionButton: fotoProvider.isLoading ? const SizedBox.shrink() : TextButton(
           onPressed: () async {
             // parametros por usar
             showDialog(
@@ -300,12 +298,12 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                         fit: BoxFit.fill,
                       ),
                     ),
-                    Positioned(
+                    Positioned( 
                       bottom: 0,
                       right: 0,
                       child: IconButton(
                         icon: const Icon(
-                          Icons.delete_forever,
+                          Icons.cancel,
                           color: Colors.red,
                           size: 50,
                         ),
@@ -314,10 +312,7 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                     ),
                   ],
                 )
-              : fotoProvider.isLoading ?  const Image(
-                                    height: 25,
-                                    width: 25,
-                                    image: AssetImage('assets/loading.gif')) : const Column(
+              : fotoProvider.isLoading ?  const IndicadorDeCarga() : const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.camera_alt_outlined,

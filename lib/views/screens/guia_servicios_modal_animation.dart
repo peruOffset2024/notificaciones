@@ -248,14 +248,20 @@ class _ModalGuiasServiciosAnimadasState
                           width: buttonSizeWidth,
                           height: _buttonCircularSize,
                           decoration: const BoxDecoration(
-                            color: Colors.blue,
+                            color: Colors.orange,
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
-                          child: const Center(
-                              child: Text(
-                            'Registrar\n  Salida',
-                            style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),
-                          ))),
+                          child: Center(
+                            child: buttonSizeWidth == _buttonCircularSize
+                                ? const Icon(Icons.check, color: Colors.white)
+                                : const Text(
+                                    'Registrar\n  Salida',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                          ),),
                     ),
                   ),
                 ],

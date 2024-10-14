@@ -95,8 +95,14 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen>
   String mes = fechaPartes[1];
   String dia = fechaPartes[2];
 
+  List<String> horaMinSeg = hora.split(':');
+  String hrs = horaMinSeg[0];
+  String mints = horaMinSeg[1];
+  String segs = horaMinSeg[2];
+  
+
   // Reordena a formato dd-MM-yyyy
-  String fechaInvertida = '$dia-$mes-$anio $hora';
+  String fechaInvertida = '$hrs:$mints:$segs $dia-$mes-$anio';
 
   return fechaInvertida;
 }

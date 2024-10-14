@@ -7,8 +7,8 @@ class NoInternetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
+    //final size = MediaQuery.of(context).size;
+    return const Scaffold(
       backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
@@ -16,7 +16,7 @@ class NoInternetScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 "Sin conexión a internet",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -25,11 +25,11 @@ class NoInternetScreen extends StatelessWidget {
                   color: Colors.black87,
                 ),
               ),
-              Image(
+              /*Image(
                 height: size.height * 0.4,
                   image: const AssetImage(
                 'assets/movil.jfif',
-              )),
+              )),*/
               // Ícono de advertencia
           
               // Mensaje de "No Conexión"
