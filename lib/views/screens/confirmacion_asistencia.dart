@@ -138,18 +138,7 @@ class _ConfirmacionAsistenciaState extends State<ConfirmacionAsistencia> {
                 barrierDismissible:
                     false, // para no cerrar el dialogo al tocar fuera el dialog
                 builder: (BuildContext context) {
-                  return const Dialog(
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(width: 20),
-                          Text('Cargando...'),
-                        ],
-                      ),
-                    ),
-                  );
+                  return const IndicadorDeCarga();
                 });
             try {
               await context.read<EnvirAsistencia>().envirAsistencia(

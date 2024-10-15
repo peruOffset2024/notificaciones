@@ -42,6 +42,7 @@ class EnvioImagenesProvider with ChangeNotifier {
       request.fields['condicion'] = condicion ?? '';
       request.fields['distribucion'] = distribucion;
       request.fields['viaje'] = viaje;
+      
 
       // Mostrar los datos que se están enviando
       // ignore: avoid_print
@@ -68,6 +69,7 @@ class EnvioImagenesProvider with ChangeNotifier {
       // Agregar imágenes y mostrar sus rutas
       for (var imagen in imagenes) {
          // ignore: avoid_print
+         print('lista-----> : $imagenes');
         print('Agregando imagen: ${imagen.path}'); // Ver la ruta de cada imagen
         request.files.add(await http.MultipartFile.fromPath(
           'img[]', // Nombre del campo en el servidor

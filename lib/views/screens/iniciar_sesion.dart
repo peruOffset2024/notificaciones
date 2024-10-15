@@ -212,7 +212,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
      floatingActionButton: Text(
-                        '© Copyrigth Peru Offset Digital S.A.C - TI',
+                        '© Copyrigth 2024 COGU - T.I',
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
                       ),
     );
