@@ -206,10 +206,10 @@ class _ModalGuiasServiciosAnimadasState
                               .read<LocationProvider>()
                               .currentLocation
                               ?.latitude;
+                          final ruc = context.read<Authprovider>().ruc;
                           await context
                               .read<MultiplesGuiasProvider>()
-                              .enviarMultiplesGuias(guias, '', usuario,
-                                  '$latitud', '$longitud', '0');
+                              .enviarMultiplesGuias(guia: guias, lugarEntrega: '', usuario: usuario, latitud: '$latitud', longitud: '$longitud', distribucion: '0', ruc: ruc);
 
                           // ignore: use_build_context_synchronously
                           context

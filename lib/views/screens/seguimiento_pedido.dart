@@ -47,6 +47,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen>
     super.didChangeDependencies();
     // Recargar los datos al volver a esta pantalla
     context.read<TrackProviderSegui>().obtenerTrack(widget.guia);
+    
   }
 
   @override
@@ -98,11 +99,11 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen>
   List<String> horaMinSeg = hora.split(':');
   String hrs = horaMinSeg[0];
   String mints = horaMinSeg[1];
-  String segs = horaMinSeg[2];
+  //String segs = horaMinSeg[2];
   
 
   // Reordena a formato dd-MM-yyyy
-  String fechaInvertida = '$hrs:$mints:$segs $dia-$mes-$anio';
+  String fechaInvertida = '$hrs:$mints\n    $dia/$mes/$anio';
 
   return fechaInvertida;
 }
@@ -115,6 +116,8 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen>
       // Puedes llamar a alguna función específica, como:
       context.read<GuiasSalidasProvider>().fetchProductos(dni, ruc);
     }
+
+    
 
     return isConneccted
         // ignore: deprecated_member_use
@@ -370,6 +373,7 @@ class _SeguimientoPedidoScreenState extends State<SeguimientoPedidoScreen>
                                 ),
                                 InkWell(
                                   onTap: () {
+                                   
                                     Navigator.push(
                                       context,
                                       PageRouteBuilder(

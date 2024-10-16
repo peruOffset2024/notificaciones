@@ -34,6 +34,9 @@ class RegistroDatos extends StatefulWidget {
 
 class _RegistroDatosState extends State<RegistroDatos> {
   final TextEditingController _observacionController = TextEditingController();
+  final TextEditingController _otroLugarEntrega = TextEditingController();
+
+  
   // ignore: prefer_final_fields
   List<String> _tipeDelivery = ['ENTREGADO', 'RECHAZADO', 'OTRO..'];
   bool isSwitched = false;
@@ -63,6 +66,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
     }
     return '';
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +132,9 @@ class _RegistroDatosState extends State<RegistroDatos> {
                                 : _buildSelectedImages(imagenesProvider),
                             const SizedBox(height: 20),
                             _buildObservacionInput(),
-                            const SizedBox(height: 30),
+                            const SizedBox(height: 10),
+                            _buildObservationsField(),
+                            const SizedBox(height: 10),
                             _comboBox('ESTADO DE PEDIDO', _tipeDelivery,
                                 _selectedTipeDelivery, (String? valor) {
                               setState(() {
@@ -153,6 +159,52 @@ class _RegistroDatosState extends State<RegistroDatos> {
                 : _buildGuardarFotos(),
           )
         : const NoInternetScreen();
+  }
+  Widget _buildObservationsField() {
+    return widget.inicio == '1' ? Container(
+      //padding: const EdgeInsets.all(5.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Otro lugar de entrega:',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            cursorColor: Colors.black,
+            style: const TextStyle(color: Colors.black),
+            controller: _otroLugarEntrega,
+            maxLines: null,
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.comment),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide:
+                    const BorderSide(color: Color.fromARGB(255, 161, 188, 211)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Color.fromARGB(255, 161, 188, 211)),
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric( vertical: 10.0),
+                  
+            ),
+          ),
+        ],
+      ),
+    ) : const Text('');
   }
 
   Widget _toogleButton() {
@@ -262,7 +314,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
     final size = MediaQuery.of(context).size.width;
     return Container(
       width: size,
-      padding: const EdgeInsets.only(left: 5, right: 5),
+      padding: const EdgeInsets.only(left: 0, right: 0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -278,7 +330,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Observaciones',
+            'Observaciones:',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
@@ -286,13 +338,14 @@ class _RegistroDatosState extends State<RegistroDatos> {
           ),
           const SizedBox(height: 10),
           TextField(
+            cursorColor: Colors.black,
             autocorrect: false,
             autofocus: false,
             controller: _observacionController,
             style: const TextStyle(color: Colors.black, fontSize: 14),
             decoration: InputDecoration(
               prefixIcon: const Icon(
-                Icons.comment,
+                Icons.insert_comment_outlined,
                 color: Colors.black,
                 size: 22,
               ),
@@ -324,6 +377,8 @@ class _RegistroDatosState extends State<RegistroDatos> {
     final longitud = context.watch<LocationProvider>().currentLocation;
     final usuario = context.watch<Authprovider>().username;
     final imagen = context.watch<ImagenesProvider>().selectedImages;
+    final ruc = context.watch<Authprovider>().ruc;
+    
 
     return TextButton(
       onPressed: () async {
@@ -346,7 +401,10 @@ class _RegistroDatosState extends State<RegistroDatos> {
               comentario: _observacionController.text,
               condicion: _selectedTipeDelivery,
               distribucion: condicion,
-              viaje: widget.viaje);
+              viaje: widget.viaje, 
+              otroLugarEntrega: _otroLugarEntrega.text, ruc: ruc);
+              
+             
 
           showDialog(
             // ignore: use_build_context_synchronously
@@ -356,7 +414,7 @@ class _RegistroDatosState extends State<RegistroDatos> {
               return AlertDialog(
                 backgroundColor: Colors.blue[50],
                 title: const Text('Excelente.'),
-                content: const Text('Los datos se han guardado correctamente.'),
+                content: const Text('Se regitro correctamente.'),
                 actions: [
                   TextButton(
                     style: ElevatedButton.styleFrom(
@@ -389,7 +447,9 @@ class _RegistroDatosState extends State<RegistroDatos> {
                   ),
                 ],
               );
+              
             },
+          
           );
         } catch (error) {
           // Si hay algún error, muestra un mensaje de error
@@ -401,14 +461,14 @@ class _RegistroDatosState extends State<RegistroDatos> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Icon(
+                title: const Icon(
                   Icons.warning_amber_sharp,
                   size: 100,
-                  color: Colors.yellow[700],
+                  color: Colors.red,
                 ),
                 content: const Text(
                   'Se requiere el estado del pedido',
-                  style: TextStyle(fontSize: 14),
+                  style: TextStyle(fontSize: 16),
                 ),
                 backgroundColor: Colors.blue[50],
                 actions: [
@@ -423,13 +483,14 @@ class _RegistroDatosState extends State<RegistroDatos> {
                     onPressed: () {
                       Navigator.of(context).pop(); // Cierra el diálogo de error
                     },
-                    child: const Text('OK'),
+                    child: const Text('OK', style: TextStyle(color:Colors.black),),
                   ),
                 ],
               );
             },
           );
         }
+       
       },
       child: Container(
         decoration: BoxDecoration(

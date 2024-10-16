@@ -4,12 +4,14 @@ import 'package:http/http.dart' as http;
 
 class MultiplesGuiasProvider with ChangeNotifier {
   Future<void> enviarMultiplesGuias(
-      List<String> guia,
-      String lugarEntrega,
-      String usuario,
-      String latitud,
-      String longitud,
-      String distribucion) async {
+      {required List<String> guia,
+      required String lugarEntrega,
+      required String usuario,
+      required String latitud,
+      required String longitud,
+      required String distribucion,
+      required String ruc,} 
+      ) async {
     try {
       // Convertir la lista de guías a una cadena JSON
       String guiasFormateadas = jsonEncode(guia);
@@ -17,9 +19,15 @@ class MultiplesGuiasProvider with ChangeNotifier {
 
       final response = await http.post(
         Uri.parse(
-          'http://190.107.181.163:81/aqnq/ajax/insert_guia.php?nro_guia=$guiasFormateadas&otro_lugarEntrega=$lugarEntrega&usuario=$usuario&latitud=$latitud&longitud=$longitud&distribucion=$distribucion',
+          'http://190.107.181.163:81/aqnq/ajax/insert_guia.php?nro_guia=$guiasFormateadas&otro_lugarEntrega=$lugarEntrega&usuario=$usuario&latitud=$latitud&longitud=$longitud&distribucion=$distribucion&ruc=$ruc',
         ),
       );
+      print('lugarEntrega: $lugarEntrega');
+      print('usuario: $usuario');
+      print('latitud: $latitud');
+      print('longitud: $longitud');
+      print('distribucion: $distribucion');
+      print('ruc: $ruc');
        // ignore: avoid_print
       print(
           'Respuesta del servidor: ${response.body}'); // Agrega esta línea para ver la respuesta

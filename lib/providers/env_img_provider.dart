@@ -12,9 +12,11 @@ class EnvioImagenesProvider with ChangeNotifier {
   Future<void> enviarDatosConImagenes({
     required String nroGuia,
     required String track,
+    required String ruc,
     required String latitud,
     required String longitud,
     required String usuario,
+    required String otroLugarEntrega,
     required String comentario,
     required String? condicion,
     required String distribucion,
@@ -41,7 +43,9 @@ class EnvioImagenesProvider with ChangeNotifier {
       request.fields['comentario'] = comentario;
       request.fields['condicion'] = condicion ?? '';
       request.fields['distribucion'] = distribucion;
+      request.fields['ruc'] = ruc;
       request.fields['viaje'] = viaje;
+      request.fields['otro_lugarEntrega'] = otroLugarEntrega;
       
 
       // Mostrar los datos que se están enviando
@@ -49,6 +53,8 @@ class EnvioImagenesProvider with ChangeNotifier {
       print('Datos que se están enviando:');
        // ignore: avoid_print
       print('nro_guia: $nroGuia');
+      // ignore: avoid_print
+      print('ruc: $ruc');
        // ignore: avoid_print
       print('track: $track');
        // ignore: avoid_print
@@ -57,6 +63,8 @@ class EnvioImagenesProvider with ChangeNotifier {
       print('longitud: $longitud');
        // ignore: avoid_print
       print('usuario: $usuario');
+      // ignore: avoid_print
+      print('otro_lugarEntrega: $otroLugarEntrega');
        // ignore: avoid_print
       print('Comentario: $comentario');
        // ignore: avoid_print

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:push_notificaciones/providers/auth_provider.dart';
 import 'package:push_notificaciones/providers/conexion_internet_provider.dart';
 import 'package:push_notificaciones/providers/guia_x_cliente_provider.dart';
+import 'package:push_notificaciones/providers/guias_salidar_provider.dart';
 import 'package:push_notificaciones/views/screens/skeleton_registro_datos.dart';
 import 'package:push_notificaciones/views/screens/vista_sin_internet.dart';
 
@@ -18,7 +20,7 @@ final String cliente;
   State<DetalleDeGuia> createState() => _DetalleDeGuiaState();
 }
 
-class _DetalleDeGuiaState extends State<DetalleDeGuia> {
+class _DetalleDeGuiaState extends State<DetalleDeGuia>  {
   
 
   @override
@@ -27,6 +29,9 @@ class _DetalleDeGuiaState extends State<DetalleDeGuia> {
     
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<GuiaxClienteProvider>().obtenerGuiasDetalle(widget.guia);
+      final ruc = context.read<Authprovider>().ruc;
+      final dni = context.read<Authprovider>().username;
+      context.read<GuiasSalidasProvider>().fetchProductos(dni, ruc);
     });
   }
 
@@ -34,6 +39,9 @@ class _DetalleDeGuiaState extends State<DetalleDeGuia> {
   Widget build(BuildContext context) {
     final obtenerGuias = context.watch<GuiaxClienteProvider>().guiaxCliente;
     final isConnected = context.watch<ConnectivityProvider>().isConnected;
+    
+    
+   
 
     return isConnected
         ? Scaffold(
